@@ -9,7 +9,7 @@
     "ajv": "^6.5.2",
     "bootstrap": "^4.1.2",
     "i": "^0.3.6",
-    "jquery": "^1.9.1",
+    "jquery": "^3.3.1",
     "jqueryui": "^1.11.1",
     "layout": "https://github.com/GedMarc/layout/archive/v1.6.3.tar.gz",
     "npm": "^6.2.0",
