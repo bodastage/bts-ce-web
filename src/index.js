@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LoginForm from './modules/session/LoginForm';
-import UILayout from './modules/layout/UILayout';
-import $ from 'jquery';
+import App from './app';
+import { Provider } from 'react-redux';
+import configureStore from './configure-store';
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore } from 'redux-persist'
+import Loading from './modules/session/loading';
 
 // Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,18 +13,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-        import { faLock, faAt } from '@fortawesome/free-solid-svg-icons'
+        import { faLock, faAt, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
-        library.add(faLock, faAt);
+        library.add(faLock, faAt, faSpinner);
 
+const store = configureStore();
 
-window.jQuery = $;
+const persistor = persistStore(store);
 
-
-const App = () => (
-            <div>
-                <UILayout/>
-            </div>
-            );
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+        <Provider store={store}>
+            <PersistGate loading={<Loading show={true}/>} persistor={persistor}>
+                <App />
+            </PersistGate>
+        </Provider>, 
+    document.getElementById('root'));
