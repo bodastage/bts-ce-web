@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import ReactDOM from 'react-dom';
 import jQuery from '../../utils/jquery';
 import $ from 'jquery';
 import layout from 'layout/dist/jquery.layout_and_plugins';
 import LayoutCSS from 'layout/dist/layout-default.css'
 import UILayoutCSS from './UILayout.css';
+import Header from './header.js';
+
+import Dashboard from '../dashboard/dashboard';
 
 export default class UILayout extends React.Component {
 	constructor(props){
@@ -38,18 +42,28 @@ export default class UILayout extends React.Component {
                     }
                 }
             });
+            
+            
+            //Load header
+            ReactDOM.render(<Header/>, document.getElementById('ui_layout_north'));
+            
+            //Dashboard
+            ReactDOM.render(<Dashboard/>, document.getElementById('ui_layout_center'));
 		
+                
+             
 	}
 
 	
 	render(){
-		return (
-                <div id="layout-container">
-                    <div className="ui-layout-center"></div>
-                    <div className="ui-layout-north"></div>
-                    <div className="ui-layout-south"></div>
-                    <div className="ui-layout-west"></div>
-                </div>
-		);
+            return (
+            <div id="layout-container">
+            <div className="ui-layout-center"><div id="ui_layout_center"></div></div>
+                <div className="ui-layout-north"><div id="ui_layout_north"></div></div>
+                <div className="ui-layout-south"><div id="ui_layout_south"></div></div>
+                <div className="ui-layout-west"><div id="ui_layout_west"></div></div>
+            </div>
+            );
 	}
 }
+
