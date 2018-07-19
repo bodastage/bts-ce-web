@@ -13,18 +13,20 @@ import './app.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
         import { faLock, faAt, faSpinner, faHome, faPlug, faCog, 
-            faQuestionCircle, faUser
+            faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,
+            faStopCircle, faUniversity, faCogs
         } from '@fortawesome/free-solid-svg-icons'
 
         library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog,
-        faQuestionCircle, faUser);
+        faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,
+        faStopCircle, faUniversity, faCogs);
 
 const store = configureStore();
 
 const persistor = persistStore(store);
 
 ReactDOM.render(
-        <Provider store={store}>
+        <Provider store={store} key="provider">
             <PersistGate loading={<Loading show={true}/>} persistor={persistor}>
                 <App />
             </PersistGate>

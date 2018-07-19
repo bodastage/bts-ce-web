@@ -26,3 +26,8 @@
     margin-bottom: 5px;
     margin-top: 5px;
 }
+
+
+.dashboard-icon .fa, .dashboard-icon .glyphicon { font-size: 100px; color: black;}
+.dashboard-icon .icon-label { text-align: center; font-weight:bold;}
+.dashboard-icon .icon-display { text-align: center; font-size: 40px;}

@@ -2,15 +2,18 @@ import React from 'react'
 import jQuery from '../../utils/jquery';
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
 
-export default class Header extends React.Component {
+class Header extends React.Component {
     constructor(props){
         super(props);
+        
+        console.log(this.props.ta);
     }
         
     render(){   
         return (
-            <div className="d-flex flex-column flex-md-row align-items-center px-md-4  bg-white">
+            <div className="navbar-nav d-flex flex-column flex-md-row align-items-center px-md-4  bg-white">
               <h5 className="my-0 mr-md-auto font-weight-normal">Boda Telecom Suite - CE</h5>
               <nav className="my-2 my-md-0 mr-md-3">
                 <a className="text-dark" href="#"><FontAwesomeIcon icon="home" className="mb-1"/> Dashboard</a>
@@ -20,9 +23,12 @@ export default class Header extends React.Component {
                 <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="user" className="mb-1"/> User</a>
                 
               </nav>
-            </div>        
+            </div> 
         );
     
     }
     
 }
+
+
+export default connect()(Header);

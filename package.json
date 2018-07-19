@@ -14,6 +14,7 @@
     "jqueryui": "^1.11.1",
     "layout": "https://github.com/GedMarc/layout/archive/v1.6.3.tar.gz",
     "npm": "^6.2.0",
+    "popper": "^1.0.1",
     "popper.js": "^1.14.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
