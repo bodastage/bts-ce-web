@@ -42,9 +42,11 @@ class Tabs extends React.Component {
                     <li className="nav-item" key={tab}>
                         <a className={"nav-link " + activeClass} id={tab+"-tab"} data-toggle="tab" href={"#"+tab} role="tab" aria-controls={tab} aria-selected="false">
                         <FontAwesomeIcon icon={Tag.icon}/> {Tag.label} &nbsp;
+                        { tab === 'Dashboard' ? "" :
                         <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tab)}>
                           <span aria-hidden="true">&times;</span>
                         </button>
+                        }
                         </a>
                     </li>
                 </React.Fragment>    
