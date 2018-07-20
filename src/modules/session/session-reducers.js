@@ -3,8 +3,7 @@ import { LOGIN, LOGOUT, AUTHENTICATE } from './session-actions';
 
 let initialState = {
     authenticated: false,
-    authenticating: false,
-    tabs: []
+    authenticating: false
 };
 function authenticateUser(state = initialState, action) {
     switch (action.type) {

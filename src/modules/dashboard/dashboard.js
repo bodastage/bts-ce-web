@@ -5,21 +5,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as DashboardCSS from './dashboard.css';
 import { connect } from 'react-redux';
 
+//import * as UILayoutActions from './uilayout-actions';
+
 class Dashboard extends React.Component {
+    
+    static icon = "home";
+    static label = "Dashboard"
+    
     constructor(props){
         super(props);
         
         this.showModule = this.showModule.bind(this);
-        
-        console.log('Dashboard.constructor')
-        console.log(this.props);
+
     }
     
     showModule(event){
         event.preventDefault();
         
+//        this.props.dispatch({
+//            type: 'SHOW_HELP',
+//            tab: 'Help'
+//        });
+        
         this.props.dispatch({
-            type: 'SHOW_HELP'
+            type: 'ADD_TAB',
+            tab: 'Help'
         });
     }
     render(){   
@@ -96,4 +106,4 @@ class Dashboard extends React.Component {
 //
 //export default connect(mapStateToProps)(Dashboard);
     
-export default connect(null)(Dashboard)
+export default connect()(Dashboard)

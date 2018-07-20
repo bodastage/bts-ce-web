@@ -2,68 +2,77 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dashboard from '../dashboard/dashboard';
+import Help from '../help/help.js';
 
-class Modules extends React.Component {
+const Components = {
+    "Help": Help,
+    "Dashboard": Dashboard};
+
+class Tabs extends React.Component {
     constructor(props){
         super(props);
         
-        console.log("Modules");
-        console.log(props);
+        this.closeTab = this.closeTab.bind(this);
     }
     
     loadModule(event){
         event.preventDefault();
     }
     
-    addTab(title, componentName){
+    addTab(){
 
     }
     
+    closeTab = (name) => (e) => { 
+        e.stopPropagation();
+        e.preventDefault();
+        
+        this.props.dispatch({
+            type: 'CLOSE_TAB',
+            tab: name
+        });
+    }
+    
     render(){
-        let tabs = this.props.tabs.map(function(){
+        let tabTitles = this.props.tabs.map( tab => {
+                const Tag = Components[tab];
+                const activeClass = tab === this.props.activeTab ? 'active show': ""; 
+                return (
+                <React.Fragment key={tab}>
+                    <li className="nav-item" key={tab}>
+                        <a className={"nav-link " + activeClass} id={tab+"-tab"} data-toggle="tab" href={"#"+tab} role="tab" aria-controls={tab} aria-selected="false">
+                        <FontAwesomeIcon icon={Tag.icon}/> {Tag.label} &nbsp;
+                        <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tab)}>
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        </a>
+                    </li>
+                </React.Fragment>    
+            );   
+        });
+        
+        let tabContents = this.props.tabs.map( tab => {
+            const Tag = Components[tab];
+            const activeClass = tab === this.props.activeTab ? 'active show': ""; 
             return (
-                <li className="nav-item">
-                    <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-                </li>     
-                <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-            )
+                <React.Fragment key={tab}>
+                    <div className={"tab-pane fade " + activeClass} id={tab} role="tabpanel" aria-labelledby="contact-tab"><Tag/></div>
+                </React.Fragment>
+            );
         });
         
         return (
             <div>
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
-                
-                {
-                    
-                  
-                  <li className="nav-item">
-                    <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
-                        <FontAwesomeIcon icon="home"/> Dashboard
-                    
-                        <button type="button" className="close" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                    </a>
-                  </li>
-                  }
-                          
-                  <li className="nav-item">
-                    <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-                  </li>
+                  {tabTitles}
                 </ul>
+                
                 <div className="tab-content" id="myTabContent">
-                    <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <Dashboard />
-                    </div>
-                      <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                      <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                    {tabContents}
                 </div>      
             </div>
         );
     }
 }
 
-export default connect()(Modules);
+export default connect()(Tabs);

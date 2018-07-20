@@ -12,6 +12,8 @@ class App extends Component {
   }
   
   render() {
+      console.log("App.render");
+      console.log("authenticated:" + this.props.authenticated );
         if (this.props.authenticated === false) {
             return (<div>
                 <LoginForm/>
@@ -25,7 +27,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.authenticated
+    authenticated: state.sessionReducer.authenticated
   }
 }
 

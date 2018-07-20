@@ -11,12 +11,25 @@ import Popper from 'popper.js';
 import Bootsrap from 'bootstrap/dist/js/bootstrap.js';
 import Dashboard from '../dashboard/dashboard';
 import Tabs from './tabs';
+import * as UILayoutActions from './uilayout-actions';
 
 class UILayout extends React.Component {
 	constructor(props){
             super(props);
+            
+            
+            console.log("UILayout");
+            console.log(props);
 	}
 	
+        addTab(){
+            
+        }
+        
+        closeTab(){
+            
+        }
+        
 	componentDidMount (){
             this.$el = $(this.el);
 		
@@ -53,7 +66,7 @@ class UILayout extends React.Component {
             <div id="layout-container">
                 <div className="ui-layout-center">
                     <div id="ui_layout_center">
-                        <Tabs tabs={['Dashboard', 'Help']}/>
+                        <Tabs activeTab={this.props.activeTab} tabs={this.props.tabs || []}/>
                     </div>
                 </div>
                 <div className="ui-layout-north">
@@ -75,9 +88,12 @@ class UILayout extends React.Component {
 	}
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
+    console.log("UILayout.mapStateToProps")
+    console.log(state)
   return {
-    tabs: state.tabs
+    tabs: state.uiLayoutReducer.tabs,
+    activeTab: state.uiLayoutReducer.activeTab
   }
 }
 

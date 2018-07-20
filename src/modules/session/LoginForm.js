@@ -48,6 +48,8 @@ class LoginForm extends React.Component {
     }
     
     render(){
+        console.log("LoginForm.render")
+        console.log("this.props.authenticating: " + this.props.authenticating)
             return (
             <div className="login-mask">
 
@@ -95,7 +97,7 @@ class LoginForm extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    authenticating: state.authenticating
+    authenticating: state.sessionReducer.authenticating
   }
 }
 

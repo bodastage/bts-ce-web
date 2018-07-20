@@ -14,12 +14,12 @@ import { library } from '@fortawesome/fontawesome-svg-core'
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
         import { faLock, faAt, faSpinner, faHome, faPlug, faCog, 
             faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,
-            faStopCircle, faUniversity, faCogs
+            faStopCircle, faUniversity, faCogs, faPowerOff
         } from '@fortawesome/free-solid-svg-icons'
 
         library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog,
         faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,
-        faStopCircle, faUniversity, faCogs);
+        faStopCircle, faUniversity, faCogs, faPowerOff);
 
 const store = configureStore();
 
