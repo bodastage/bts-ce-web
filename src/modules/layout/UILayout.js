@@ -12,6 +12,7 @@ import Bootsrap from 'bootstrap/dist/js/bootstrap.js';
 import Dashboard from '../dashboard/dashboard';
 import Tabs from './tabs';
 import * as UILayoutActions from './uilayout-actions';
+import SidePanel from './side-panel';
 
 class UILayout extends React.Component {
 	constructor(props){
@@ -80,8 +81,7 @@ class UILayout extends React.Component {
                     </div>
                 </div>
                 <div className="ui-layout-west">
-                    <div id="ui_layout_west">
-                    </div>
+                    <div id="ui_layout_west"><SidePanel/></div>
                 </div>
             </div>
             );
