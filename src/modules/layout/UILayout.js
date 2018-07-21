@@ -5,7 +5,6 @@ import jQuery from '../../utils/jquery';
 import $ from 'jquery';
 import layout from 'layout/dist/jquery.layout_and_plugins';
 import LayoutCSS from 'layout/dist/layout-default.css'
-import UILayoutCSS from './UILayout.css';
 import Header from './header.js';
 import Popper from 'popper.js';
 import Bootsrap from 'bootstrap/dist/js/bootstrap.js';
@@ -13,19 +12,19 @@ import Dashboard from '../dashboard/dashboard';
 import Tabs from './tabs';
 import * as UILayoutActions from './uilayout-actions';
 import SidePanel from './side-panel';
+import BSTabDrop from 'stefanpetre-bootstrap-tabdrop/js/bootstrap-tabdrop';
+import UILayoutCSS from './UILayout.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class UILayout extends React.Component {
 	constructor(props){
             super(props);
-            
-            console.log("UILayout");
-            console.log(props);
 	}
 	
         
 	componentDidMount (){
             this.$el = $(this.el);
-		
+
             $('#layout-container').layout({applyDemoStyles: true,
                 north: {
                     maxSize: '50',
@@ -47,14 +46,12 @@ class UILayout extends React.Component {
                 },
                 center: {
                     onresize_end: function () {
-
+                        $('.nav-tabs').tabdrop('layout');
                     }
                 }
             });
             
-            
-             
-            console.log("UILayout.componentDidMount");
+
 	}
 
         
@@ -73,7 +70,7 @@ class UILayout extends React.Component {
                 </div>
                 <div className="ui-layout-south">
                     <div id="ui_layout_south">
-                    <span className="text-secondary">Copyright &copy 2018. Bodastage Solutions </span>
+                    <span className="text-secondary">Copyright &copy; 2018. Bodastage Solutions </span>
                     </div>
                 </div>
                 <div className="ui-layout-west">
@@ -85,8 +82,6 @@ class UILayout extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log("UILayout.mapStateToProps")
-    console.log(state)
   return {
     tabs: state.uiLayoutReducer.tabs,
     activeTab: state.uiLayoutReducer.activeTab

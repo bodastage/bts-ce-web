@@ -6,3 +6,58 @@
 #header{
     
 }
+/*Tab drop styles
+Taken from tabdrop.css to create custom styles
+//'stefanpetre-bootstrap-tabdrop/css/tabdrop.css';
+*/
+.nav-tabs,
+.nav-pills {
+  position: relative;
+}
+
+/* adjust as needed so the tab text displays */
+.tabdrop{
+  width: 10px;
+}
+
+/* hide any icons found in tabs not on first line */
+.nav-tabs li li i{
+  visibility: hidden;
+}
+
+.tabdrop .nav-item{
+    white-space: nowrap;
+    display:inline;
+}
+
+.tabdrop .nav-link {
+    display: block;
+    padding: .5rem 1rem;
+    vertical-align:top;
+    
+    
+}
+
+.tabdrop button {
+    margin-left: 5px;
+}
+.tabdrop .nav-link span.tab-label {
+    padding-right:20px;
+}
+
+
+
+.tabdrop .dropdown-menu {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    
+}
+
+.tabdrop span.glyphicon{
+    float:right;
+    display:inline-block;
+    padding-left: 10px;
+}

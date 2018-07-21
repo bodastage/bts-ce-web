@@ -1,15 +1,31 @@
 import React from 'react';
+import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dashboard from '../dashboard/dashboard';
 import Settings from '../settings/settings';
+import NetworkBrowser from '../networkbrowser/network-browser';
+import NetworkAudit from '../networkaudit/network-audit';
+import MOBrowser from '../mobrowser/mo-browser';
+import NetworkBaseline from '../networkbaseline/network-baseline';
+import TelecomLib from '../telecomlib/telecomlib';
+import Processes from '../processes/processes';
+import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
 import $ from 'jquery';
 
 const Components = {
     "Help": Help,
     "Dashboard": Dashboard,
-    "Settings": Settings};
+    "Settings": Settings,
+    "NetworkBrowser": NetworkBrowser,
+    "NetworkAudit": NetworkAudit,
+    "MOBrowser": MOBrowser,
+    "NetworkBaseline": NetworkBaseline,
+    "TelecomLib": TelecomLib,
+    "Processes": Processes,
+    "UserProfile": UserProfile
+    };
 
 class Tabs extends React.Component {
     constructor(props){
@@ -30,6 +46,7 @@ class Tabs extends React.Component {
             type: 'SET_ACTIVE_TAB',
             tab: name
         });
+        
     }
     
     closeTab = (name) => (e) => { 
@@ -44,16 +61,41 @@ class Tabs extends React.Component {
     
     componentDidMount(){
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
+
+        $('.nav-tabs').tabdrop({text: '||||'});
+        
+        
+
+            
     }
 	
     componentDidUpdate(){
-        console.log("UILayout.componentDidUpdate");
-
+        
+        $('.nav-tabs').tabdrop('layout');
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
+        
+        var activeTab = this.props.activeTab + '-tab';
+        $('#myTab').on('shown.bs.tab', function (e) {
+            $.each($('.tabdrop ul.dropdown-menu li.nav-item>a'),function(index,value){
+                  if($(value).attr('id') !== activeTab){
+                      $(value).removeClass('active show');
+                  }else{
+                      $(value).addClass('active show');
+                  }
+            });
+        });
+
 
     } 
+    
+    componentWillUnmount(){
+        $('#myTab').off('shown.bs.tab');
+        
+        
+        //@todo: Remove any registered jquery events
+    }
+    
     render(){
-        console.log("rendering...........................................");
         let tabTitles = this.props.tabs.map( tab => {
                 const Tag = Components[tab];
 //                const activeClass = tab === this.props.activeTab ? 'active show': ""; 
@@ -62,12 +104,13 @@ class Tabs extends React.Component {
                 <React.Fragment key={tab}>
                     <li className="nav-item" key={tab}>
                         <a className={"nav-link " + activeClass} id={tab+"-tab"} data-toggle="tab" href={"#"+tab} role="tab" aria-controls={tab} aria-selected="false" onClick={this.setActiveTab(tab)}>
-                        <FontAwesomeIcon icon={Tag.icon}/> {Tag.label} &nbsp;
                         { tab === 'Dashboard' ? "" :
                         <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tab)}>
-                          <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                        }
+                        }            
+                        <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{Tag.label}</span>
+                        
                         </a>
                     </li>
                 </React.Fragment>    

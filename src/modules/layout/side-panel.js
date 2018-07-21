@@ -12,7 +12,6 @@ class SidePanel extends React.Component{
         super(props)
     }
 
-    
     render(){
         const CurrentPanel = SidePanels[this.props.panel] || DashboardSidePanel;
         return (

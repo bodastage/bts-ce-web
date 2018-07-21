@@ -40,26 +40,26 @@ class Dashboard extends React.Component {
                     
                         <div className="row dashboard-icon">
                             <div className="col-md-2">
-                                <div className="icon-display"><a href="#/netmgt"> <FontAwesomeIcon icon="sitemap" /></a></div>
+                                <div className="icon-display"><a href="#/netmgt" onClick={this.addTab('NetworkBrowser')}> <FontAwesomeIcon icon="sitemap" /></a></div>
                                 <div className="icon-label">Network Browser</div>
                             </div>
 
                             <div className="col-md-2">
-                                <div className="icon-display" title="Network Audit Module"><a href="#/netaudit"><FontAwesomeIcon icon="wrench"/></a></div>
+                                <div className="icon-display" title="Network Audit Module"><a href="#/netaudit" onClick={this.addTab('NetworkAudit')}><FontAwesomeIcon icon="wrench"/></a></div>
                                 <div className="icon-label">Network Audit</div>
                             </div>
                             <div className="col-md-2">
-                                <div className="icon-display"><a href="#/mobrowser" title="Managed Object Browser"> <FontAwesomeIcon icon="puzzle-piece"/></a></div>
+                                <div className="icon-display"><a href="#/mobrowser" title="Managed Object Browser" onClick={this.addTab('MOBrowser')}> <FontAwesomeIcon icon="puzzle-piece"/></a></div>
                                 <div className="icon-label">MO Browser</div>
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a href="#/baseline"> <FontAwesomeIcon icon="stop-circle"/></a></div>
+                            <div className="icon-display"><a href="#/baseline" onClick={this.addTab('NetworkBaseline')}> <FontAwesomeIcon icon="stop-circle"/></a></div>
                                 <div className="icon-label">Network Baseline</div>
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a href="#/telecomlib"> <FontAwesomeIcon icon="university"/></a></div>
+                            <div className="icon-display"><a href="#/telecomlib" onClick={this.addTab('TelecomLib')}> <FontAwesomeIcon icon="university"/></a></div>
                                 <div className="icon-label">Telecom Library</div>
                             </div>
 
@@ -71,12 +71,12 @@ class Dashboard extends React.Component {
                     
                     <div className="row dashboard-icon">
                         <div className="col-md-2">
-                            <div className="icon-display"><a href="#/processes"><FontAwesomeIcon icon="cogs"/></a></div>
+                            <div className="icon-display"><a href="#/processes" onClick={this.addTab('Processes')}><FontAwesomeIcon icon="cogs"/></a></div>
                             <div className="icon-label">Processes</div>
                         </div>
 
                         <div className="col-md-2">
-                            <div className="icon-display"><a href="#/profile"><FontAwesomeIcon icon="user"/></a></div>
+                            <div className="icon-display"><a href="#/profile" onClick={this.addTab('UserProfile')}><FontAwesomeIcon icon="user"/></a></div>
                             <div className="icon-label">Profile</div>
                         </div>
 
