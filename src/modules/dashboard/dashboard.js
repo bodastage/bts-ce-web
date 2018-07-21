@@ -15,23 +15,22 @@ class Dashboard extends React.Component {
     constructor(props){
         super(props);
         
-        this.showModule = this.showModule.bind(this);
+        this.addTab = this.addTab.bind(this);
 
     }
     
-    showModule(event){
-        event.preventDefault();
-        
-//        this.props.dispatch({
-//            type: 'SHOW_HELP',
-//            tab: 'Help'
-//        });
+    
+    addTab = (name) => (e) => { 
+        e.preventDefault();
         
         this.props.dispatch({
             type: 'ADD_TAB',
-            tab: 'Help'
+            tab: name
         });
+        
+        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
+    
     render(){   
         return (
 
@@ -82,12 +81,12 @@ class Dashboard extends React.Component {
                         </div>
 
                         <div className="col-md-2">
-                        <div className="icon-display"><a href="#"><FontAwesomeIcon icon="cog"/></a></div>
+                        <div className="icon-display"><a href="#" onClick={this.addTab('Settings')}><FontAwesomeIcon icon="cog"/></a></div>
                             <div className="icon-label">Settings</div>
                         </div>
 
                         <div className="col-md-2">
-                            <div className="icon-display"><a href="#/help" onClick={this.showModule}><FontAwesomeIcon icon="question-circle"/></a></div>
+                            <div className="icon-display"><a href="#/help" onClick={this.addTab('Help')}><FontAwesomeIcon icon="question-circle"/></a></div>
                             <div className="icon-label">Help</div>
                         </div>
                     </div>

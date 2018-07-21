@@ -18,18 +18,10 @@ class UILayout extends React.Component {
 	constructor(props){
             super(props);
             
-            
             console.log("UILayout");
             console.log(props);
 	}
 	
-        addTab(){
-            
-        }
-        
-        closeTab(){
-            
-        }
         
 	componentDidMount (){
             this.$el = $(this.el);
@@ -60,8 +52,12 @@ class UILayout extends React.Component {
                 }
             });
             
+            
+             
+            console.log("UILayout.componentDidMount");
 	}
-	
+
+        
 	render(){
             return (
             <div id="layout-container">

@@ -2,11 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dashboard from '../dashboard/dashboard';
+import Settings from '../settings/settings';
 import Help from '../help/help.js';
+import $ from 'jquery';
 
 const Components = {
     "Help": Help,
-    "Dashboard": Dashboard};
+    "Dashboard": Dashboard,
+    "Settings": Settings};
 
 class Tabs extends React.Component {
     constructor(props){
@@ -18,9 +21,15 @@ class Tabs extends React.Component {
     loadModule(event){
         event.preventDefault();
     }
-    
-    addTab(){
 
+    setActiveTab = (name) => (e) => { 
+        e.stopPropagation();
+        e.preventDefault();
+        
+        this.props.dispatch({
+            type: 'SET_ACTIVE_TAB',
+            tab: name
+        });
     }
     
     closeTab = (name) => (e) => { 
@@ -33,14 +42,26 @@ class Tabs extends React.Component {
         });
     }
     
+    componentDidMount(){
+        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
+    }
+	
+    componentDidUpdate(){
+        console.log("UILayout.componentDidUpdate");
+
+        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
+
+    } 
     render(){
+        console.log("rendering...........................................");
         let tabTitles = this.props.tabs.map( tab => {
                 const Tag = Components[tab];
-                const activeClass = tab === this.props.activeTab ? 'active show': ""; 
+//                const activeClass = tab === this.props.activeTab ? 'active show': ""; 
+                const activeClass = ""; 
                 return (
                 <React.Fragment key={tab}>
                     <li className="nav-item" key={tab}>
-                        <a className={"nav-link " + activeClass} id={tab+"-tab"} data-toggle="tab" href={"#"+tab} role="tab" aria-controls={tab} aria-selected="false">
+                        <a className={"nav-link " + activeClass} id={tab+"-tab"} data-toggle="tab" href={"#"+tab} role="tab" aria-controls={tab} aria-selected="false" onClick={this.setActiveTab(tab)}>
                         <FontAwesomeIcon icon={Tag.icon}/> {Tag.label} &nbsp;
                         { tab === 'Dashboard' ? "" :
                         <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tab)}>
@@ -55,7 +76,8 @@ class Tabs extends React.Component {
         
         let tabContents = this.props.tabs.map( tab => {
             const Tag = Components[tab];
-            const activeClass = tab === this.props.activeTab ? 'active show': ""; 
+//            const activeClass = tab === this.props.activeTab ? 'active show': ""; 
+            const activeClass = ""; 
             return (
                 <React.Fragment key={tab}>
                     <div className={"tab-pane fade " + activeClass} id={tab} role="tabpanel" aria-labelledby="contact-tab"><Tag/></div>

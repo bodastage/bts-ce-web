@@ -1,4 +1,4 @@
-import { ADD_TAB, CLOSE_TAB } from './uilayout-actions';
+import { ADD_TAB, CLOSE_TAB, SET_ACTIVE_TAB } from './uilayout-actions';
 
 let initialState = {
     tabs: ['Dashboard'],
@@ -28,6 +28,12 @@ export default function uiLayoutReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 tabs: state.tabs.filter(tab => tab != action.tab ),
                 activeTab: 'Dashboard'
+            });
+        case SET_ACTIVE_TAB:
+             if ( typeof action.tab === 'undefined' || action.tab === null ) return state;
+            
+            return Object.assign({}, state, {
+                activeTab: action.tab
             });
     }
         
