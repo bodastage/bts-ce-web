@@ -60,39 +60,37 @@ class Tabs extends React.Component {
     }
     
     componentDidMount(){
+        console.log("Tabs.componentDidMount");
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
 
         $('.nav-tabs').tabdrop({text: '||||'});
         
-        
+        $('#myTab').on('shown.bs.tab', function (e) {
+            let activeTab = $('.nav-tabs li.nav-item a.active').attr("id");
+            $.each($('.tabdrop ul.dropdown-menu li.nav-item>a'),function(index,value){
+
+                if($(value).attr('id') !== activeTab){
+                    $(value).removeClass('active show');
+                }else{
+                    $(value).addClass('active show');
+                }
+            });
+        });
 
             
     }
 	
     componentDidUpdate(){
-        
+        console.log("Tabs.componentDidUpdate");
         $('.nav-tabs').tabdrop('layout');
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
-        
-        var activeTab = this.props.activeTab + '-tab';
-        $('#myTab').on('shown.bs.tab', function (e) {
-            $.each($('.tabdrop ul.dropdown-menu li.nav-item>a'),function(index,value){
-                  if($(value).attr('id') !== activeTab){
-                      $(value).removeClass('active show');
-                  }else{
-                      $(value).addClass('active show');
-                  }
-            });
-        });
-
 
     } 
     
     componentWillUnmount(){
+        console.log("Tabs.componentWillUnmount");
         $('#myTab').off('shown.bs.tab');
         
-        
-        //@todo: Remove any registered jquery events
     }
     
     render(){
