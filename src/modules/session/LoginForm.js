@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import * as sessionActions from './session-actions';
 import LoginFormCSS from './LoginForm.css';
 import Loading from './loading';
+import axios from 'axios';
 
 class LoginForm extends React.Component {
     constructor(props){

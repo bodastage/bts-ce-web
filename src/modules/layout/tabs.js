@@ -9,6 +9,7 @@ import NetworkAudit from '../networkaudit/network-audit';
 import MOBrowser from '../mobrowser/mo-browser';
 import NetworkBaseline from '../networkbaseline/network-baseline';
 import TelecomLib from '../telecomlib/telecomlib';
+import Vendors from '../telecomlib/vendors';
 import Processes from '../processes/processes';
 import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
@@ -24,7 +25,8 @@ const Components = {
     "NetworkBaseline": NetworkBaseline,
     "TelecomLib": TelecomLib,
     "Processes": Processes,
-    "UserProfile": UserProfile
+    "UserProfile": UserProfile,
+    "Vendors": Vendors,
     };
 
 class Tabs extends React.Component {
@@ -60,13 +62,13 @@ class Tabs extends React.Component {
     }
     
     componentDidMount(){
-        console.log("Tabs.componentDidMount");
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
 
         $('.nav-tabs').tabdrop({text: '||||'});
         
         $('#myTab').on('shown.bs.tab', function (e) {
-            let activeTab = $('.nav-tabs li.nav-item a.active').attr("id");
+            let activeTab = window.activeTab + '-tab';
+            console.log("activeTab:" + activeTab);
             $.each($('.tabdrop ul.dropdown-menu li.nav-item>a'),function(index,value){
 
                 if($(value).attr('id') !== activeTab){
@@ -81,14 +83,16 @@ class Tabs extends React.Component {
     }
 	
     componentDidUpdate(){
-        console.log("Tabs.componentDidUpdate");
         $('.nav-tabs').tabdrop('layout');
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
-
+        
+        //This is used by the shown.bs.tab event which is called in 
+        //componentDidMount
+        window.activeTab = this.props.activeTab;
+      
     } 
     
     componentWillUnmount(){
-        console.log("Tabs.componentWillUnmount");
         $('#myTab').off('shown.bs.tab');
         
     }
@@ -129,7 +133,9 @@ class Tabs extends React.Component {
         return (
             <div>
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
+                <li className="dropdown d-none float-right tabdrop"><a className="dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span className="display-tab"><FontAwesomeIcon icon="list"/></span><b className="caret"></b></a><ul className="dropdown-menu"></ul></li>
                   {tabTitles}
+                  
                 </ul>
                 
                 <div className="tab-content" id="myTabContent">

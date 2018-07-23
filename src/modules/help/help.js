@@ -17,7 +17,7 @@ export default class Help extends React.Component {
         return (
             <div>
                 <div className="bd-notice"></div>
-                <h1><FontAwesomeIcon icon="question-circle"/> Help</h1>
+                <h3><FontAwesomeIcon icon="question-circle"/> Help</h3>
 
                 <div className="panel panel-default">
                 <div className="panel-heading"><b>About</b></div>

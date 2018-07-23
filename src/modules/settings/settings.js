@@ -12,7 +12,7 @@ class Settings extends React.Component{
     render(){
         return (
         <div>
-            <h1><FontAwesomeIcon icon="cog"/> Settings</h1>
+            <h3><FontAwesomeIcon icon="cog"/> Settings</h3>
 
             <div className="card">
                 <div className="card-body p-3">
