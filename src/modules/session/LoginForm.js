@@ -7,7 +7,7 @@ import * as sessionActions from './session-actions';
 import LoginFormCSS from './LoginForm.css';
 import Loading from './loading';
 import axios from 'axios';
-import { attemptAuthentication } from '../session/session-actions';
+import { attemptAuthentication, clearAuthError } from '../session/session-actions';
 
 class LoginForm extends React.Component {
     constructor(props){
@@ -20,7 +20,12 @@ class LoginForm extends React.Component {
         
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.dismissError = this.dismissError.bind(this);
 
+    }
+    
+    dismissError(){
+        this.props.dispatch(clearAuthError());
     }
 
     handleSubmit(event){
@@ -55,6 +60,9 @@ class LoginForm extends React.Component {
                     {this.props.loginError == null ? "" :
                         <div className="alert alert-danger" role="alert">
                             {this.props.loginError}
+                        <button type="button" className="close"  aria-label="Close" onClick={this.dismissError}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         </div>
                     }
                     <label htmlFor="session_email" className="sr-only">Email address</label>

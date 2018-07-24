@@ -4,6 +4,13 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const AUTHENTICATE = 'AUTHENTICATE'; //login attemp
 export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
+export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR';
+
+export function clearAuthError(){
+    return {
+        type: CLEAR_AUTH_ERROR,
+    };
+}
 
 export function logIntoApp(userDetails){
     return {
