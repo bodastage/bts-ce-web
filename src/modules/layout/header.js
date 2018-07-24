@@ -39,7 +39,7 @@ class Header extends React.Component {
                 <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="plug" className="mb-1"/> Modules</a>
                 <a className="p-2 text-secondary" href="#" onClick={this.addTab('Settings')}><FontAwesomeIcon icon="cog" className="mb-1"/> Settings</a>
                 <a className="p-2 text-secondary" href="#" onClick={this.addTab('Help')}><FontAwesomeIcon icon="question-circle" className="mb-1"/> Help</a>
-                <a className="p-2 text-secondary" href="#" onClick={this.addTab('UserProfile')}><FontAwesomeIcon icon="user" className="mb-1"/> User</a>
+                <a className="p-2 text-secondary" href="#" onClick={this.addTab('UserProfile')}><FontAwesomeIcon icon="user" className="mb-1"/> {this.props.userDetails.first_name}</a>
                 <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="power-off" className="mb-1" onClick={this.logout}/></a>
                 
               </nav>
@@ -50,5 +50,10 @@ class Header extends React.Component {
     
 }
 
+function mapStateToProps(state) {
+  return {
+    userDetails: state.session.userDetails
+  }
+}
 
-export default connect()(Header);
+export default connect(mapStateToProps)(Header);

@@ -5,16 +5,12 @@ import { connect } from 'react-redux';
 export default class Loading extends React.Component {
     constructor(props){
         super(props);
-        
-        console.log("props:" + props);
     }
     
     componentDidMount(){
-        console.log(this.props)
     }
     
     componentWillReceiveProps(nextProps){
-        console.log("nextProps:" + nextProps);
     }
     
     render(){

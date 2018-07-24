@@ -83,8 +83,8 @@ class UILayout extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    tabs: state.uiLayoutReducer.tabs,
-    activeTab: state.uiLayoutReducer.activeTab
+    tabs: state.uiLayout.tabs,
+    activeTab: state.uiLayout.activeTab
   }
 }
 

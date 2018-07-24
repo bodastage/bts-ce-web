@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
-import sessionReducer from './modules/session/session-reducers';
-import helpReducer from './modules/help/help-reducers';
-import uiLayoutReducer from './modules/layout/uilayout-reducers';
+import session from './modules/session/session-reducers';
+import help from './modules/help/help-reducers';
+import uiLayout from './modules/layout/uilayout-reducers';
 
 
 const appReducer = combineReducers({
-  sessionReducer,
-  helpReducer,
-  uiLayoutReducer
+  session,
+  help,
+  uiLayout
 });
 //const appReducer = sessionReducer;
 

@@ -5,7 +5,7 @@ let initialState = {
     activeTab: 'Dashboard'
 };
 
-export default function uiLayoutReducer(state = initialState, action) {
+export default function uiLayout(state = initialState, action) {
 
     switch (action.type) {
         case ADD_TAB:

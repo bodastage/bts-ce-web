@@ -1,35 +1,42 @@
 import { combineReducers } from 'redux';
-import { LOGIN, LOGOUT, AUTHENTICATE } from './session-actions';
+import { LOGIN, LOGOUT, AUTHENTICATE, AUTHENTICATION_FAILED } from './session-actions';
 
 let initialState = {
     authenticated: false,
-    authenticating: false
+    authenticating: false,
+    loginError: null
 };
-function authenticateUser(state = initialState, action) {
+function session(state = initialState, action) {
     switch (action.type) {
         case AUTHENTICATE:
-            return {
+            return Object.assign({}, state, {
                 authenticated: false,
                 authenticating: true,
-                userDetails: action.userDetails
-            };
-        break;
+                loginError: null
+            });
         case LOGIN:
-            return {
+            return Object.assign({}, state, {
                 authenticated: true,
                 authenticating: false,
-                userDetails: action.userDetails
-            };
-        break;
+                userDetails: action.userDetails,
+                loginError: null
+            });
         case LOGOUT:
-            return Object.assign({}, state, {authenticated: false,
+            return Object.assign({}, state, {
+                authenticated: false,
+                authenticating: false,
+                loginError: null,
                 userDetails: null});
-        break;
+        case AUTHENTICATION_FAILED:
+            return Object.assign({}, state, {
+                authenticated: false,
+                authenticating: false,
+                userDetails: null,
+                loginError: action.error});
         default:
             return state;
     }
 }
 
-const sessionReducer = authenticateUser;
 
-export default sessionReducer;
+export default session;

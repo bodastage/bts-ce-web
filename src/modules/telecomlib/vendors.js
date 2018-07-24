@@ -17,15 +17,15 @@ class Vendors extends React.Component{
         this.state = {
                 isLoading: true,
                 columnDefs: [
-                    {headerName: "Make", field: "make"},
-                    {headerName: "Model", field: "model"},
-                    {headerName: "Price", field: "price"}
+                    {headerName: "Name", field: "name"},
+                    {headerName: "Description", field: "description"}
 
                 ],
                 rowData: [
-                    {make: "Toyota", model: "Celica", price: 35000},
-                    {make: "Ford", model: "Mondeo", price: 32000},
-                    {make: "Porsche", model: "Boxter", price: 72000}
+                    {name: "Ericsson", description: "Ericsson AB"},
+                    {name: "Huawei", description: "Huawei Solutions"},
+                    {name: "ZTE", description: "ZTE Corporation"},
+                    {name: "Nokia", description: "Nokia Solutions"}
                 ]
         }
     }

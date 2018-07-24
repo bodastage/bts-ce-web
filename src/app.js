@@ -12,13 +12,15 @@ class App extends Component {
   }
   
   render() {
-      console.log("App.render");
-      console.log("authenticated:" + this.props.authenticated );
+      console.log("this.props.authenticated:")
+      console.log(this.props.authenticated)
+      
         if (this.props.authenticated === false) {
             return (<div>
                 <LoginForm/>
             </div>);
         }
+        
         return (<div>
             <UILayout/>
         </div>);
@@ -27,7 +29,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.sessionReducer.authenticated
+    authenticated: state.session.authenticated
   }
 }
 

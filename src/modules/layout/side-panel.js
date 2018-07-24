@@ -24,7 +24,7 @@ class SidePanel extends React.Component{
 
 function mapStateToProps(state) {
   return {
-    activePanel: state.uiLayoutReducer.activePanel
+    activePanel: state.uiLayout.activePanel
   }
 }
 

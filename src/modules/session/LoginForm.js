@@ -7,69 +7,62 @@ import * as sessionActions from './session-actions';
 import LoginFormCSS from './LoginForm.css';
 import Loading from './loading';
 import axios from 'axios';
+import { attemptAuthentication } from '../session/session-actions';
 
 class LoginForm extends React.Component {
     constructor(props){
         super(props);
 
+        this.state = {
+            username: "",
+            password: ""
+        };
+        
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
 
     }
 
     handleSubmit(event){
         event.preventDefault();
 
-        this.props.dispatch(sessionActions.authenticateUser({
-            username: 'btsuser',
-            password: 'password'
-        }));
-        
-        //@TODO: Remove
-        let logIntoApp  = function(){
-            this.props.dispatch(sessionActions.logIntoApp({
-                username: 'btsuser',
-                password: 'password'
-            }));
-        }
-        
-        logIntoApp = logIntoApp.bind(this);
-        
-        setTimeout(logIntoApp, 1000*10);
+          this.props.dispatch(attemptAuthentication({
+              username: this.state['username'],
+              password: this.state['password']
+          }));
         
     }
 
-    handleChange(event){
-        const target = event.target;
+    handleInputChange(event){
         const name = event.target.name;
         const value = event.target.value;
-        this.state({
+        this.setState({
             [name]: value
         });
     }
     
     render(){
-        console.log("LoginForm.render")
-        console.log("this.props.authenticating: " + this.props.authenticating)
             return (
             <div className="login-mask">
 
                 <div className="login-logo">
-                        <img src={logo} width="320px" alt="Boda Telecom Suite - CE" />
-                </div>
-
-                <div className="login-logo">
-                    <Loading show={this.props.authenticating}/>
+                    <img src={logo} width="320px" alt="Boda Telecom Suite - CE" />
                 </div>
                 
                 <form className="form-signin" onSubmit={this.handleSubmit}>
-
+                    <Loading show={this.props.authenticating}/>
+                    
+                    {this.props.loginError == null ? "" :
+                        <div className="alert alert-danger" role="alert">
+                            {this.props.loginError}
+                        </div>
+                    }
                     <label htmlFor="session_email" className="sr-only">Email address</label>
                     <div className="input-group">
                             <div className="input-group-prepend">
                                     <span className="input-group-text"><FontAwesomeIcon icon="at" /></span>
                             </div>
-                            <input type="email" id="session_email" onChange={this.handleInputChange}  name="email" className="form-control" placeholder="Email address" required autoFocus/>
+                            <input type="email" id="session_email" onChange={this.handleInputChange}  name="username" className="form-control" placeholder="Email address" required autoFocus/>
                     </div>
 
 
@@ -90,15 +83,16 @@ class LoginForm extends React.Component {
 }
 
 //LoginForm.propTypes = {
-//  email: PropTypes.string.isRequired,
+//  username: PropTypes.string.isRequired,
 //  password: PropTypes.string.isRequired,
-//  onChange: PropTypes.func.isRequired,
+//  handleInputChange: PropTypes.func.isRequired,
 //  onSubmit: PropTypes.func.isRequired
 //}
 
 function mapStateToProps(state) {
   return {
-    authenticating: state.sessionReducer.authenticating
+    authenticating: state.session.authenticating,
+    loginError: state.session.loginError
   }
 }
 
