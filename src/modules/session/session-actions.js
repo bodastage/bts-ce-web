@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from '../../api/config';
+
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const AUTHENTICATE = 'AUTHENTICATE'; //login attemp
@@ -36,13 +37,14 @@ export function attemptAuthentication(userDetails){
     return (dispatch, getState) => {
         dispatch(authenticateUser(userDetails));
         
-        let postSerialData  = "username=" + userDetails.username + "&password=" + 
-            userDetails.password;
+        const params = new URLSearchParams();
+        params.append('username', userDetails.username);
+        params.append('password', userDetails.password);
     
-        axios.post("http://192.168.99.100:8181/authenticate/", postSerialData)
+        axios.post("/authenticate", params, {
+            header: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
         .then(response => {
-              console.log(response);
-              console.log(response.data);
               if(response.status === 200){
                   return dispatch(logIntoApp(response.data));
               }else{
@@ -50,7 +52,6 @@ export function attemptAuthentication(userDetails){
               }
         })
         .catch(function (response) {
-            console.log(response)
             return dispatch(markLoginAsFailed("Login attempt failed"));
         });
     }

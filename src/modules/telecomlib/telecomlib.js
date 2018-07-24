@@ -37,7 +37,7 @@ class TelecomLib extends React.Component{
                             <div className=""><a href="#" className="load-vendors" onClick={this.addTab('Vendors')}><FontAwesomeIcon icon="arrow-right"/> Vendors</a></div>
                         </div>
                         <div className="col-md-6">
-                            <div className=""><a href="#" className="load-technologies"><FontAwesomeIcon icon="arrow-right"/> Technologies</a></div>
+                            <div className=""><a href="#" className="load-technologies" onClick={this.addTab('Technologies')}><FontAwesomeIcon icon="arrow-right"/> Technologies</a></div>
                         </div>
                     </div>
                 </div>

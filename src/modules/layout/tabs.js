@@ -10,6 +10,7 @@ import MOBrowser from '../mobrowser/mo-browser';
 import NetworkBaseline from '../networkbaseline/network-baseline';
 import TelecomLib from '../telecomlib/telecomlib';
 import Vendors from '../telecomlib/vendors';
+import Technologies from '../telecomlib/technologies';
 import Processes from '../processes/processes';
 import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
@@ -27,6 +28,7 @@ const Components = {
     "Processes": Processes,
     "UserProfile": UserProfile,
     "Vendors": Vendors,
+    "Technologies": Technologies
     };
 
 class Tabs extends React.Component {

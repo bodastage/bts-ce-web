@@ -5,11 +5,11 @@ import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/ag-theme-balham.css';
 import {AgGridReact} from 'ag-grid-react';
 import axios from 'axios';
-import { getVendors, dismissRequestError } from './vendors-actions';
+import { getTechnologies, dismissRequestError } from './technologies-actions';
 
-class Vendors extends React.Component{
+class Technologies extends React.Component{
     static icon = "university";
-    static label = "Vendors";
+    static label = "Technologies";
     
     
     constructor(props){
@@ -33,7 +33,7 @@ class Vendors extends React.Component{
     }
     
     componentDidMount() {
-        this.props.dispatch(getVendors());
+        this.props.dispatch(getTechnologies());
     }
     
     componentDidUpdate(){
@@ -42,9 +42,9 @@ class Vendors extends React.Component{
     render(){
         return (
         <div>
-            <h3><FontAwesomeIcon icon={Vendors.icon}/> Vendors</h3>
+            <h3><FontAwesomeIcon icon={Technologies.icon}/> Technologies</h3>
             
-            {this.props.requestingVendors === false ? "" : 
+            {this.props.requestingData === false ? "" : 
                 <div className="pb-1">
                     <div className="progress">
                       <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: 100 +'%'}}>Loading...</div>
@@ -72,9 +72,9 @@ class Vendors extends React.Component{
                     >
                         <AgGridReact
                             enableColResize={true}
-                            gridAutoHeight={true}
-                            columnDefs={this.state.columnDefs}
-                            rowData={this.props.data}>
+                                gridAutoHeight={true}
+                                columnDefs={this.state.columnDefs}
+                                rowData={this.props.data}>
                         </AgGridReact>
                     </div>
                         
@@ -87,10 +87,10 @@ class Vendors extends React.Component{
     
 function mapStateToProps(state) {
   return {
-    requestingVendors: state.vendors.requestingVendors,
-    requestError: state.vendors.requestError,
-    data: state.vendors.data
+    requestingData: state.technologies.requestingData,
+    requestError: state.technologies.requestError,
+    data: state.technologies.data
   }
 }
 
-export default connect(mapStateToProps)(Vendors);
+export default connect(mapStateToProps)(Technologies);
