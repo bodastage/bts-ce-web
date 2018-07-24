@@ -3,6 +3,7 @@ import jQuery from '../../utils/jquery';
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
+import logo from '../../images/logo-no-text.svg';
 
 class Header extends React.Component {
     constructor(props){
@@ -33,7 +34,11 @@ class Header extends React.Component {
     render(){   
         return (
             <div className="navbar-nav d-flex flex-column flex-md-row align-items-center px-md-2  bg-white">
-              <h5 className="my-0 mr-md-auto font-weight-normal">Boda Telecom Suite - CE</h5>
+              <h5 className="my-0 mr-md-auto font-weight-normal">
+              <img src={logo} width="30px" alt="Boda Telecom Suite - CE" /> &nbsp;
+                Boda Telecom Suite - CE
+              </h5>
+              
               <nav className="my-2 my-md-0 mr-md-3">
                 <a className="text-dark" href="#" onClick={this.addTab('Dashboard')}><FontAwesomeIcon icon="home" className="mb-1"/> Dashboard</a>
                 <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="plug" className="mb-1"/> Modules</a>

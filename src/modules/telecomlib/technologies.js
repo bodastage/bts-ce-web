@@ -66,15 +66,12 @@ class Technologies extends React.Component{
                 <div className="card-body p-3">
 
 
-                    <div
-                        className="ag-theme-balham"
-                        style={{width: '100%'}}
-                    >
+                    <div  className="ag-theme-balham" style={{width: '100%'}}>
                         <AgGridReact
                             enableColResize={true}
-                                gridAutoHeight={true}
-                                columnDefs={this.state.columnDefs}
-                                rowData={this.props.data}>
+                            gridAutoHeight={true}
+                            columnDefs={this.state.columnDefs}
+                            rowData={this.props.data}>
                         </AgGridReact>
                     </div>
                         

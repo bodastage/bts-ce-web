@@ -2,8 +2,6 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://192.168.99.100:8181';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-//axios.defaults.headers[''] = 'application/json';
-//axios.defaults.headers.common['Authorization'] = "";
 
 export const ERROR_CODES = {
     "401" : "Un-authorized resource access",
