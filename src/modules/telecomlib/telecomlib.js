@@ -18,7 +18,7 @@ class TelecomLib extends React.Component{
     addTab = (name) => (e) => { 
         e.preventDefault();
         
-        this.props.dispatch(addTab(name, name, {}));
+        this.props.dispatch(addTab(name, name, {title: name}));
         
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }

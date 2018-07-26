@@ -40,14 +40,14 @@ class NetworkBrowser extends React.Component{
                     <table className="table">
                         <tbody>
                             <tr>
-                                <td><a href="#" className="show-node-list" onClick={this.launchEntityTab({entity:'node', title: 'Nodes'})}><FontAwesomeIcon icon="arrow-right"/> View all nodes</a></td>
-                                <td><a href="#" className="show-site-list" onClick={this.launchEntityTab({entity:'site', title: 'Sites'})}><FontAwesomeIcon icon="arrow-right"/> View all sites</a></td>
-                                <td><a href="#" className="show-nbr-list"><FontAwesomeIcon icon="arrow-right"/> View all relations</a></td>
+                                <td><a href="#" className="show-node-list" onClick={this.launchEntityTab({entity:'node', title: 'Network Nodes'})}><FontAwesomeIcon icon="arrow-right"/> View all nodes</a></td>
+                                <td><a href="#" className="show-site-list" onClick={this.launchEntityTab({entity:'site', title: 'Network Sites'})}><FontAwesomeIcon icon="arrow-right"/> View all sites</a></td>
+                                <td><a href="#" className="show-nbr-list" onClick={this.launchEntityTab({entity:'relation', title: 'Network Relations'})}><FontAwesomeIcon icon="arrow-right"/> View all relations</a></td>
                             </tr>
                             <tr>
-                                <td><a href="#" className="show-2gcell-list"><FontAwesomeIcon icon="arrow-right"/> View 2G cell parameters</a></td>
-                                <td><a href="#" className="show-3gcell-list"><FontAwesomeIcon icon="arrow-right"/> View 3G cell parameters</a></td>
-                                <td><a href="#" className="show-4gcell-list"><FontAwesomeIcon icon="arrow-right"/> View 4G cell parameters</a></td>
+                                <td><a href="#" className="show-2gcell-list" onClick={this.launchEntityTab({entity:'gsm_cell_params', title: '2G Cell Parameters'})}><FontAwesomeIcon icon="arrow-right"/> View 2G cell parameters</a></td>
+                                <td><a href="#" className="show-3gcell-list" onClick={this.launchEntityTab({entity:'umts_cell_params', title: '3G Cell Parameters'})}><FontAwesomeIcon icon="arrow-right"/> View 3G cell parameters</a></td>
+                                <td><a href="#" className="show-4gcell-list" onClick={this.launchEntityTab({entity:'lte_cell_params', title: '4G Cell Parameters'})}><FontAwesomeIcon icon="arrow-right"/> View 4G cell parameters</a></td>
 
                                 <td></td>
                             </tr>

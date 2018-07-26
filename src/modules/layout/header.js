@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import logo from '../../images/logo-no-text.svg';
+import { addTab } from '../layout/uilayout-actions';
 
 class Header extends React.Component {
     constructor(props){
@@ -20,15 +21,11 @@ class Header extends React.Component {
         });
     }
     
-    addTab = (name) => (e) => { 
+    addTab = (options) => (e) => { 
         e.preventDefault();
-        
-        this.props.dispatch({
-            type: 'ADD_TAB',
-            id: name,
-            component: name,
-            options: {}
-        });
+
+        let tabId = options.component;
+        this.props.dispatch(addTab(tabId, options.component, {title: options.title}));
         
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
@@ -42,11 +39,15 @@ class Header extends React.Component {
               </h5>
               
               <nav className="my-2 my-md-0 mr-md-3">
-                <a className="text-dark" href="#" onClick={this.addTab('Dashboard')}><FontAwesomeIcon icon="home" className="mb-1"/> Dashboard</a>
+                <a className="text-dark" href="#" onClick={this.addTab({
+                    component: 'dashboard', title: 'Dashboard'})}><FontAwesomeIcon icon="home" className="mb-1"/> Dashboard</a>
                 <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="plug" className="mb-1"/> Modules</a>
-                <a className="p-2 text-secondary" href="#" onClick={this.addTab('Settings')}><FontAwesomeIcon icon="cog" className="mb-1"/> Settings</a>
-                <a className="p-2 text-secondary" href="#" onClick={this.addTab('Help')}><FontAwesomeIcon icon="question-circle" className="mb-1"/> Help</a>
-                <a className="p-2 text-secondary" href="#" onClick={this.addTab('UserProfile')}><FontAwesomeIcon icon="user" className="mb-1"/> {this.props.userDetails.first_name}</a>
+                <a className="p-2 text-secondary" href="#" onClick={this.addTab({
+                    component: 'Settings', title: 'Settings'})}><FontAwesomeIcon icon="cog" className="mb-1"/> Settings</a>
+                <a className="p-2 text-secondary" href="#" onClick={this.addTab({
+                    component: 'Help', title: 'Help'})}><FontAwesomeIcon icon="question-circle" className="mb-1"/> Help</a>
+                <a className="p-2 text-secondary" href="#" onClick={this.addTab({
+                    component: 'UserProfile', title: 'Profile'})}><FontAwesomeIcon icon="user" className="mb-1"/> {this.props.userDetails.first_name}</a>
                 <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="power-off" className="mb-1" onClick={this.logout}/></a>
                 
               </nav>

@@ -10,30 +10,65 @@ class DashboardSidePanel extends React.Component {
     constructor(props){
         super(props);
         
-        this.onClick = this.onClick.bind(this);
+        this.addTab = this.addTab.bind(this);
 
     }
     
-    onClick = (name) => (e) => { 
+    addTab = (options) => (e) => { 
         e.preventDefault();
-        
-        this.props.dispatch(addTab(name, name, {title: name}));
+
+        let tabId = options.component;
+        this.props.dispatch(addTab(tabId, options.component, {title: options.title}));
+                
+        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     render(){
         return (
         <div>
                 <span className="dropdown-item-text legend w-100">Radio Access Network</span>
-                <a className="dropdown-item" href="#/netmgt" onClick={this.onClick('NetworkBrowser')}> <FontAwesomeIcon icon="sitemap" /> Network Browser</a>
-                <a className="dropdown-item" href="#/netaudit" onClick={this.onClick('NetworkAudit')}><FontAwesomeIcon icon="wrench"/> Network Audit</a>
-                <a className="dropdown-item" href="#/mobrowser" onClick={this.onClick('MOBrowser')}><FontAwesomeIcon icon="puzzle-piece"/> MO Browser</a>
-                <a className="dropdown-item" href="#/baseline" onClick={this.onClick('NetworkBaseline')}> <FontAwesomeIcon icon="stop-circle"/>  Network Baseline</a>
-                <a className="dropdown-item" href="#/telecomlib" onClick={this.onClick('TelecomLib')}> <FontAwesomeIcon icon="university"/>  Telecom Library</a>
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                component: 'NetworkBrowser',
+                                title: 'Network Browser'
+                                })}> <FontAwesomeIcon icon="sitemap" /> Network Browser</a>
+                                
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                    component: 'NetworkAudit',
+                                    title: 'Network Audit'
+                                })}><FontAwesomeIcon icon="wrench"/> Network Audit</a>
+                                
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                    component: 'MOBrowser',
+                                    title: 'MO Browser'})}><FontAwesomeIcon icon="puzzle-piece"/> MO Browser</a>
+                                    
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                    component: 'NetworkBaseline',
+                                    title: 'Network Baseline'
+                                })}> <FontAwesomeIcon icon="stop-circle"/>  Network Baseline</a>
+                                
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                component: 'TelecomLib',
+                                title: 'Telecom Library'
+                                })}> <FontAwesomeIcon icon="university"/>  Telecom Library</a>
+                                
+                <span className="dropdown-item-text legend w-100">General</span>
+                <a className="dropdown-item" href="#" onClick={this.addTab('Reports')}> <FontAwesomeIcon icon="chart-area"/>  Reports</a>
+                <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="brain"/>  SON</a>
+                <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="gem"/>  CEM</a>
+                <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="user-md"/>  Faults</a>
                 <span className="dropdown-item-text legend w-100">System</span>
-                <a className="dropdown-item" href="#" onClick={this.onClick('Processes')}> <FontAwesomeIcon icon="cogs"/>  Processes</a>
-                <a className="dropdown-item" href="#" onClick={this.onClick('Settings')}><FontAwesomeIcon icon="cog"/> Settings</a>
-                <a className="dropdown-item" href="#" onClick={this.onClick('UserProfile')}><FontAwesomeIcon icon="user"/> Profile</a>
-                <a className="dropdown-item" href="#" onClick={this.onClick('Help')}><FontAwesomeIcon icon="question-circle"/>  Help</a>
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                component: 'Processes', title: 'Processes'})}> <FontAwesomeIcon icon="cogs"/>  Processes</a>
+                                
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                            component: 'Settings', title: 'Settings'})}><FontAwesomeIcon icon="cog"/> Settings</a>
+                            
+                <a className="dropdown-item" href="#" 
+                    onClick={this.addTab({ component: 'UserProfile', title:'Profile'})}>
+                    <FontAwesomeIcon icon="user"/> Profile</a>
+                                
+                <a className="dropdown-item" href="#" onClick={this.addTab({
+                                component: 'Help', title: 'Help'})}><FontAwesomeIcon icon="question-circle"/>  Help</a>
         </div>
         );
         
