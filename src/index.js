@@ -13,14 +13,16 @@ import icons from 'glyphicons'
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-        import { faLock, faAt, faSpinner, faHome, faPlug, faCog, 
-            faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,
-            faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList
+        import { faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
+            faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
+            faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
+            faChartArea
         } from '@fortawesome/free-solid-svg-icons'
 
-        library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog,
-        faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,
-        faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList);
+        library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
+        faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
+        faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
+        faChartArea);
 
 const store = configureStore();
 
