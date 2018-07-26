@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dashboard from '../dashboard/dashboard';
 import Settings from '../settings/settings';
 import NetworkBrowser from '../networkbrowser/network-browser';
+import ElementBrowser from '../networkbrowser/element-browser';
 import NetworkAudit from '../networkaudit/network-audit';
 import MOBrowser from '../mobrowser/mo-browser';
 import NetworkBaseline from '../networkbaseline/network-baseline';
@@ -12,9 +13,12 @@ import TelecomLib from '../telecomlib/telecomlib';
 import Vendors from '../telecomlib/vendors';
 import Technologies from '../telecomlib/technologies';
 import Processes from '../processes/processes';
+import Airflow from '../processes/airflow';
+import RabbitMQ from '../processes/rabbitmq';
 import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
 import $ from 'jquery';
+import { closeTab, setActiveTab } from './uilayout-actions';
 
 const Components = {
     "Help": Help,
@@ -28,7 +32,10 @@ const Components = {
     "Processes": Processes,
     "UserProfile": UserProfile,
     "Vendors": Vendors,
-    "Technologies": Technologies
+    "Technologies": Technologies,
+    "Airflow": Airflow,
+    "RabbitMQ": RabbitMQ,
+    "ElementBrowser": ElementBrowser,
     };
 
 class Tabs extends React.Component {
@@ -42,25 +49,19 @@ class Tabs extends React.Component {
         event.preventDefault();
     }
 
-    setActiveTab = (name) => (e) => { 
+    setActiveTab = (tabId) => (e) => { 
         e.stopPropagation();
         e.preventDefault();
         
-        this.props.dispatch({
-            type: 'SET_ACTIVE_TAB',
-            tab: name
-        });
+        this.props.dispatch(setActiveTab(tabId));
         
     }
     
-    closeTab = (name) => (e) => { 
+    closeTab = (tabId) => (e) => { 
         e.stopPropagation();
         e.preventDefault();
         
-        this.props.dispatch({
-            type: 'CLOSE_TAB',
-            tab: name
-        });
+        this.props.dispatch(closeTab(tabId));
     }
     
     componentDidMount(){
@@ -70,7 +71,6 @@ class Tabs extends React.Component {
         
         $('#myTab').on('shown.bs.tab', function (e) {
             let activeTab = window.activeTab + '-tab';
-            console.log("activeTab:" + activeTab);
             $.each($('.tabdrop ul.dropdown-menu li.nav-item>a'),function(index,value){
 
                 if($(value).attr('id') !== activeTab){
@@ -95,42 +95,42 @@ class Tabs extends React.Component {
     } 
     
     componentWillUnmount(){
-        $('#myTab').off('shown.bs.tab');
-        
+        $('#myTab').off('shown.bs.tab');        
     }
     
     render(){
-        let tabTitles = this.props.tabs.map( tab => {
-                const Tag = Components[tab];
-//                const activeClass = tab === this.props.activeTab ? 'active show': ""; 
+        let tabTitles = [];
+        for (var tabId in this.props.tabs){
+                const Tag = Components[ this.props.tabs[tabId].component];
+                const options = this.props.tabs[tabId].options;
                 const activeClass = ""; 
-                return (
-                <React.Fragment key={tab}>
-                    <li className="nav-item" key={tab}>
-                        <a className={"nav-link " + activeClass} id={tab+"-tab"} data-toggle="tab" href={"#"+tab} role="tab" aria-controls={tab} aria-selected="false" onClick={this.setActiveTab(tab)}>
-                        { tab === 'Dashboard' ? "" :
-                        <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tab)}>
+        tabTitles.push(
+                <React.Fragment key={tabId}>
+                    <li className="nav-item" key={tabId}>
+                        <a className={"nav-link " + activeClass} id={tabId+"-tab"} data-toggle="tab" href={"#"+tabId} role="tab" aria-controls={tabId} aria-selected="false" onClick={this.setActiveTab(tabId)}>
+                        { this.props.tabs[tabId].component === 'Dashboard' ? "" :
+                        <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tabId)}>
                             <span aria-hidden="true">&times;</span>
                         </button>
                         }            
-                        <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{Tag.label}</span>
+                        <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{options.title}</span>
                         
                         </a>
                     </li>
                 </React.Fragment>    
-            );   
-        });
-        
-        let tabContents = this.props.tabs.map( tab => {
-            const Tag = Components[tab];
-//            const activeClass = tab === this.props.activeTab ? 'active show': ""; 
-            const activeClass = ""; 
-            return (
-                <React.Fragment key={tab}>
-                    <div className={"tab-pane fade " + activeClass} id={tab} role="tabpanel" aria-labelledby="contact-tab"><Tag/></div>
-                </React.Fragment>
             );
-        });
+        }
+        
+
+        let tabContents = [];
+        for( var tabId in this.props.tabs){
+            const Tag = Components[ this.props.tabs[tabId].component];
+            const options = this.props.tabs[tabId].options;
+            const activeClass = ""; 
+            tabContents.push(
+                <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby="contact-tab"><Tag options={options}/></div>
+            );
+        }
         
         return (
             <div>

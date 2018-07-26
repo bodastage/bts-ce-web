@@ -9,7 +9,7 @@ let initialState = {
 };
 
 
-export default function uiLayout(state = initialState, action) {
+export default function nodes(state = initialState, action) {
 
     switch (action.type) {
         case REQUEST_VENDORS:

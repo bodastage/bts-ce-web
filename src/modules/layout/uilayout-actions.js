@@ -2,17 +2,26 @@ export const ADD_TAB = 'ADD_TAB';
 export const CLOSE_TAB = 'CLOSE_TAB';
 export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 
-export default function addTab(tabName){
+export function addTab(id,component,options){
     return {
         type: ADD_TAB,
-        tab: tabName
+        id: id,
+        component: component,
+        options: options
     };
 }
 
 
-export  function closeTab(tabName){
+export  function closeTab(tabId){
     return {
-        type: ADD_TAB,
-        tab: tabName
+        type: CLOSE_TAB,
+        id: tabId
+    };
+}
+
+export function setActiveTab(tabId){
+    return {
+        type: SET_ACTIVE_TAB,
+        id: tabId
     };
 }

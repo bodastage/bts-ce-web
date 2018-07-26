@@ -4,6 +4,8 @@ import help from './modules/help/help-reducers';
 import uiLayout from './modules/layout/uilayout-reducers';
 import vendors from './modules/telecomlib/vendors-reducers';
 import technologies from './modules/telecomlib/technologies-reducers';
+import profile from './modules/profile/profile-reducers';
+import networkbrowser from './modules/networkbrowser/network-browser-reducers';
 
 
 const appReducer = combineReducers({
@@ -11,8 +13,9 @@ const appReducer = combineReducers({
   help,
   uiLayout,
   vendors,
-  technologies
+  technologies,
+  profile,
+  networkbrowser
 });
-//const appReducer = sessionReducer;
 
 export default appReducer;

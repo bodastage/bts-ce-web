@@ -19,8 +19,8 @@ class Vendors extends React.Component{
         
         this.state = {
                 columnDefs: [
-                    {headerName: "Name", field: "name"},
-                    {headerName: "Description", field: "notes"}
+                    {headerName: "Name", field: "name",  filter: "agTextColumnFilter"},
+                    {headerName: "Description", field: "notes",  filter: "agTextColumnFilter"}
 
                 ],
                 rowData: [
@@ -74,6 +74,8 @@ class Vendors extends React.Component{
                             enableColResize={true}
                             gridAutoHeight={true}
                             columnDefs={this.state.columnDefs}
+                            enableFilter={true}
+                            enableSorting={true}
                             rowData={this.props.data}>
                         </AgGridReact>
                     </div>

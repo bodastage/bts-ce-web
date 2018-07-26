@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
+import { addTab } from '../layout/uilayout-actions';
 
 class TelecomLib extends React.Component{
     static icon = "university";
@@ -17,10 +18,7 @@ class TelecomLib extends React.Component{
     addTab = (name) => (e) => { 
         e.preventDefault();
         
-        this.props.dispatch({
-            type: 'ADD_TAB',
-            tab: name
-        });
+        this.props.dispatch(addTab(name, name, {}));
         
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }

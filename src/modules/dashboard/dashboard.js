@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as DashboardCSS from './dashboard.css';
 import { connect } from 'react-redux';
+import { addTab } from '../layout/uilayout-actions';
 
 //import * as UILayoutActions from './uilayout-actions';
 
@@ -22,12 +23,9 @@ class Dashboard extends React.Component {
     
     addTab = (name) => (e) => { 
         e.preventDefault();
-        
-        this.props.dispatch({
-            type: 'ADD_TAB',
-            tab: name
-        });
-        
+
+        this.props.dispatch(addTab(name, name, {title: name}));
+                
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     

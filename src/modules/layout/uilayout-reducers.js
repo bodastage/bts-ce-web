@@ -1,39 +1,42 @@
 import { ADD_TAB, CLOSE_TAB, SET_ACTIVE_TAB } from './uilayout-actions';
 
 let initialState = {
-    tabs: ['Dashboard'],
-    activeTab: 'Dashboard'
+    tabs: {'dashboard': { component: 'Dashboard', options:{title: "Dashboard"}}},
+    activeTab: 'dashboard'
 };
 
 export default function uiLayout(state = initialState, action) {
 
     switch (action.type) {
         case ADD_TAB:
-            if ( typeof action.tab === 'undefined' || action.tab === null ) return state;
+            if ( typeof action.id === 'undefined' || action.id === null ) return state;
             
-            if (state.tabs.includes(action.tab) === true ) { 
+            if (typeof state.tabs[action.id] != 'undefined' ) { 
                 return Object.assign({}, state, {
-                    activeTab: action.tab
+                    activeTab: action.id
                 });
             }
             
             return Object.assign({}, state, {
-                tabs: [ ...state.tabs, action.tab],
-                activeTab: action.tab
+                tabs: Object.assign({},state.tabs, {[action.id]:{component: action.component, options: action.options}}),
+                activeTab: action.id
             });
         case CLOSE_TAB:
-             if ( typeof action.tab === 'undefined' || action.tab === null ) return state;
-             if ( state.tabs.includes(action.tab) !== true ) { return state; }
+             if ( typeof action.id === 'undefined' || action.id === null ) return state;
+             if ( typeof state.tabs[action.id] === 'undefined' ) { return state; }
+            
+            //@TODO: State should not be modifed. Or can this be done here?!
+            delete state.tabs[action.id];
             
             return Object.assign({}, state, {
-                tabs: state.tabs.filter(tab => tab != action.tab ),
-                activeTab: 'Dashboard'
+                tabs: state.tabs,
+                activeTab: 'dashboard'
             });
         case SET_ACTIVE_TAB:
-             if ( typeof action.tab === 'undefined' || action.tab === null ) return state;
+             if ( typeof action.id === 'undefined' || action.id === null ) return state;
             
             return Object.assign({}, state, {
-                activeTab: action.tab
+                activeTab: action.id
             });
     }
         

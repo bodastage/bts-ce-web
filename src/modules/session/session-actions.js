@@ -1,4 +1,5 @@
 import axios from '../../api/config';
+import 'url-search-params-polyfill';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
