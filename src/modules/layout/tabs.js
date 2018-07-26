@@ -17,6 +17,7 @@ import Airflow from '../processes/airflow';
 import RabbitMQ from '../processes/rabbitmq';
 import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
+import Reports from '../reports/reports.js';
 import $ from 'jquery';
 import { closeTab, setActiveTab } from './uilayout-actions';
 
@@ -36,6 +37,7 @@ const Components = {
     "Airflow": Airflow,
     "RabbitMQ": RabbitMQ,
     "ElementBrowser": ElementBrowser,
+    "Reports": Reports
     };
 
 class Tabs extends React.Component {
@@ -43,10 +45,6 @@ class Tabs extends React.Component {
         super(props);
         
         this.closeTab = this.closeTab.bind(this);
-    }
-    
-    loadModule(event){
-        event.preventDefault();
     }
 
     setActiveTab = (tabId) => (e) => { 
@@ -128,7 +126,9 @@ class Tabs extends React.Component {
             const options = this.props.tabs[tabId].options;
             const activeClass = ""; 
             tabContents.push(
-                <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby="contact-tab"><Tag options={options}/></div>
+                <React.Fragment key={tabId}>
+                    <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby="contact-tab"><Tag options={options}/></div>
+                </React.Fragment>    
             );
         }
         

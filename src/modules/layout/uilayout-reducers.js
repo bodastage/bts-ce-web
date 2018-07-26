@@ -25,11 +25,15 @@ export default function uiLayout(state = initialState, action) {
              if ( typeof action.id === 'undefined' || action.id === null ) return state;
              if ( typeof state.tabs[action.id] === 'undefined' ) { return state; }
             
-            //@TODO: State should not be modifed. Or can this be done here?!
-            delete state.tabs[action.id];
+            let tabs = {};
+            for(var tabId in state.tabs){
+                if( tabId != action.id ){
+                    tabs[tabId] = state.tabs[tabId];
+                }
+            }
             
             return Object.assign({}, state, {
-                tabs: state.tabs,
+                tabs: tabs,
                 activeTab: 'dashboard'
             });
         case SET_ACTIVE_TAB:
@@ -38,8 +42,8 @@ export default function uiLayout(state = initialState, action) {
             return Object.assign({}, state, {
                 activeTab: action.id
             });
+        default:
+            return state;
     }
-        
-    return state;
 
 }

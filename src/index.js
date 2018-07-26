@@ -16,13 +16,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
         import { faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
             faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
             faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
-            faChartArea
+            faChartArea, faBrain, faGem, faUserMd
         } from '@fortawesome/free-solid-svg-icons'
 
         library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
         faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
         faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
-        faChartArea);
+        faChartArea, faBrain, faGem, faUserMd);
 
 const store = configureStore();
 

@@ -27,9 +27,9 @@ class UILayout extends React.Component {
 
             $('#layout-container').layout({applyDemoStyles: true,
                 north: {
-                    maxSize: '50',
+                    maxSize: '51',
                     resizable: false,
-                    size: '50',
+                    size: '51',
                     onopen_end: function () {
 
                     },
@@ -81,7 +81,7 @@ class UILayout extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     tabs: state.uiLayout.tabs,
     activeTab: state.uiLayout.activeTab

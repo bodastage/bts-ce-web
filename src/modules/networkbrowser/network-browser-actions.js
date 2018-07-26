@@ -51,11 +51,13 @@ export function getEntities(entity){
         let apiEndPoint = "/api/network/nodes";
         if ( entity === 'node') apiEndPoint = "/api/network/nodes";
         if ( entity === 'site') apiEndPoint = "/api/network/sites";
+        if ( entity === 'relation') apiEndPoint = "/api/network/relations";
         
         axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }
         })
         .then(response => {
+            
             return dispatch(receiveNodes(entity, response.data));
         })
         .catch(function(error){

@@ -13,10 +13,16 @@ class ElementBrowser extends React.Component{
         super(props);
 
         this.dismissError = this.dismissError.bind(this);
+        this.updateColumnDefs = this.updateColumnDefs.bind(this);
+        this.refreshData = this.refreshData.bind(this);
+        
+        this.columnDefs = []
         
         this.state = {
             columnDefs: [
                 {headerName: "Name", field: "nodename",  filter: "agTextColumnFilter"},
+                {headerName: "Node", field: "node",  filter: "agTextColumnFilter"},
+                {headerName: "Name", field: "name",  filter: "agTextColumnFilter"},
                 {headerName: "Type", field: "type",  filter: "agTextColumnFilter"},
                 {headerName: "Technology", field: "technology",  filter: "agTextColumnFilter"},
                 {headerName: "Vendor", field: "vendor",  filter: "agTextColumnFilter"}
@@ -25,6 +31,24 @@ class ElementBrowser extends React.Component{
             rowData: [
             ]
         };
+    }
+    
+    refreshData(){
+        this.props.dispatch(getEntities(this.props.options.entity));
+    }
+    
+    downloadData(){
+        
+    }
+    
+    updateColumnDefs(){
+        this.columnDef = [];
+        if( typeof this.props.data.data === 'undefined'  ) return;
+        for(var key in this.props.data.data[0]){
+            if( key === 'id' || key === 'date_added' || key === 'pk') continue;
+            this.columnDef.push(
+                {headerName: key.toUpperCase(), field: key,  filter: "agTextColumnFilter"},);
+        }
     }
     
     
@@ -36,14 +60,25 @@ class ElementBrowser extends React.Component{
         this.props.dispatch(getEntities(this.props.options.entity));
     }
     
-    componentDidUpdate(){
-
+    componentWillMount() {
+        console.log("ElementBrowser.componentDidMount");
     }
+
     
     render(){
+        this.updateColumnDefs();
+
         return (
         <div>
             <h3><FontAwesomeIcon icon={ElementBrowser.icon}/> {this.props.options.title}</h3>
+            
+            {this.props.requesting === false ? "" : 
+                <div className="pb-1">
+                    <div className="progress">
+                      <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: 100 +'%'}}>Processing...</div>
+                    </div>
+                </div>
+            }
             
             {this.props.requestError === null ? "" :
                     <div className="alert alert-danger" role="alert">
@@ -56,16 +91,18 @@ class ElementBrowser extends React.Component{
             
             <div className="card">
                 <div className="card-body p-3">
-
-
-                    <div
-                        className="ag-theme-balham"
-                        style={{width: '100%'}}
-                    >
+                
+                <div className="mb-2">
+                    <a href="#" title="Refresh" onClick={this.refreshData} className="mr-2"><FontAwesomeIcon icon="sync"/></a>
+                    <a href="#" title="Download" onClick={this.downloadData}><FontAwesomeIcon icon="download"/></a>
+                    
+                </div>
+                
+                    <div className="ag-theme-balham" style={{width: '100%'}}>
                         <AgGridReact
                             enableColResize={true}
                             gridAutoHeight={true}
-                            columnDefs={this.state.columnDefs}
+                            columnDefs={this.columnDef}
                             enableFilter={true}
                             enableSorting={true}
                             rowData={this.props.data.data}>
@@ -84,7 +121,7 @@ function mapStateToProps(state, ownProps) {
         return {
             requesting: false,
             requestError:  null,
-            data: [] 
+            data: {}
         };
     }
     
