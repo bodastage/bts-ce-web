@@ -19,14 +19,16 @@ export default class Help extends React.Component {
                 <div className="bd-notice"></div>
                 <h3><FontAwesomeIcon icon="question-circle"/> Help</h3>
 
-                <div className="panel panel-default">
-                <div className="panel-heading"><b>About</b></div>
-                  <div className="panel-body">
-                    <p> 
+
+                <div className="card">
+                
+                  <div className="card-body">
+                    <h4 className="card-title">About</h4>
+                    <p className="card-text"> 
                         <b>Boda Telecom Suite - CE</b> (BTS-CE) is an open source telecommunication network management platform. The project aims to leverage the best in open source software , big data and machine learning to provide a feature rich platform for network management. It was started at <b><a href="http://www.bodastage.com" target="_blank">Bodastage Solutions</a></b> with initial focus on Radio Network Optimization.
                     </p>
 
-                    <h3>Resources </h3>
+                    <h4 className="card-title">Resources </h4>
 
                     <ul>
                         <li>Support is provided through the <b><a href="http://www.telecomhall.net"  target="_blank">Telecomhall</a></b> forum.</li>
