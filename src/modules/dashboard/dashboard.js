@@ -64,7 +64,7 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a href="#/baseline" onClick={this.addTab({
+                            <div className="icon-display"><a href="#" onClick={this.addTab({
                                     component: 'NetworkBaseline',
                                     title: 'Network Baseline'
                                 })}> <FontAwesomeIcon icon="stop-circle"/></a></div>
@@ -85,7 +85,7 @@ class Dashboard extends React.Component {
                
                 
                 <fieldset className="col-md-12 fieldset">    	
-                    <legend className="legend">General</legend>
+                    <legend className="legend">Service Assurance</legend>
                     
                     <div className="row dashboard-icon">
                         <div className="col-md-2">

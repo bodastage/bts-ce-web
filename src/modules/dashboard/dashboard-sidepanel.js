@@ -51,7 +51,7 @@ class DashboardSidePanel extends React.Component {
                                 title: 'Telecom Library'
                                 })}> <FontAwesomeIcon icon="university"/>  Telecom Library</a>
                                 
-                <span className="dropdown-item-text legend w-100">General</span>
+                <span className="dropdown-item-text legend w-100">Service Assurance</span>
                 <a className="dropdown-item" href="#" onClick={this.addTab('Reports')}> <FontAwesomeIcon icon="chart-area"/>  Reports</a>
                 <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="brain"/>  SON</a>
                 <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="gem"/>  CEM</a>
