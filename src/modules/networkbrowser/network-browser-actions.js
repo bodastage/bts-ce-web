@@ -52,6 +52,9 @@ export function getEntities(entity){
         if ( entity === 'node') apiEndPoint = "/api/network/nodes";
         if ( entity === 'site') apiEndPoint = "/api/network/sites";
         if ( entity === 'relation') apiEndPoint = "/api/network/relations";
+        if ( entity === 'gsm_cell_params') apiEndPoint = "/api/network/live/cells?tech_pk=1";
+        if ( entity === 'umts_cell_params') apiEndPoint = "/api/network/live/cells?tech_pk=2";
+        if ( entity === 'lte_cell_params') apiEndPoint = "/api/network/live/cells?tech_pk=3";
         
         axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }

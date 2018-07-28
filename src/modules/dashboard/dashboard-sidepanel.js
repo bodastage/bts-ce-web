@@ -52,10 +52,12 @@ class DashboardSidePanel extends React.Component {
                                 })}> <FontAwesomeIcon icon="university"/>  Telecom Library</a>
                                 
                 <span className="dropdown-item-text legend w-100">Service Assurance</span>
-                <a className="dropdown-item" href="#" onClick={this.addTab('Reports')}> <FontAwesomeIcon icon="chart-area"/>  Reports</a>
+                <a className="dropdown-item text-muted" href="#" onClick={this.addTab('Reports')}> <FontAwesomeIcon icon="chart-area"/>  Reports</a>
                 <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="brain"/>  SON</a>
-                <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="gem"/>  CEM</a>
-                <a className="dropdown-item text-muted" href="#" > <FontAwesomeIcon icon="user-md"/>  Faults</a>
+                <a className="dropdown-item text-muted" href="#" title="Customer Experience Management"> <FontAwesomeIcon icon="gem"/>  CEM</a>
+                <a className="dropdown-item text-muted" href="#" title="Fault Management" > <FontAwesomeIcon icon="user-md"/>  Faults</a>
+                <a className="dropdown-item text-muted" href="#" title="Geographical Information Services"> <FontAwesomeIcon icon="globe-africa"/>  GIS</a>
+                <a className="dropdown-item text-muted" href="#" title="Works Authorisation"> <FontAwesomeIcon icon="people-carry"/>  WorkFlow</a>
                 <span className="dropdown-item-text legend w-100">System</span>
                 <a className="dropdown-item" href="#" onClick={this.addTab({
                                 component: 'Processes', title: 'Processes'})}> <FontAwesomeIcon icon="cogs"/>  Processes</a>

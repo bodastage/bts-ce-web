@@ -108,6 +108,17 @@ class Dashboard extends React.Component {
                             <div className="icon-display "><a title="Fault Managemenet" href="#" className="text-muted" ><FontAwesomeIcon icon="user-md"/></a></div>
                             <div className="icon-label">Faults</div>
                         </div>
+
+                        <div className="col-md-2">
+                            <div className="icon-display "><a title="Geographical Information Services" href="#" className="text-muted" ><FontAwesomeIcon icon="globe-africa"/></a></div>
+                            <div className="icon-label">GIS</div>
+                        </div>
+                        
+
+                        <div className="col-md-2">
+                            <div className="icon-display "><a title="Works Authorisation" href="#" className="text-muted" ><FontAwesomeIcon icon="people-carry"/></a></div>
+                            <div className="icon-label">WorkFlow</div>
+                        </div>
                     </div>
                 </fieldset>
                 

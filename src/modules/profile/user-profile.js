@@ -130,7 +130,7 @@ class UserProfile extends React.Component{
               <div className="form-group row">
                 <label htmlFor="staticAPIToken" className="col-sm-2 col-form-label">API Token</label>
                 <div className="col-sm-6">
-                    <input type="text" readOnly className="form-control-plaintext form-control-sm text-muted" id="staticAPIToken" value={this.state.token}/>
+                    <input type="text" readOnly className="form-control-plaintext form-control-sm text-muted font-italic font-weight-light" id="staticAPIToken" value={this.state.token}/>
                     <small id="emailHelp" className="form-text text-muted">Use this to access the REST API.</small>
                 </div>
               </div>

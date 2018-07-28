@@ -46,6 +46,10 @@ Taken from tabdrop.css to create custom styles
     padding-right:20px;
 }
 
+/*.dropdown-menu .tabdrop {
+    font-size: 14px;
+}*/
+
 
 
 .tabdrop .dropdown-menu {
@@ -54,6 +58,7 @@ Taken from tabdrop.css to create custom styles
     
     border-top-left-radius: .25rem;
     border-top-right-radius: .25rem;
+    font-size: 14px;
     
 }
 
@@ -61,4 +66,11 @@ Taken from tabdrop.css to create custom styles
     float:right;
     display:inline-block;
     padding-left: 10px;
+
+}
+
+ .nav-tabs  .tabdrop .nav-item.show .nav-link, .nav-tabs .tabdrop  .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-color: #fff #fff #fff ;
 }

@@ -105,6 +105,9 @@ class ElementBrowser extends React.Component{
                             columnDefs={this.columnDef}
                             enableFilter={true}
                             enableSorting={true}
+                            pagination={true}
+                            paginationAutoPageSize={true}
+                            paginationPageSize={20}
                             rowData={this.props.data.data}>
                         </AgGridReact>
                     </div>
