@@ -39,7 +39,7 @@ class Dashboard extends React.Component {
                     
                         <div className="row dashboard-icon">
                             <div className="col-md-2">
-                                <div className="icon-display"><a href="#/netmgt" 
+                                <div className="icon-display"><a title="Network Browser" href="#/netmgt" 
                                 onClick={this.addTab({
                                 component: 'NetworkBrowser',
                                 title: 'Network Browser'
@@ -48,7 +48,7 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                                <div className="icon-display" title="Network Audit Module"><a href="#/netaudit" 
+                                <div className="icon-display" title="Network Audit Module"><a title="Network Audit" href="#/netaudit" 
                                 onClick={this.addTab({
                                     component: 'NetworkAudit',
                                     title: 'Network Audit'
@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
                                 <div className="icon-label">Network Audit</div>
                             </div>
                             <div className="col-md-2">
-                                <div className="icon-display"><a href="#/mobrowser" title="Managed Object Browser" 
+                                <div className="icon-display"><a title="Managed Object Browser" href="#/mobrowser" title="Managed Object Browser" 
                                 onClick={this.addTab({
                                     component: 'MOBrowser',
                                     title: 'MO Browser'})}> <FontAwesomeIcon icon="puzzle-piece"/></a></div>
@@ -64,7 +64,7 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a href="#" onClick={this.addTab({
+                            <div className="icon-display"><a title="Network Baseline" href="#" onClick={this.addTab({
                                     component: 'NetworkBaseline',
                                     title: 'Network Baseline'
                                 })}> <FontAwesomeIcon icon="stop-circle"/></a></div>
@@ -73,7 +73,7 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a href="#/telecomlib" onClick={this.addTab({
+                            <div className="icon-display"><a title="Telecom Library" href="#/telecomlib" onClick={this.addTab({
                                 component: 'TelecomLib',
                                 title: 'Telecom Library'
                                 })}> <FontAwesomeIcon icon="university"/></a></div>
@@ -89,7 +89,7 @@ class Dashboard extends React.Component {
                     
                     <div className="row dashboard-icon">
                         <div className="col-md-2">
-                            <div className="icon-display"><a className="text-muted" href="#" onClick={this.addTab({
+                            <div className="icon-display"><a title="Reports" className="text-muted" href="#" onClick={this.addTab({
                                 component: 'Reports', title: 'Reports'})}><FontAwesomeIcon icon="chart-area"/></a></div>
                             <div className="icon-label">Reports</div>
                         </div>
@@ -127,25 +127,25 @@ class Dashboard extends React.Component {
                     
                     <div className="row dashboard-icon">
                         <div className="col-md-2">
-                            <div className="icon-display"><a href="#/processes" onClick={this.addTab({
+                            <div className="icon-display"><a title="Processes" href="#/processes" onClick={this.addTab({
                                 component: 'Processes', title: 'Processes'})}><FontAwesomeIcon icon="cogs"/></a></div>
                             <div className="icon-label">Processes</div>
                         </div>
 
                         <div className="col-md-2">
-                            <div className="icon-display"><a href="#/profile" onClick={this.addTab({
+                            <div className="icon-display"><a title="Profile" href="#/profile" onClick={this.addTab({
                                 component: 'UserProfile', title:'Profile'})}><FontAwesomeIcon icon="user"/></a></div>
                             <div className="icon-label">Profile</div>
                         </div>
 
                         <div className="col-md-2">
-                        <div className="icon-display"><a href="#" onClick={this.addTab({
+                        <div className="icon-display"><a title="Settings" href="#" onClick={this.addTab({
                             component: 'Settings', title: 'Settings'})}><FontAwesomeIcon icon="cog"/></a></div>
                             <div className="icon-label">Settings</div>
                         </div>
 
                         <div className="col-md-2">
-                            <div className="icon-display"><a href="#/help" onClick={this.addTab({
+                            <div className="icon-display"><a title="Help" href="#/help" onClick={this.addTab({
                                 component: 'Help', title: 'Help'})}><FontAwesomeIcon icon="question-circle"/></a></div>
                             <div className="icon-label">Help</div>
                         </div>
