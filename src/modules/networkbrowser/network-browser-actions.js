@@ -42,25 +42,30 @@ export function notifyNodesRequestFailure(entity, errorMessage){
     };
 }
 
-export function getEntities(entity){
+export function getEntities(entity, page, length){
     return (dispatch, getState) => {
         dispatch(requestNodes(entity));
         
+        let page = page || 0;
+        let length = length || 1;
+        
         const authToken = getState().session.userDetails.token;
         
-        let apiEndPoint = "/api/network/nodes";
-        if ( entity === 'node') apiEndPoint = "/api/network/nodes";
-        if ( entity === 'site') apiEndPoint = "/api/network/sites";
-        if ( entity === 'relation') apiEndPoint = "/api/network/relations";
-        if ( entity === 'gsm_cell_params') apiEndPoint = "/api/network/live/cells?tech_pk=1";
-        if ( entity === 'umts_cell_params') apiEndPoint = "/api/network/live/cells?tech_pk=2";
-        if ( entity === 'lte_cell_params') apiEndPoint = "/api/network/live/cells?tech_pk=3";
+        let apiEndPoint = "/api/network/live/nodes";
+        if ( entity === 'node') apiEndPoint = "/api/network/live/nodes?start=" + page + "&length=" + length;
+        if ( entity === 'site') apiEndPoint = "/api/network/live/sites?start=" + page + "&length=" + length;
+        if ( entity === 'relation') apiEndPoint = "/api/network/live/relations?start=" + page + "&length=" + length;
+        if ( entity === 'gsm_cell_params') apiEndPoint = "/api/network/live/cells/gsm?start=" + page + "&length=" + length;
+        if ( entity === 'umts_cell_params') apiEndPoint = "/api/network/live/cells/umts?start=" + page + "&length=" + length;
+        if ( entity === 'lte_cell_params') apiEndPoint = "/api/network/live/cells/lte?start=" + page + "&length=" + length ;
+        if ( entity === 'gsm_externals') apiEndPoint = "/api/network/live/externals/gsm?start=" + page + "&length=" + length;
+        if ( entity === 'umts_externals') apiEndPoint = "/api/network/live/externals/umts?start=" + page + "&length=" + length;
+        if ( entity === 'lte_externals') apiEndPoint = "/api/network/live/externals/lte?start=" + page + "&length=" + length;
         
         axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }
         })
         .then(response => {
-            
             return dispatch(receiveNodes(entity, response.data));
         })
         .catch(function(error){

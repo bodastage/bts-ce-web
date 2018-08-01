@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { setSidePanel } from '../layout/uilayout-actions';
 
 class MOBrowser extends React.Component{
     static icon = "puzzle-piece";
@@ -8,6 +9,11 @@ class MOBrowser extends React.Component{
     
     constructor(props){
         super(props)
+        this.setSidePanel = this.setSidePanel.bind(this);
+    }
+    
+    setSidePanel(){
+        this.props.dispatch(setSidePanel('MOBrowserPanel'));
     }
     
     render(){
@@ -18,7 +24,7 @@ class MOBrowser extends React.Component{
 
             <div className="card  mb-2">
                 <div className="card-body p-3">
-                    <a href="#" className="launch-network-tree"><FontAwesomeIcon icon="arrow-right"/> Launch MO Browser</a>        
+                    <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> Launch MO Browser</a>        
                 </div>
             </div>
         </div>

@@ -18,6 +18,7 @@ import RabbitMQ from '../processes/rabbitmq';
 import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
 import Reports from '../reports/reports.js';
+import GIS from '../gis/gis.js';
 import $ from 'jquery';
 import { closeTab, setActiveTab } from './uilayout-actions';
 
@@ -37,7 +38,8 @@ const Components = {
     "Airflow": Airflow,
     "RabbitMQ": RabbitMQ,
     "ElementBrowser": ElementBrowser,
-    "Reports": Reports
+    "Reports": Reports,
+    "GIS": GIS
     };
 
 class Tabs extends React.Component {

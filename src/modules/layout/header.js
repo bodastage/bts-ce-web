@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import logo from '../../images/logo-no-text.svg';
 import { addTab } from '../layout/uilayout-actions';
+import { setSidePanel } from '../layout/uilayout-actions';
 
 class Header extends React.Component {
     constructor(props){
         super(props);
         
         this.logout = this.logout.bind(this);
+        this.setSidePanel = this.setSidePanel.bind(this);
     }
     
     logout(event){
@@ -19,6 +21,10 @@ class Header extends React.Component {
         this.props.dispatch({
             type: "LOGOUT"
         });
+    }
+    
+    setSidePanel(){
+        this.props.dispatch(setSidePanel('DashboardSidePanel'));
     }
     
     addTab = (options) => (e) => { 
@@ -41,7 +47,7 @@ class Header extends React.Component {
               <nav className="my-2 my-md-0 mr-md-3">
                 <a className="text-dark" href="#" onClick={this.addTab({
                     component: 'dashboard', title: 'Dashboard'})}><FontAwesomeIcon icon="home" className="mb-1"/> Dashboard</a>
-                <a className="p-2 text-secondary" href="#"><FontAwesomeIcon icon="plug" className="mb-1"/> Modules</a>
+                <a className="p-2 text-secondary" href="#" onClick={this.setSidePanel} title="Modules"><FontAwesomeIcon icon="plug" className="mb-1"/> Modules</a>
                 <a className="p-2 text-secondary" href="#" onClick={this.addTab({
                     component: 'Settings', title: 'Settings'})}><FontAwesomeIcon icon="cog" className="mb-1"/> Settings</a>
                 <a className="p-2 text-secondary" href="#" onClick={this.addTab({

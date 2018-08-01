@@ -2,12 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Plot from 'react-plotly.js';
+import { setSidePanel } from '../layout/uilayout-actions';
 
 class Reports extends React.Component{
     static icon = "chart-area";
     static label = "Reports";
     constructor(props){
         super(props);
+        this.setSidePanel = this.setSidePanel.bind(this);
+        
+    }
+    
+    setSidePanel(){
+        this.props.dispatch(setSidePanel('ReportsPanel'));
     }
     
     render(){
@@ -15,6 +22,12 @@ class Reports extends React.Component{
         <div>
             <h3><FontAwesomeIcon icon="chart-area"/> Reports</h3>
 
+            <div className="card  mb-2">
+                <div className="card-body p-3">
+                    <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> Show report tree</a>        
+                </div>
+            </div>
+            
             <div className="card">
                 <div className="card-body p-3">
                     

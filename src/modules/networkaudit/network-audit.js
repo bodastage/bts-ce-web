@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { setSidePanel } from '../layout/uilayout-actions';
 
 class NetworkAudit extends React.Component{
     static icon = "wrench";
@@ -8,6 +9,12 @@ class NetworkAudit extends React.Component{
     
     constructor(props){
         super(props)
+        
+        this.setSidePanel = this.setSidePanel.bind(this);
+    }
+    
+    setSidePanel(){
+        this.props.dispatch(setSidePanel('AuditRuleTree'));
     }
     
     render(){
@@ -18,7 +25,7 @@ class NetworkAudit extends React.Component{
 
             <div className="card  mb-2">
                 <div className="card-body p-3">
-                    <a href="#" className="launch-network-tree"><FontAwesomeIcon icon="arrow-right"/> Launch audit rules</a>        
+                    <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> Launch audit rules</a>        
                 </div>
             </div>
         </div>

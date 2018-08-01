@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
 import {AgGridReact} from 'ag-grid-react';
-import { getEntities, dismissRequestError } from './network-browser-actions';
+import { getEntities, dismissRequestError, notifyNodesRequestFailure } from './network-browser-actions';
+import axios, { ERROR_CODES } from '../../api/config';
 
 class ElementBrowser extends React.Component{
     static icon = "sitemap";
@@ -15,6 +16,7 @@ class ElementBrowser extends React.Component{
         this.dismissError = this.dismissError.bind(this);
         this.updateColumnDefs = this.updateColumnDefs.bind(this);
         this.refreshData = this.refreshData.bind(this);
+        this.updateData = this.updateData.bind(this);
         
         this.columnDefs = []
         
@@ -29,7 +31,15 @@ class ElementBrowser extends React.Component{
 
             ],
             rowData: [
-            ]
+            ],
+            rowBuffer: 0,
+            rowSelection: "multiple",
+            rowModelType: "infinite",
+            paginationPageSize: 100,
+            cacheOverflowSize: 2,
+            maxConcurrentDatasourceRequests: 2,
+            infiniteInitialRowCount: 1,
+            maxBlocksInCache: 2
         };
     }
     
@@ -61,9 +71,79 @@ class ElementBrowser extends React.Component{
     }
     
     componentWillMount() {
-        console.log("ElementBrowser.componentDidMount");
     }
 
+    updateData(){
+        var _lastRow = this.props.data.recordsTotal;
+        var _data = this.props.data.data;
+        
+        let dataSource = {  
+            rowCount: null,
+            getRows: function(params) {
+                console.log("getRows -------------->");
+            setTimeout(function() {
+                var rowsThisPage = _data.slice(params.startRow, params.endRow);
+                var lastRow = _lastRow;
+                params.successCallback(rowsThisPage, lastRow);
+
+              }, 500);
+
+            }
+        };
+        this.gridApi.setDatasource(dataSource);
+    }
+    
+    onGridReady(params) {
+
+        this.gridApi = params.api;
+        this.gridColumnApi = params.columnApi;
+        //let _data = this.props.data.data || [];
+        let _lastRow = this.props.data.recordsTotal;
+        let token = this.props.token;
+        let entity= this.props.options.entity;
+        
+        
+        console.log("_lastRow:" + _lastRow);
+        console.log(this.props);
+        
+        let dataSource = {  
+            rowCount: null,
+            getRows: function(params) {
+                console.log("params.startRow:" + params.startRow);
+                console.log("params.endRow:" + params.endRow);
+                
+                let page = params.startRow;
+                let length= params.endRow - params.startRow;
+                
+                let apiEndPoint = "/api/network/live/nodes";
+                if ( entity === 'node') apiEndPoint = "/api/network/live/nodes?start=" + page + "&length=" + length;
+                if ( entity === 'site') apiEndPoint = "/api/network/live/sites?start=" + page + "&length=" + length;
+                if ( entity === 'relation') apiEndPoint = "/api/network/live/relations?start=" + page + "&length=" + length;
+                if ( entity === 'gsm_cell_params') apiEndPoint = "/api/network/live/cells/gsm?start=" + page + "&length=" + length;
+                if ( entity === 'umts_cell_params') apiEndPoint = "/api/network/live/cells/umts?start=" + page + "&length=" + length;
+                if ( entity === 'lte_cell_params') apiEndPoint = "/api/network/live/cells/lte?start=" + page + "&length=" + length ;
+                if ( entity === 'gsm_externals') apiEndPoint = "/api/network/live/externals/gsm?start=" + page + "&length=" + length;
+                if ( entity === 'umts_externals') apiEndPoint = "/api/network/live/externals/umts?start=" + page + "&length=" + length;
+                if ( entity === 'lte_externals') apiEndPoint = "/api/network/live/externals/lte?start=" + page + "&length=" + length;
+
+                axios.get(apiEndPoint,{
+                    headers: { "Authorization": token }
+                })
+                .then(response => {
+//                    var rowsThisPage = response.data.data.slice(params.startRow, params.endRow);
+                    var lastRow = response.data.recordsTotal;
+//                    params.successCallback(rowsThisPage, lastRow);
+                    params.successCallback(response.data.data, lastRow);
+                })
+                .catch(function(error){
+                    this.props.dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
+                });
+            }
+        };
+        this.gridApi.setDatasource(dataSource);
+        
+        
+    }
     
     render(){
         this.updateColumnDefs();
@@ -98,19 +178,31 @@ class ElementBrowser extends React.Component{
                     
                 </div>
                 
-                    <div className="ag-theme-balham" style={{width: '100%'}}>
+                    <div className="ag-theme-balham" style={{width: '100%', height: "100%", boxSizing: "border-box"}}>
                         <AgGridReact
-                            enableColResize={true}
+                            pagination={true}
                             gridAutoHeight={true}
                             columnDefs={this.columnDef}
-                            enableFilter={true}
-                            enableSorting={true}
-                            pagination={true}
-                            paginationAutoPageSize={true}
-                            paginationPageSize={20}
-                            rowData={this.props.data.data}>
+                            components={this.state.components}
+                            enableColResize={true}
+                            rowBuffer={this.state.rowBuffer}
+                            debug={true}
+                            rowSelection={this.state.rowSelection}
+                            rowDeselection={true}
+                            rowModelType={this.state.rowModelType}
+                            paginationPageSize={this.state.paginationPageSize}
+                            cacheOverflowSize={this.state.cacheOverflowSize}
+                            maxConcurrentDatasourceRequests={this.state.maxConcurrentDatasourceRequests}
+                            infiniteInitialRowCount={this.state.infiniteInitialRowCount}
+                            maxBlocksInCache={this.state.maxBlocksInCache}
+                            enableServerSideSorting={true}
+                            enableServerSideFilter={true}
+                            onGridReady={this.onGridReady.bind(this)}
+                            >
                         </AgGridReact>
+                       
                     </div>
+                    
                         
                 </div>
             </div>
@@ -131,7 +223,8 @@ function mapStateToProps(state, ownProps) {
   return {
     requesting: state.networkbrowser[ownProps.options.entity].requesting,
     requestError: state.networkbrowser[ownProps.options.entity].requestError,
-    data: state.networkbrowser[ownProps.options.entity].data
+    data: state.networkbrowser[ownProps.options.entity].data,
+    token: state.session.userDetails.token
   };
 }
 

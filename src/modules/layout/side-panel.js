@@ -3,9 +3,15 @@ import ReactDOM from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DashboardSidePanel from '../dashboard/dashboard-sidepanel';
 import { connect } from 'react-redux';
+import AuditRuleTree from '../networkaudit/audit-rule-tree';
+import ReportsPanel from '../reports/reports-panel';
+import MOBrowserPanel from '../mobrowser/mo-panel';
 
 const SidePanels = {
-    "DashboardSidePanel": DashboardSidePanel
+    "DashboardSidePanel": DashboardSidePanel,
+    "AuditRuleTree": AuditRuleTree,
+    "ReportsPanel": ReportsPanel,
+    "MOBrowserPanel": MOBrowserPanel
 };
 class SidePanel extends React.Component{
     constructor(props){
@@ -13,7 +19,7 @@ class SidePanel extends React.Component{
     }
 
     render(){
-        const CurrentPanel = SidePanels[this.props.panel] || DashboardSidePanel;
+        const CurrentPanel = SidePanels[this.props.activePanel] || DashboardSidePanel;
         return (
                 <CurrentPanel/>
         );
