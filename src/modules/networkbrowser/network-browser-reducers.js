@@ -1,11 +1,7 @@
 import { REQUEST_NODES, RECEIVE_NODES, NOTIFY_NODE_REQUEST_FAILURE, 
-         DISMISS_NODES_REQUEST_ERROR } from './network-browser-actions';
+         DISMISS_NODES_REQUEST_ERROR, RECEIVE_NODES_FIELDS } from './network-browser-actions';
 
 let initialState = {
-//      entities : {}
-//    requestingNodes: false,
-//    requestError: null,
-//    data: []
 };
 
 
@@ -24,7 +20,8 @@ export default function networkbrowser(state = initialState, action) {
                     [entity]: {
                         requesting: true,
                         requestError: null,
-                        data: []
+                        data: [],
+                        fields: []
                     }
                 });
             }
@@ -33,7 +30,8 @@ export default function networkbrowser(state = initialState, action) {
                 [entity]: {
                     requesting: true,
                     requestError: null,
-                    data: state[entity].data
+                    data: state[entity].data,
+                    fields: state[entity].fields
                 }
             });
 
@@ -42,7 +40,17 @@ export default function networkbrowser(state = initialState, action) {
                 [entity]: {
                     requesting: false,
                     requestError: null,
-                    data: action.data
+                    data: action.data,
+                    fields: state[entity].fields
+                }
+            });
+        case RECEIVE_NODES_FIELDS:
+            return Object.assign({}, state, { 
+                [entity]: {
+                    requesting: false,
+                    requestError: null,
+                    data: action.data,
+                    fields: action.fields
                 }
             });
         case NOTIFY_NODE_REQUEST_FAILURE:
@@ -50,7 +58,8 @@ export default function networkbrowser(state = initialState, action) {
                 [entity]: {
                     requesting: false,
                     requestError: action.error,
-                    data: state[entity].data
+                    data: state[entity].data,
+                    fields: state[entity].fields
                 }
             });
         case DISMISS_NODES_REQUEST_ERROR:
@@ -58,7 +67,8 @@ export default function networkbrowser(state = initialState, action) {
                 [entity]: {
                     requesting: false,
                     requestError: null,
-                    data: state[entity].data
+                    data: state[entity].data,
+                    fields: state[entity].fields
                 }
             });
         default:

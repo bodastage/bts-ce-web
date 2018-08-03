@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
 import {AgGridReact} from 'ag-grid-react';
-import { getEntities, dismissRequestError, notifyNodesRequestFailure } from './network-browser-actions';
+import { getEntityFields, getEntities, dismissRequestError, notifyNodesRequestFailure } from './network-browser-actions';
 import axios, { ERROR_CODES } from '../../api/config';
+import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
 
 class ElementBrowser extends React.Component{
     static icon = "sitemap";
@@ -16,7 +17,8 @@ class ElementBrowser extends React.Component{
         this.dismissError = this.dismissError.bind(this);
         this.updateColumnDefs = this.updateColumnDefs.bind(this);
         this.refreshData = this.refreshData.bind(this);
-        this.updateData = this.updateData.bind(this);
+        
+        this.fields = [];
         
         this.columnDefs = []
         
@@ -53,11 +55,12 @@ class ElementBrowser extends React.Component{
     
     updateColumnDefs(){
         this.columnDef = [];
-        if( typeof this.props.data.data === 'undefined'  ) return;
-        for(var key in this.props.data.data[0]){
-            if( key === 'id' || key === 'date_added' || key === 'pk') continue;
+        if( typeof this.props.fields === 'undefined'  ) return;
+        for(var key in this.props.fields){
+            let columnName = this.props.fields[key]
+            if( columnName === 'id' || columnName === 'date_added' || columnName === 'pk') continue;
             this.columnDef.push(
-                {headerName: key.toUpperCase(), field: key,  filter: "agTextColumnFilter"},);
+                {headerName: columnName.toUpperCase(), field: columnName,  filter: "agTextColumnFilter"},);
         }
     }
     
@@ -67,53 +70,28 @@ class ElementBrowser extends React.Component{
     }
     
     componentDidMount() {
-        this.props.dispatch(getEntities(this.props.options.entity));
+        this.props.dispatch(getEntityFields(this.props.options.entity));
     }
     
     componentWillMount() {
-    }
-
-    updateData(){
-        var _lastRow = this.props.data.recordsTotal;
-        var _data = this.props.data.data;
-        
-        let dataSource = {  
-            rowCount: null,
-            getRows: function(params) {
-                console.log("getRows -------------->");
-            setTimeout(function() {
-                var rowsThisPage = _data.slice(params.startRow, params.endRow);
-                var lastRow = _lastRow;
-                params.successCallback(rowsThisPage, lastRow);
-
-              }, 500);
-
-            }
-        };
-        this.gridApi.setDatasource(dataSource);
     }
     
     onGridReady(params) {
 
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
-        //let _data = this.props.data.data || [];
-        let _lastRow = this.props.data.recordsTotal;
+        let _columnApi =  params.columnApi;
         let token = this.props.token;
         let entity= this.props.options.entity;
-        
-        
-        console.log("_lastRow:" + _lastRow);
-        console.log(this.props);
-        
+        let _fields = this.props.fields;
+
         let dataSource = {  
             rowCount: null,
             getRows: function(params) {
-                console.log("params.startRow:" + params.startRow);
-                console.log("params.endRow:" + params.endRow);
                 
                 let page = params.startRow;
                 let length= params.endRow - params.startRow;
+                let gridColumns = _columnApi.getAllColumns();
                 
                 let apiEndPoint = "/api/network/live/nodes";
                 if ( entity === 'node') apiEndPoint = "/api/network/live/nodes?start=" + page + "&length=" + length;
@@ -125,14 +103,17 @@ class ElementBrowser extends React.Component{
                 if ( entity === 'gsm_externals') apiEndPoint = "/api/network/live/externals/gsm?start=" + page + "&length=" + length;
                 if ( entity === 'umts_externals') apiEndPoint = "/api/network/live/externals/umts?start=" + page + "&length=" + length;
                 if ( entity === 'lte_externals') apiEndPoint = "/api/network/live/externals/lte?start=" + page + "&length=" + length;
-
+                
+                
+                let query = getQueryForAGGridSortAndFilter( _fields, 
+                        params.sortModel, params.filterModel, _columnApi.getAllColumns());
+                apiEndPoint += "&" + query;
+                
                 axios.get(apiEndPoint,{
                     headers: { "Authorization": token }
                 })
                 .then(response => {
-//                    var rowsThisPage = response.data.data.slice(params.startRow, params.endRow);
-                    var lastRow = response.data.recordsTotal;
-//                    params.successCallback(rowsThisPage, lastRow);
+                    var lastRow = response.data.recordsFiltered;
                     params.successCallback(response.data.data, lastRow);
                 })
                 .catch(function(error){
@@ -141,13 +122,16 @@ class ElementBrowser extends React.Component{
             }
         };
         this.gridApi.setDatasource(dataSource);
-        
-        
     }
     
+    filterAndSort(filterModel, sortModel){
+        
+    }
     render(){
         this.updateColumnDefs();
+        
 
+        
         return (
         <div>
             <h3><FontAwesomeIcon icon={ElementBrowser.icon}/> {this.props.options.title}</h3>
@@ -216,7 +200,9 @@ function mapStateToProps(state, ownProps) {
         return {
             requesting: false,
             requestError:  null,
-            data: {}
+            data: {},
+            token: state.session.userDetails.token,
+            fields: []
         };
     }
     
@@ -224,7 +210,8 @@ function mapStateToProps(state, ownProps) {
     requesting: state.networkbrowser[ownProps.options.entity].requesting,
     requestError: state.networkbrowser[ownProps.options.entity].requestError,
     data: state.networkbrowser[ownProps.options.entity].data,
-    token: state.session.userDetails.token
+    token: state.session.userDetails.token,
+    fields: state.networkbrowser[ownProps.options.entity].fields,
   };
 }
 

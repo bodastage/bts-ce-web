@@ -37,6 +37,7 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "stefanpetre-bootstrap-tabdrop": "git+https://github.com/erssebaggala/bootstrap-tabdrop.git",
+    "url-search-params": "^1.0.2",
     "url-search-params-polyfill": "^4.0.1"
   },
   "scripts": {

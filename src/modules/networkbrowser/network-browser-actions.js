@@ -1,12 +1,13 @@
 import axios, { ERROR_CODES } from '../../api/config';
 
-//Make GET request for vendors
 export const REQUEST_NODES = 'REQUEST_NODES';
 
-//Receive requested vendors
+export const REQUEST_NODES_FIELDS = 'REQUEST_NODES_FIELDS';
+
 export const RECEIVE_NODES = 'RECEIVE_NODES';
 
-//Notify UI that request has failed
+export const RECEIVE_NODES_FIELDS = 'RECEIVE_NODES_FIELDS';
+
 export const NOTIFY_NODE_REQUEST_FAILURE = 'NOTIFY_NODE_REQUEST_FAILURE';
 
 //Dismiss the error message
@@ -34,12 +35,49 @@ export function receiveNodes(entity, data){
     };
 }
 
+export function receiveNodeFields(entity, fields){
+    return {
+        type: RECEIVE_NODES_FIELDS,
+        entity: entity,
+        fields: fields
+    };
+}
+
 export function notifyNodesRequestFailure(entity, errorMessage){
     return {
         type: NOTIFY_NODE_REQUEST_FAILURE,
         entity: entity,
         error: errorMessage
     };
+}
+
+export function getEntityFields(entity){
+    return (dispatch, getState) => {
+        dispatch(requestNodes(entity));
+        
+        const authToken = getState().session.userDetails.token;
+        
+        let apiEndPoint = "/api/network/live/nodes/fields";
+        if ( entity === 'node') apiEndPoint = "/api/network/live/nodes/fields";
+        if ( entity === 'site') apiEndPoint = "/api/network/live/sites/fields";
+        if ( entity === 'relation') apiEndPoint = "/api/network/live/relations/fields";
+        if ( entity === 'gsm_cell_params') apiEndPoint = "/api/network/live/cells/gsm/fields" ;
+        if ( entity === 'umts_cell_params') apiEndPoint = "/api/network/live/cells/umts/fields" ;
+        if ( entity === 'lte_cell_params') apiEndPoint = "/api/network/live/cells/lte/fields"  ;
+        if ( entity === 'gsm_externals') apiEndPoint = "/api/network/live/externals/gsm/fields" ;
+        if ( entity === 'umts_externals') apiEndPoint = "/api/network/live/externals/umts/fields" ;
+        if ( entity === 'lte_externals') apiEndPoint = "/api/network/live/externals/lte/fields";
+
+        axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            return dispatch(receiveNodeFields(entity, response.data));
+        })
+        .catch(function(error){
+            return dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
+        });
+    }
 }
 
 export function getEntities(entity, page, length){
