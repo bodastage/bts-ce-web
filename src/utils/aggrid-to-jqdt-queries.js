@@ -14,15 +14,47 @@ export function getQueryForAGGridSortAndFilter(columnNames, AGGridSortModel, AGG
     let urlSearchParams = new URLSearchParams();
     columnNames.forEach(function(col, index){
         if( typeof AGGridFilterModel[col] !== 'undefined' ){
+            let filterModel = AGGridFilterModel[col];
             let value = AGGridFilterModel[col].filter;
-            let type = AGGridFilterModel[col].type; //COTAINS|EQUAL
+            console.log(filterModel);
+            
             urlSearchParams.append("columns["+ index+ "][data]", col);
             urlSearchParams.append("columns["+ index+ "][name]", col);
             urlSearchParams.append("columns["+ index+ "][searchable]", true);
             urlSearchParams.append("columns["+ index+ "][orderable]", true);
-            urlSearchParams.append("columns["+ index+ "][search][value]", value);
             
-            urlSearchParams.append("columns["+ index+ "][search][regex]", false);
+            if( typeof filterModel.operator === 'undefined'){
+                urlSearchParams.append("columns["+ index+ "][search][value]", filterModel.filter);
+                urlSearchParams.append("columns["+ index+ "][search][regex]", false);
+            }else{
+                let filterOperator = filterModel.operator;
+                let condition1 = filterModel.condition1;
+                let condition2 = filterModel.condition2;
+                let separator = "";
+                let filterValue1 = "";
+                let filterValue2 = "";
+                
+                if(condition1.type === 'contains') {
+                    filterValue1 = "?=.*" + condition1.filter + ".*";
+                }
+                
+                if(condition2.type === 'contains') {
+                    filterValue2 = "?=.*" + condition2.filter + ".*";
+                }
+                
+                if( filterOperator === 'OR'){
+                    separator = "|";
+                }
+                
+                let filterValue = "(" + filterValue1 + ")" + separator + "(" + filterValue2 + ")";
+                
+                urlSearchParams.append("columns["+ index+ "][search][value]", filterValue);
+                urlSearchParams.append("columns["+ index+ "][search][regex]", true);
+
+            }
+            
+            
+            
         }else{
             urlSearchParams.append("columns["+ index+ "][data]", col);
             urlSearchParams.append("columns["+ index+ "][name]", col);
