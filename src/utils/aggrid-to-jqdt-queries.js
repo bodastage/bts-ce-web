@@ -68,10 +68,42 @@ export function getQueryForAGGridSortAndFilter(columnNames, AGGridSortModel, AGG
                 if(condition1.type === 'contains') {
                     filterValue1 = "?=.*" + condition1.filter + ".*";
                 }
+                if( condition1.type === 'notEqual' ){
+                    filterValue1 = '^(?!'+condition1.filter + "$)";                  
+                }
+                if( condition1.type === 'equals' ){
+                    filterValue1 = '^'+condition1.filter + "$";           
+                }
+                if( condition1.type === 'startsWith' ){
+                    filterValue1 = '^'+condition1.filter + ".*";                  
+                }
+                if( condition1.type === 'endsWith' ){
+                    filterValue1 = '.*'+condition1.filter + "$";                 
+                }
+                if( condition1.type === 'notContains' ){
+                    filterValue1 = '^((?!'+condition1.filter + ").)*$";                 
+                }
                 
+                //condition2 filter
                 if(condition2.type === 'contains') {
                     filterValue2 = "?=.*" + condition2.filter + ".*";
                 }
+                if( condition2.type === 'notEqual' ){
+                    filterValue2 = '^(?!'+condition2.filter + "$)";                  
+                }
+                if( condition2.type === 'equals' ){
+                    filterValue2 = '^'+condition2.filter + "$";           
+                }
+                if( condition2.type === 'startsWith' ){
+                    filterValue2 = '^'+condition2.filter + ".*";                  
+                }
+                if( condition2.type === 'endsWith' ){
+                    filterValue2 = '.*'+condition2.filter + "$";                 
+                }
+                if( condition2.type === 'notContains' ){
+                    filterValue2 = '^((?!'+condition2.filter + ").)*$";                 
+                }
+                
                 
                 if( filterOperator === 'OR'){
                     separator = "|";
