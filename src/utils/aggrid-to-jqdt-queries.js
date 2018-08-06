@@ -24,8 +24,39 @@ export function getQueryForAGGridSortAndFilter(columnNames, AGGridSortModel, AGG
             urlSearchParams.append("columns["+ index+ "][orderable]", true);
             
             if( typeof filterModel.operator === 'undefined'){
-                urlSearchParams.append("columns["+ index+ "][search][value]", filterModel.filter);
-                urlSearchParams.append("columns["+ index+ "][search][regex]", false);
+                let filterType = filterModel.type;
+                let filterValue= filterModel.filter;
+                
+                if( filterType === 'contains' ){
+                    urlSearchParams.append("columns["+ index+ "][search][value]", filterModel.filter);
+                    urlSearchParams.append("columns["+ index+ "][search][regex]", false);                    
+                }
+                
+                if( filterType === 'notEqual' ){
+                    urlSearchParams.append("columns["+ index+ "][search][value]", '^(?!'+filterValue + "$)" );
+                    urlSearchParams.append("columns["+ index+ "][search][regex]", true);                    
+                }
+                
+                if( filterType === 'equals' ){
+                    urlSearchParams.append("columns["+ index+ "][search][value]", '^'+filterValue + "$" );
+                    urlSearchParams.append("columns["+ index+ "][search][regex]", true);                    
+                }
+                
+                if( filterType === 'startsWith' ){
+                    urlSearchParams.append("columns["+ index+ "][search][value]", '^'+filterValue + ".*" );
+                    urlSearchParams.append("columns["+ index+ "][search][regex]", true);                    
+                }
+                
+                if( filterType === 'endsWith' ){
+                    urlSearchParams.append("columns["+ index+ "][search][value]", '.*'+filterValue + "$" );
+                    urlSearchParams.append("columns["+ index+ "][search][regex]", true);                    
+                }
+                
+                if( filterType === 'notContains' ){
+                    urlSearchParams.append("columns["+ index+ "][search][value]", '^((?!'+filterValue + ").)*$" );
+                    urlSearchParams.append("columns["+ index+ "][search][regex]", true);                    
+                }
+
             }else{
                 let filterOperator = filterModel.operator;
                 let condition1 = filterModel.condition1;
