@@ -12,8 +12,6 @@ class App extends Component {
   }
   
   render() {
-      console.log("this.props.authenticated:")
-      console.log(this.props.authenticated)
       
         if (this.props.authenticated === false) {
             return (<div>
