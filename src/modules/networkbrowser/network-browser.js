@@ -49,8 +49,8 @@ class NetworkBrowser extends React.Component{
                         <div className="col-md-4"><a href="#" className="show-4gcell-list" onClick={this.launchEntityTab({entity:'lte_cell_params', title: '4G Cell Parameters'})}><FontAwesomeIcon icon="arrow-right"/> View 4G cell parameters</a></div>
                     </div>
                     <div className="row mb-3">
-                        <div className="col-md-4"><a href="#" className="load-2g-externals" onClick={this.launchEntityTab({entity:'gsm_externals', title: '2G Cell Parameters'})}><FontAwesomeIcon icon="arrow-right"/> View 2G externals</a></div>
-                        <div className="col-md-4"><a href="#" className="load-3g-externals"><FontAwesomeIcon icon="arrow-right"/> View 3G externals</a></div>
+                        <div className="col-md-4"><a href="#" className="load-2g-externals" onClick={this.launchEntityTab({entity:'gsm_externals', title: '2G External Cells'})}><FontAwesomeIcon icon="arrow-right"/> View 2G externals</a></div>
+                        <div className="col-md-4"><a href="#" className="load-3g-externals" onClick={this.launchEntityTab({entity:'umts_externals', title: '3G External Cells'})}><FontAwesomeIcon icon="arrow-right"/> View 3G externals</a></div>
                         <div className="col-md-4"><a href="#" className="load-msc-definitions"><FontAwesomeIcon icon="arrow-right"/> View MSC definitions</a></div>
                     </div>
                     

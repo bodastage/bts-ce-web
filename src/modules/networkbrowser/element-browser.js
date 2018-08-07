@@ -84,6 +84,7 @@ class ElementBrowser extends React.Component{
         let token = this.props.token;
         let entity= this.props.options.entity;
         let _fields = this.props.fields;
+        let _dispatch = this.props.dispatch;
 
         let dataSource = {  
             rowCount: null,
@@ -117,7 +118,7 @@ class ElementBrowser extends React.Component{
                     params.successCallback(response.data.data, lastRow);
                 })
                 .catch(function(error){
-                    this.props.dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
+                    _dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
                 });
             }
         };

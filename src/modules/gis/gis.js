@@ -27,7 +27,6 @@ class GIS extends React.Component{
     }
    
     componentDidMount () {
-        console.log('React-leaflet componentDidMount');
         const map = this.refs.map.leafletElement;
         
         //By the time the GIS tab is shown, the GIS component has already
@@ -36,11 +35,8 @@ class GIS extends React.Component{
         //display:none. This re-renders the map correctly after the tab is shown.
         setTimeout(function(){
             map.invalidateSize();
-        },1000);
+        },500);
         
-//        window.dispatchEvent(new Event('resize'));
-//        
-//        this.forceUpdate();
     }
     
     componentDidUpdate(){
