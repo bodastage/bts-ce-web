@@ -1,6 +1,8 @@
 import axios, { ERROR_CODES } from '../../api/config';
 
 export const FETCH_MOS = 'FETCH_MOS';
+export const NOTIFY_MOS_FETCH_FAILURE = 'NOTIFY_MOS_FETCH_FAILURE';
+export const DISMISS_MOS_FETCH_ERROR = 'DISMISS_MOS_FETCH_ERROR';
 export const RECEIVE_MOS = 'RECEIVE_MOS';
 export const FILTER_MOS = 'FILTER_MOS';
 export const FETCH_MO_DATA = 'FETCH_MO_DATA';
@@ -19,9 +21,31 @@ export function fetchMOs(){
     };
 }
 
+export function receiveMOs(vendor, technology, mos){
+    return {
+        type: RECEIVE_MOS,
+        vendor: vendor,
+        technology: technology,
+        mos: mos
+    };
+}
+
 export function fetchMOsVendors(){
     return {
         type: FETCH_MOS_VENDORS
+    };
+}
+
+export function notifyFetchMOsFailure(error){
+    return {
+        type: NOTIFY_MOS_FETCH_FAILURE,
+        error: error
+    };
+}
+
+export function dismissMOsFetchError(){
+    return {
+        type: DISMISS_MOS_FETCH_ERROR
     };
 }
 
@@ -47,5 +71,17 @@ export function initializeMOBrowser(){
         dispatch(fetchMOs());
         
         const authToken = getState().session.userDetails.token;
+        let apiEndPoint = "/api/managedobjects/ericsson/gsm";
+        
+        //Get ericsson GSM
+        axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            return dispatch(receiveMOs('Ericsson', 'GSM', response.data));
+        })
+        .catch(function(error){
+            return dispatch(notifyFetchMOsFailure( "Failed to fetch data Ericsson GSM MOs"));
+        });
     }
 }

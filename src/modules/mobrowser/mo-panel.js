@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
-import { setFilter } from './mobrowser-actions';
+import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
 
 class MOBrowserPanel extends React.Component{
     static icon = "puzzle-piece";
@@ -15,11 +15,16 @@ class MOBrowserPanel extends React.Component{
         this.selectTechnology = this.selectTechnology.bind(this);
         this.changeEvent = this.changeEvent.bind(this);
         this.updateFilter = this.updateFilter.bind(this);
+        this.dismissError = this.dismissError.bind(this);
         
         
         this.text = this.props.filter.text;
         this.technology = this.props.filter.technology;
         this.vendor = this.props.filter.vendor;
+    }
+    
+    componentDidMount(){
+        this.props.dispatch(initializeMOBrowser());
     }
     
     updateFilter(){
@@ -41,7 +46,13 @@ class MOBrowserPanel extends React.Component{
         this.updateFilter();
     }
     
+    dismissError(){
+        this.props.dispatch(dismissMOsFetchError());
+    }
+    
     render(){
+        const filterText = this.props.filter.text;
+        
         return (
         <div>
             <h6><FontAwesomeIcon icon={MOBrowserPanel.icon}/> MO Browser</h6>
@@ -77,9 +88,22 @@ class MOBrowserPanel extends React.Component{
                     </div>        
                 }
 
+                {this.props.fetchError === null ? '': 
+                    <div className="alert alert-danger" role="alert">
+                        {this.props.fetchError}
+                        <button type="button" className="close"  aria-label="Close" onClick={this.dismissError}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>     
+                }
+
                     <Tree>
-                    { this.props.mos[this.props.filter.vendor + '-' + this.props.filter.technology].map( (v,k) => 
-                         <TreeNode title="leaf" isLeaf icon={<FontAwesomeIcon className="mb-2" icon="file"/>}/>
+                    { this.props.mos[this.props.filter.vendor + '-' + this.props.filter.technology]
+                        .filter(function(v,k){
+                            var regex = new RegExp(filterText, 'i');
+                            return filterText === '' || regex.test(v.name);
+                        }).map( (v,k) => 
+                         <TreeNode title={v.name} isLeaf icon={<FontAwesomeIcon className="mb-2" icon="file"/>} key={v.name}/>
                     )}
                     </Tree>
                 </div>
@@ -94,7 +118,8 @@ function mapStateToProps(state){
         technologies: state.mobrowser.technologies,
         filter: state.mobrowser.filter,
         mos: state.mobrowser.mos,
-        fetchingMOs: state.mobrowser.fetchingMOs
+        fetchingMOs: state.mobrowser.fetchingMOs,
+        fetchError: state.mobrowser.fetchError
     };
 }
 
