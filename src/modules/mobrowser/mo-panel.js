@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
+import './mo-browser.css';
 
 class MOBrowserPanel extends React.Component{
     static icon = "puzzle-piece";
