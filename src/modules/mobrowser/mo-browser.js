@@ -33,4 +33,14 @@ class MOBrowser extends React.Component{
     
 }
 
-export default connect()(MOBrowser);
+function mapStateToProps(state){
+    return {
+        vendors: state.mobrowser.vendors,
+        technologies: state.mobrowser.technologies,
+        filter: state.mobrowser.filter,
+        mos: state.mobrowser.mos
+    };
+}
+
+export default connect(mapStateToProps)(MOBrowser);
+   
