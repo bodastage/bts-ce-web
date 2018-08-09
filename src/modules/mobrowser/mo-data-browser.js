@@ -32,7 +32,10 @@ class MODataBrowser extends React.Component{
     }
     
     componentDidMount() {
-        this.props.dispatch(getMOFields(this.props.options.moId));
+        if(this.props.options.length === 0 ){
+            this.props.dispatch(getMOFields(this.props.options.moId));
+        }
+        
     }
     
     
@@ -42,9 +45,11 @@ class MODataBrowser extends React.Component{
         for(var key in this.props.fields){
             let columnName = this.props.fields[key]
             if( columnName.toUpperCase() === 'FILENAME' || 
-                columnName.toUpperCase() === 'VARDATETIME' || columnName === 'pk') continue;
+                columnName.toUpperCase() === 'VARDATETIME' || 
+                columnName.toUpperCase() === 'NE_XSITYPE' || 
+                columnName === 'pk') continue;
             this.columnDef.push(
-                {headerName: columnName.replace('vsData',''), field: columnName,  filter: "agTextColumnFilter"},);
+                {headerName: columnName.replace('vsData','').toUpperCase(), field: columnName,  filter: "agTextColumnFilter"},);
         }
     }
     
