@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import { LOGIN, LOGOUT, AUTHENTICATE, AUTHENTICATION_FAILED, CLEAR_AUTH_ERROR } 
+import { LOGIN, LOGOUT, AUTHENTICATE, AUTHENTICATION_FAILED, CLEAR_AUTH_ERROR,
+    CLEAR_OLD_SESSION} 
     from './session-actions';
 
 let initialState = {
@@ -26,16 +27,20 @@ function session(state = initialState, action) {
             return Object.assign({}, state, {
                 authenticated: false,
                 authenticating: false,
-                loginError: null,
-                userDetails: null});
+                loginError: null});
         case AUTHENTICATION_FAILED:
+            return Object.assign({}, state, {
+                authenticated: false,
+                authenticating: false,
+                loginError: action.error});
+        case CLEAR_AUTH_ERROR:
+            return Object.assign({}, state, {loginError: null});
+        case CLEAR_OLD_SESSION:
             return Object.assign({}, state, {
                 authenticated: false,
                 authenticating: false,
                 userDetails: null,
                 loginError: action.error});
-        case CLEAR_AUTH_ERROR:
-            return Object.assign({}, state, {loginError: null});
         default:
             return state;
     }

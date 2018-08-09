@@ -6,10 +6,17 @@ export const LOGOUT = 'LOGOUT';
 export const AUTHENTICATE = 'AUTHENTICATE'; //login attemp
 export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
 export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR';
+export const CLEAR_OLD_SESSION = 'CLEAR_OLD_SESSION';
 
 export function clearAuthError(){
     return {
         type: CLEAR_AUTH_ERROR,
+    };
+}
+
+export function clearOldSession(){
+    return {
+        type: CLEAR_OLD_SESSION,
     };
 }
 

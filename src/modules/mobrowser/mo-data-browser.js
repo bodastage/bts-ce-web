@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './mo-browser.css';
 import $ from 'jquery';
 import { getMOFields } from './mobrowser-actions';
 import { AgGridReact } from 'ag-grid-react';
@@ -32,7 +31,7 @@ class MODataBrowser extends React.Component{
     }
     
     componentDidMount() {
-        if(this.props.options.length === 0 ){
+        if(this.props.fields.length === 0 ){
             this.props.dispatch(getMOFields(this.props.options.moId));
         }
         

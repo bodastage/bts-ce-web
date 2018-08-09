@@ -7,7 +7,7 @@ import * as sessionActions from './session-actions';
 import LoginFormCSS from './LoginForm.css';
 import Loading from './loading';
 import axios from 'axios';
-import { attemptAuthentication, clearAuthError } from '../session/session-actions';
+import { attemptAuthentication, clearAuthError, clearOldSession } from '../session/session-actions';
 
 class LoginForm extends React.Component {
     constructor(props){
@@ -21,7 +21,20 @@ class LoginForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.dismissError = this.dismissError.bind(this);
+        this.clearOldSession = this.clearOldSession.bind(this);
+        
 
+    }
+    
+    componentDidMount(){
+        if(typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null ){
+            console.log(this.props);
+            this.setState({username: this.props.userDetails.username});
+        }
+    }
+    
+    clearOldSession(){
+        this.props.dispatch(clearOldSession())
     }
     
     dismissError(){
@@ -47,6 +60,7 @@ class LoginForm extends React.Component {
     }
     
     render(){
+        //console.log("this.state.username:", this.state.username);
             return (
             <div className="login-mask">
 
@@ -65,15 +79,33 @@ class LoginForm extends React.Component {
                         </button>
                         </div>
                     }
-                    <label htmlFor="session_email" className="sr-only">Email address</label>
-                    <div className="input-group">
-                            <div className="input-group-prepend">
-                                    <span className="input-group-text"><FontAwesomeIcon icon="at" /></span>
+                    
+                    {typeof this.props.userDetails === 'undefined' || this.props.userDetails === null? 
+                        <React.Fragment>
+                            <label htmlFor="session_email" className="sr-only">Email address</label>
+                            <div className="input-group">
+                                    <div className="input-group-prepend">
+                                            <span className="input-group-text"><FontAwesomeIcon icon="at" /></span>
+                                    </div>
+                                    <input type="email" id="session_email" 
+                                        value={this.state.username || ''}  
+                                        onChange={this.handleInputChange}  
+                                        name="username" className="form-control" placeholder="Email address" required autoFocus
+                                       />
                             </div>
-                            <input type="email" id="session_email" onChange={this.handleInputChange}  name="username" className="form-control" placeholder="Email address" required autoFocus/>
-                    </div>
-
-
+                        </React.Fragment>
+                    :''}
+                    
+                    {typeof this.props.userDetails === 'undefined' || this.props.userDetails === null? '' : 
+                        <React.Fragment>
+                            <label htmlFor="username" className="sr-only">Username</label>
+                            <div className="input-group">
+                            <span className="font-weight-light">Login as </span>  &nbsp;
+                                <span className="font-weight-bold">{this.props.userDetails.first_name + " " +  this.props.userDetails.last_name}</span>
+                            </div>
+                        </React.Fragment>     
+                    }
+                    
                     <label htmlFor="session_password" className="sr-only">Password</label>
                     <div className="input-group">
                             <div className="input-group-prepend">
@@ -83,6 +115,12 @@ class LoginForm extends React.Component {
                     </div>
 
                     <button className="btn btn-lg btn-primary btn-block" type="submit" data-placeholder="Sign in">Sign in</button>
+                    
+                    {typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null? 
+                    <div className="input-group">
+                        <a href="#" onClick={this.clearOldSession}>Login as different user</a>
+                    </div>
+                    :''}
                 </form>
 
             </div>
@@ -100,7 +138,8 @@ class LoginForm extends React.Component {
 function mapStateToProps(state) {
   return {
     authenticating: state.session.authenticating,
-    loginError: state.session.loginError
+    loginError: state.session.loginError,
+    userDetails: state.session.userDetails,
   }
 }
 

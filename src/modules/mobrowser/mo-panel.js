@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
-import './mo-browser.css';
+import './mo-panel.css';
 import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
 
@@ -36,8 +36,6 @@ class MOBrowserPanel extends React.Component{
     }
     
     rightClick(info){
-        console.log('right click', info);
-        console.log('info.node.props.moId:', info.node.props.moId);
         this.showMODataTab(info.node.props.title, info.node.props.moId );
     }
     
