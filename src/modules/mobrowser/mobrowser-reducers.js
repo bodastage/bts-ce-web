@@ -1,5 +1,5 @@
-import { SET_MO_FILTER_TEXT, SET_MO_FILTER_VENDOR, SET_MO_FILTER_TECH, SET_MO_FILTER,
-    FETCH_MOS, NOTIFY_MOS_FETCH_FAILURE, RECEIVE_MOS, DISMISS_MOS_FETCH_ERROR} 
+import { SET_MO_FILTER, FETCH_MOS, NOTIFY_MOS_FETCH_FAILURE, RECEIVE_MOS, 
+    DISMISS_MOS_FETCH_ERROR, REQUEST_MO_DATA, REQUEST_MO_FEILDS, RECEIVE_MO_FIELDS} 
     from './mobrowser-actions';
 
 let initialState  = {
@@ -19,11 +19,37 @@ let initialState  = {
         'Huawei-GSM': [],
         'Huawei-UMTS': [],
         'Huawei-LTE': [],
-    }
+    },
+    modata: {}
 };
 
 export default function mobrowser(state = initialState, action) {
         switch (action.type) {
+        case REQUEST_MO_FEILDS:
+            console.log("action.moId:" + action.moId);
+            if( typeof state.modata[action.moId]=== 'undefined' ){
+                return Object.assign({}, state, { 
+                    modata: Object.assign({},state.modata, {
+                        [action.moId]: {
+                            requesting: true,
+                            requestError:  null,
+                            token: null,
+                            fields: []
+                        }
+                    })
+                });
+            }
+            
+            return Object.assign({}, state, { 
+                    modata: Object.assign({},state.modata, {
+                        [action.moId]: {
+                            requesting: true,
+                            requestError:  null,
+                            token: state.modata[action.moId].token,
+                            fields: state.modata[action.moId].fields
+                        }
+                    })
+                });
             case SET_MO_FILTER:
                 return Object.assign({}, state, { filter: action.filter });
             case FETCH_MOS:
@@ -41,6 +67,17 @@ export default function mobrowser(state = initialState, action) {
                         [vendorTech]: action.mos
                     })
                 });
+            case RECEIVE_MO_FIELDS:
+                return Object.assign({}, state, { 
+                        modata: Object.assign({},state.modata, {
+                            [action.moId]: {
+                                requesting: false,
+                                requestError:  null,
+                                token: state.modata[action.moId].token,
+                                fields: action.fields
+                            }
+                        })
+                    });
             default:
                 return state;
         }

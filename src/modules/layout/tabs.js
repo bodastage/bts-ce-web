@@ -19,6 +19,7 @@ import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
 import Reports from '../reports/reports.js';
 import GIS from '../gis/gis.js';
+import MODataBrowser from '../mobrowser/mo-data-browser.js';
 import $ from 'jquery';
 import { closeTab, setActiveTab } from './uilayout-actions';
 
@@ -39,7 +40,8 @@ const Components = {
     "RabbitMQ": RabbitMQ,
     "ElementBrowser": ElementBrowser,
     "Reports": Reports,
-    "GIS": GIS
+    "GIS": GIS,
+    "MODataBrowser": MODataBrowser
     };
 
 class Tabs extends React.Component {

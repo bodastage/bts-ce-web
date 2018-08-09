@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
 
+
 class NetworkBrowser extends React.Component{
     static icon = "sitemap";
     static label = "Network Browser";

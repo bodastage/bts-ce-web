@@ -5,6 +5,8 @@ import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
 import './mo-browser.css';
+import $ from 'jquery';
+import { addTab } from '../layout/uilayout-actions';
 
 class MOBrowserPanel extends React.Component{
     static icon = "puzzle-piece";
@@ -17,6 +19,8 @@ class MOBrowserPanel extends React.Component{
         this.changeEvent = this.changeEvent.bind(this);
         this.updateFilter = this.updateFilter.bind(this);
         this.dismissError = this.dismissError.bind(this);
+        this.reload = this.reload.bind(this);
+        this.rightClick = this.rightClick.bind(this);
         
         
         this.text = this.props.filter.text;
@@ -25,6 +29,31 @@ class MOBrowserPanel extends React.Component{
     }
     
     componentDidMount(){
+        //Initialize if this is the fast time or if it as refresh
+        if (this.props.mos['Ericsson-GSM'].length === 0){
+            this.props.dispatch(initializeMOBrowser());            
+        }
+    }
+    
+    rightClick(info){
+        console.log('right click', info);
+        console.log('info.node.props.moId:', info.node.props.moId);
+        this.showMODataTab(info.node.props.title, info.node.props.moId );
+    }
+    
+    
+    showMODataTab(moName, moId){ 
+        console.log('.moId:', moId);
+        let tabId = moName + '_' + moId + "Tab";
+        this.props.dispatch(addTab(tabId, 'MODataBrowser', {
+            title: moName,
+            moId: moId
+        }));
+        
+        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
+    }
+    
+    reload(){
         this.props.dispatch(initializeMOBrowser());
     }
     
@@ -98,13 +127,13 @@ class MOBrowserPanel extends React.Component{
                     </div>     
                 }
 
-                    <Tree>
+                    <Tree  onRightClick={this.rightClick}>
                     { this.props.mos[this.props.filter.vendor + '-' + this.props.filter.technology]
                         .filter(function(v,k){
                             var regex = new RegExp(filterText, 'i');
                             return filterText === '' || regex.test(v.name);
                         }).map( (v,k) => 
-                         <TreeNode title={v.name} isLeaf icon={<FontAwesomeIcon className="mb-2" icon="file"/>} key={v.name}/>
+                         <TreeNode title={v.name} isLeaf icon={<FontAwesomeIcon className="mb-2" icon="file"/>} key={v.name} moId={v.pk}/>
                     )}
                     </Tree>
                 </div>
