@@ -44,11 +44,12 @@ class MODataBrowser extends React.Component{
             if( columnName.toUpperCase() === 'FILENAME' || 
                 columnName.toUpperCase() === 'VARDATETIME' || columnName === 'pk') continue;
             this.columnDef.push(
-                {headerName: columnName, field: columnName,  filter: "agTextColumnFilter"},);
+                {headerName: columnName.replace('vsData',''), field: columnName,  filter: "agTextColumnFilter"},);
         }
     }
     
     onGridReady(params) {
+        console.log("onGridReady", );
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
         let _columnApi =  params.columnApi;
@@ -57,13 +58,17 @@ class MODataBrowser extends React.Component{
         let _dispatch = this.props.dispatch;
         let moId = this.props.options.moId;
 
+        console.log("_fields:", _fields);
+        
         let dataSource = {  
             rowCount: null,
             getRows: function(params) {
                 let page = params.startRow;
                 let length= params.endRow - params.startRow;
                 let apiEndPoint = "/api/managedobjects/dt/" + moId + "?start="+  page + "&length=" + length;;
-                 
+                
+                console.log("_fields:", _fields);
+                
                 let query = getQueryForAGGridSortAndFilter( _fields, 
                         params.sortModel, params.filterModel, _columnApi.getAllColumns());
                         
@@ -136,7 +141,6 @@ function mapStateToProps(state, ownProps){
         };
     }
     
-    console.log("state.mobrowser.modata:", state.mobrowser.modata[ownProps.options.moId]);
     return {
             requesting: state.mobrowser.modata[ownProps.options.moId].requesting,
             requestError:  state.mobrowser.modata[ownProps.options.moId].requestError,
