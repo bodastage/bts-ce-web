@@ -48,7 +48,7 @@ class MODataBrowser extends React.Component{
                 columnName.toUpperCase() === 'NE_XSITYPE' || 
                 columnName === 'pk') continue;
             this.columnDef.push(
-                {headerName: columnName.replace('vsData','').toUpperCase(), field: columnName,  filter: "agTextColumnFilter"},);
+                {headerName: columnName.replace('vsData',''), field: columnName,  filter: "agTextColumnFilter"},);
         }
     }
     
