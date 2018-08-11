@@ -1,0 +1,3 @@
+ul.rc-tree li.rc-tree-treenode-switcher-open:last-child {
+    background: none !important;
+}
