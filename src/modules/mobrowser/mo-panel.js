@@ -131,7 +131,7 @@ class MOBrowserPanel extends React.Component{
                             var regex = new RegExp(filterText, 'i');
                             return filterText === '' || regex.test(v.name);
                         }).map( (v,k) => 
-                         <TreeNode title={v.name} isLeaf icon={<FontAwesomeIcon className="mb-2" icon="file"/>} key={v.name} moId={v.pk}/>
+                         <TreeNode title={v.name} isLeaf icon={<FontAwesomeIcon className="mb-2" icon="puzzle-piece"/>} key={v.name} moId={v.pk}/>
                     )}
                     </Tree>
                 </div>

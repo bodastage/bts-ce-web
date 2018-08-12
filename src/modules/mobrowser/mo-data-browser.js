@@ -61,8 +61,6 @@ class MODataBrowser extends React.Component{
         let _fields = this.props.fields;
         let _dispatch = this.props.dispatch;
         let moId = this.props.options.moId;
-
-        console.log("_fields:", _fields);
         
         let dataSource = {  
             rowCount: null,
@@ -70,8 +68,6 @@ class MODataBrowser extends React.Component{
                 let page = params.startRow;
                 let length= params.endRow - params.startRow;
                 let apiEndPoint = "/api/managedobjects/dt/" + moId + "?start="+  page + "&length=" + length;;
-                
-                console.log("_fields:", _fields);
                 
                 let query = getQueryForAGGridSortAndFilter( _fields, 
                         params.sortModel, params.filterModel, _columnApi.getAllColumns());

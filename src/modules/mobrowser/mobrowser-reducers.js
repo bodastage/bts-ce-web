@@ -4,7 +4,7 @@ import { SET_MO_FILTER, FETCH_MOS, NOTIFY_MOS_FETCH_FAILURE, RECEIVE_MOS,
 
 let initialState  = {
     technologies: ['GSM','UMTS','LTE'],
-    vendors: ['Ericsson','Huawei'],
+    vendors: ['Ericsson','Huawei','ZTE'],
     fetchError: null,
     filter: {
         text: '',
@@ -19,6 +19,9 @@ let initialState  = {
         'Huawei-GSM': [],
         'Huawei-UMTS': [],
         'Huawei-LTE': [],
+        'ZTE-GSM': [],
+        'ZTE-UMTS': [],
+        'ZTE-LTE': [],
     },
     modata: {}
 };

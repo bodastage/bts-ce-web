@@ -11,9 +11,6 @@ export const REQUEST_MO_FEILDS = 'REQUEST_MO_FEILDS';
 export const RECEIVE_MO_FIELDS = 'RECEIVE_MO_FIELDS';
 export const FETCH_MOS_VENDORS = 'FETCH_MOS_VENDORS';
 export const RECEIVE_MOS_VENDORS = 'RECEIVE_MOS_VENDORS';
-export const SET_MO_FILTER_TEXT = 'SET_MO_FILTER_TEXT';
-export const SET_MO_FILTER_VENDOR = 'SET_MO_FILTER_VENDOR';
-export const SET_MO_FILTER_TECH = 'SET_MO_FILTER_TECH';
 export const SET_MO_FILTER = 'SET_MO_FILTER';
 
 export function requestMOFields(moId){
@@ -122,6 +119,9 @@ export function initializeMOBrowser(){
             'Huawei-GSM': '/api/managedobjects/huawei/gsm',
             'Huawei-UMTS': '/api/managedobjects/huawei/umts',
             'Huawei-LTE': '/api/managedobjects/huawei/lte',
+            'ZTE-GSM': '/api/managedobjects/zte/gsm',
+            'ZTE-UMTS': '/api/managedobjects/zte/umts',
+            'ZTE-LTE': '/api/managedobjects/zte/lte',
         };
         
         for(let vendorTechKey in apiEndPoints){

@@ -7,6 +7,7 @@ import technologies from './modules/telecomlib/technologies-reducers';
 import profile from './modules/profile/profile-reducers';
 import networkbrowser from './modules/networkbrowser/network-browser-reducers';
 import mobrowser from './modules/mobrowser/mobrowser-reducers';
+import netaudit from './modules/networkaudit/netaudit-reducers';
 
 
 const appReducer = combineReducers({
@@ -17,7 +18,8 @@ const appReducer = combineReducers({
   technologies,
   profile,
   networkbrowser,
-  mobrowser
+  mobrowser,
+  netaudit
 });
 
 export default appReducer;
