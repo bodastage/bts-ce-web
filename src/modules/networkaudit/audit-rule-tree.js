@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tree, { TreeNode } from 'rc-tree';
@@ -6,6 +7,9 @@ import 'rc-tree/assets/index.css';
 import './netaudit-panel.css';
 import { getAuditRules, setAuditRuleFilter } from './netaudit-actions';
 import FolderIcon from './folder-icon';
+import Tooltip from 'rc-tooltip';
+import $ from 'jquery';
+import { addTab } from '../layout/uilayout-actions';
 
 class AuditRuleTree extends React.Component{
     static icon = "wrench";
@@ -16,11 +20,15 @@ class AuditRuleTree extends React.Component{
         
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
         this.dismissError = this.dismissError.bind(this);
+        this.getContextMenu = this.getContextMenu.bind(this);
+        this.onRightClick = this.onRightClick.bind(this);
+        this.showMODataTab = this.showMODataTab.bind(this);
 
         this.state = {
           text: this.props.filter.text,
           categories: this.props.filter.categories,
-          rules: this.props.filter.rules
+          rules: this.props.filter.rules,
+          selectedKeys: [],
         };
         
         this.filterRules = this.state.rules;
@@ -32,7 +40,7 @@ class AuditRuleTree extends React.Component{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        console.log("handleChangeEvent name:", name," value:", value);
+        
         this.setState({
           [name]: value
         });
@@ -63,22 +71,66 @@ class AuditRuleTree extends React.Component{
     }
     
     updateFilter(){
-        console.log("this.state.text:", this.state.text);
-        console.log("this.state.rules:", this.state.rules);
-        console.log("this.state.categories:", this.state.categories);
         this.props.dispatch(setAuditRuleFilter(this.state.text, this.filterCategories, this.filterRules));
     }
     
     componentDidMount(){
         this.props.dispatch(getAuditRules());
+
+        this.createContextMenuContainer();
     }
     
     dismissError(){
         
     }
     
-    onDoublClick(e){
-        console.log("onDoublClick");
+    onRightClick(info){
+        console.log('right click', info);
+        //this.getContextMenu(info);
+        this.showMODataTab(info.node.props.title, info.node.props.ruleId );
+    }
+
+    
+    showMODataTab(ruleName, ruleId){ 
+        let tabId = 'netaudit_rule_' + ruleId + "Tab";
+        this.props.dispatch(addTab(tabId, 'NetAuditRuleData', {
+            title: ruleName,
+            ruleId: ruleId
+        }));
+        
+        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
+    }
+
+    createContextMenuContainer(){
+        if (!this.cmContainer) {
+            this.cmContainer = document.createElement('div');
+            document.body.appendChild(this.cmContainer);
+        }
+        return this.cmContainer;
+    }
+    
+    getContextMenu(info){
+        if (this.toolTip) {
+          ReactDOM.unmountComponentAtNode(this.cmContainer);
+          this.toolTip = null;
+        }
+        this.toolTip = (
+          <Tooltip
+            trigger="click" placement="bottomRight" prefixCls="rc-tree-contextmenu"
+            defaultVisible overlay={<h4>{info.node.props.title}</h4>}
+          >
+            <span />
+          </Tooltip>
+        );
+
+        const container = this.createContextMenuContainer();
+        Object.assign(this.cmContainer.style, {
+          position: 'absolute',
+          left: `${info.event.pageX}px`,
+          top: `${info.event.pageY}px`,
+        });
+
+        ReactDOM.render(this.toolTip, container);
     }
     
     render(){
@@ -118,7 +170,7 @@ class AuditRuleTree extends React.Component{
                 }
 
 
-                <Tree icon={FolderIcon} defaultExpandAll={filterText !== ''}>
+                <Tree icon={FolderIcon} defaultExpandAll={filterText !== ''} onRightClick={this.onRightClick}>
                 { this.props.rules
                     .filter(function(v,k){
                         var regex = new RegExp(filterText, 'i');
@@ -127,7 +179,7 @@ class AuditRuleTree extends React.Component{
                                 (!filterOnrules && !filterOnCategories) ||
                                 (filterOnrules && that.catContainsMatchingRule(v.rules, filterText));
                     }).map( (v,k) => 
-                    <TreeNode title={v.cat_name} key={v.cat_id}>
+                    <TreeNode title={v.cat_name} key={v.cat_id} >
                         { v.rules
                             .filter(function(v, k){
                                 var regex = new RegExp(filterText, 'i');
@@ -136,7 +188,7 @@ class AuditRuleTree extends React.Component{
                                     filterOnCategories || 
                                     (!filterOnrules && !filterOnCategories && regex.test(v.name));
                             })
-                            .map((val,key)=> <TreeNode isLeaf title={val.name} icon={<FontAwesomeIcon className="mb-2" icon="wrench"/>} key={v.cat_id +"-"+key} onDoublClick={this.onDoublClick}/> ) }
+                            .map((val,key)=> <TreeNode isLeaf title={val.name} icon={<FontAwesomeIcon className="mb-2" icon="wrench"/>} key={v.cat_id +"-"+key} ruleId={val.id}/> ) }
                     </TreeNode>
                 )}
                 </Tree>

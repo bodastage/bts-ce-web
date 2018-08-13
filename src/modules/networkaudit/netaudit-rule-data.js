@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
-import { getMOFields } from './mobrowser-actions';
+import { getRuleFields } from './netaudit-actions';
 import { AgGridReact } from 'ag-grid-react';
 import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
 import axios, { ERROR_CODES } from '../../api/config';
 
-class MODataBrowser extends React.Component{
-    static icon = "puzzle-piece";
+class NetAuditRuleData extends React.Component{
+    static icon = "wrench";
     static label = "";
     constructor(props){
         super(props);
@@ -32,25 +32,23 @@ class MODataBrowser extends React.Component{
     
     componentDidMount() {
         if(this.props.fields.length === 0 ){
-            this.props.dispatch(getMOFields(this.props.options.moId));
+            this.props.dispatch(getRuleFields(this.props.options.ruleId));
         }
         
     }
-    
     
     updateColumnDefs(){
         this.columnDef = [];
         if( typeof this.props.fields === 'undefined'  ) return;
         for(var key in this.props.fields){
             let columnName = this.props.fields[key]
-            if( columnName.toUpperCase() === 'FILENAME' || 
-                columnName.toUpperCase() === 'VARDATETIME' || 
-                columnName.toUpperCase() === 'NE_XSITYPE' || 
-                columnName === 'pk') continue;
+            if( columnName === 'pk') continue;
             this.columnDef.push(
-                {headerName: columnName.replace('vsData',''), field: columnName,  filter: "agTextColumnFilter"},);
+                {headerName: columnName.toUpperCase(), field: columnName,  
+                 filter: "agTextColumnFilter"},);
         }
     }
+
     
     onGridReady(params) {
         this.gridApi = params.api;
@@ -59,18 +57,18 @@ class MODataBrowser extends React.Component{
         let token = this.props.token;
         let _fields = this.props.fields;
         let _dispatch = this.props.dispatch;
-        let moId = this.props.options.moId;
+        let ruleId = this.props.options.ruleId;
         
         let dataSource = {  
             rowCount: null,
             getRows: function(params) {
                 let page = params.startRow;
                 let length= params.endRow - params.startRow;
-                let apiEndPoint = "/api/managedobjects/dt/" + moId + "?start="+  page + "&length=" + length;;
+                let apiEndPoint = "/api/networkaudit/rule/dt/" + ruleId + "?start="+  page + "&length=" + length;
                 
                 let query = getQueryForAGGridSortAndFilter( _fields, 
                         params.sortModel, params.filterModel, _columnApi.getAllColumns());
-                        
+                
                 apiEndPoint += "&" + query;
                 
                 axios.get(apiEndPoint,{
@@ -87,11 +85,13 @@ class MODataBrowser extends React.Component{
         };
         this.gridApi.setDatasource(dataSource);
     }
+    
     render(){
         this.updateColumnDefs();
+        
         return (
             <div>
-            <h3><FontAwesomeIcon icon={MODataBrowser.icon}/> {this.props.options.title}</h3>        
+            <h3><FontAwesomeIcon icon={NetAuditRuleData.icon}/> {this.props.options.title}</h3>        
                 <div className="card">
                     <div className="card-body p-3">
 
@@ -128,10 +128,9 @@ class MODataBrowser extends React.Component{
     }
 }
 
-
 function mapStateToProps(state, ownProps){
     
-    if ( typeof state.mobrowser.modata[ownProps.options.moId] === 'undefined'){
+    if ( typeof state.netaudit.rulesdata[ownProps.options.ruleId] === 'undefined'){
         return {
             requesting: false,
             requestError:  null,
@@ -141,11 +140,11 @@ function mapStateToProps(state, ownProps){
     }
     
     return {
-            requesting: state.mobrowser.modata[ownProps.options.moId].requesting,
-            requestError:  state.mobrowser.modata[ownProps.options.moId].requestError,
+            requesting: state.netaudit.rulesdata[ownProps.options.ruleId].requesting,
+            requestError:  state.netaudit.rulesdata[ownProps.options.ruleId].requestError,
             token: state.session.userDetails.token,
-            fields: state.mobrowser.modata[ownProps.options.moId].fields
+            fields: state.netaudit.rulesdata[ownProps.options.ruleId].fields
     };
 }
 
-export default connect(mapStateToProps)(MODataBrowser);
+export default connect(mapStateToProps)(NetAuditRuleData);

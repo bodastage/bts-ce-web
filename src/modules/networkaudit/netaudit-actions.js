@@ -5,10 +5,10 @@ export const RECEIVE_AUDIT_RULES = 'RECEIVE_AUDIT_RULES';
 export const NOTIFY_AUDIT_REQUEST_ERROR = 'NOTIFY_AUDIT_REQUEST_ERROR';
 export const DISMISS_AUDIT_REQUEST_ERROR = 'DISMISS_AUDIT_REQUEST_ERROR';
 
-export const REQUEST_AUDIT_RULE_FIELD = 'REQUEST_AUDIT_RULE_FIELD';
-export const RECEIVE_AUDIT_RULE_FIELD = 'RECEIVE_AUDIT_RULE_FIELD';
-export const NOTIFY_AUDIT_RULE_FIELD_REQUEST_ERROR = 'NOTIFY_AUDIT_RULE_FIELD_REQUEST_ERROR';
-export const DISMISS_AUDIT_RULE_FIELD_REQUEST_ERROR = 'DISMISS_AUDIT_RULE_FIELD_REQUEST_ERROR';
+export const REQUEST_AUDIT_RULE_FIELDS = 'REQUEST_AUDIT_RULE_FIELDS';
+export const RECEIVE_AUDIT_RULE_FIELDS = 'RECEIVE_AUDIT_RULE_FIELDS';
+export const NOTIFY_AUDIT_RULE_FIELDS_REQUEST_ERROR = 'NOTIFY_AUDIT_RULE_FIELDS_REQUEST_ERROR';
+export const DISMISS_AUDIT_RULE_FIELDS_REQUEST_ERROR = 'DISMISS_AUDIT_RULE_FIELDS_REQUEST_ERROR';
 
 export const SET_AUDIT_RULES_FILTER = 'SET_AUDIT_RULES_FILTER';
 
@@ -39,7 +39,6 @@ export function dismissAuditRuleRequestError(){
 }
 
 export function setAuditRuleFilter(filterText, filterCategories, filterRules){
-    console.log("filterRules:", filterRules);
     return {
         type: SET_AUDIT_RULES_FILTER,
         filter: {
@@ -50,7 +49,43 @@ export function setAuditRuleFilter(filterText, filterCategories, filterRules){
     };
 }
 
+export function receiveRuleFields(ruleId, fields){
+    return {
+        type: RECEIVE_AUDIT_RULE_FIELDS,
+        ruleId: ruleId,
+        fields: fields
+    };
+}
 
+export function requestRuleFields(ruleId){
+    return {
+        type: REQUEST_AUDIT_RULE_FIELDS,
+        ruleId: ruleId
+    };
+}
+
+export function notifyReceiveRuleFieldsFailure(){
+    
+}
+
+export function getRuleFields(ruleId){
+    return (dispatch, getState) => {
+        dispatch(requestRuleFields(ruleId));
+        
+        const authToken = getState().session.userDetails.token;
+        let apiEndPoint = "/api/networkaudit/rule/fields/" + ruleId;
+        
+        axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            return dispatch(receiveRuleFields(ruleId, response.data));
+        })
+        .catch(function(error){
+            return dispatch(notifyReceiveRuleFieldsFailure(ruleId, "Failed to get rule fields"));
+        });
+    }
+}
 
 export function getAuditRules(){
     return (dispatch, getState) => {

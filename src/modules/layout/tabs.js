@@ -19,7 +19,8 @@ import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
 import Reports from '../reports/reports.js';
 import GIS from '../gis/gis.js';
-import MODataBrowser from '../mobrowser/mo-data-browser.js';
+import MODataBrowser from '../mobrowser/mo-data-browser';
+import NetAuditRuleData from '../networkaudit/netaudit-rule-data';
 import $ from 'jquery';
 import { closeTab, setActiveTab } from './uilayout-actions';
 
@@ -41,7 +42,8 @@ const Components = {
     "ElementBrowser": ElementBrowser,
     "Reports": Reports,
     "GIS": GIS,
-    "MODataBrowser": MODataBrowser
+    "MODataBrowser": MODataBrowser,
+    "NetAuditRuleData": NetAuditRuleData,
     };
 
 class Tabs extends React.Component {

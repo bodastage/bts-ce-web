@@ -1,6 +1,6 @@
 import { REQUEST_AUDIT_RULES, RECEIVE_AUDIT_RULES, NOTIFY_AUDIT_REQUEST_ERROR,
-         DISMISS_AUDIT_REQUEST_ERROR, REQUEST_AUDIT_RULE_FIELD, RECEIVE_AUDIT_RULE_FIELD, 
-         NOTIFY_AUDIT_RULE_FIELD_REQUEST_ERROR,
+         DISMISS_AUDIT_REQUEST_ERROR, REQUEST_AUDIT_RULE_FIELDS, RECEIVE_AUDIT_RULE_FIELDS, 
+         NOTIFY_AUDIT_RULE_FIELDS_REQUEST_ERROR,
          SET_AUDIT_RULES_FILTER} from './netaudit-actions';
 
 
@@ -20,6 +20,38 @@ export default function netaudit(state = initialState, action){
         switch (action.type) {
             case REQUEST_AUDIT_RULES:
                 return Object.assign({}, state, { requestingRules: true });
+            case REQUEST_AUDIT_RULE_FIELDS:
+                if( typeof state.rulesdata[action.ruleId]=== 'undefined' ){
+                    return Object.assign({}, state, { 
+                        rulesdata: Object.assign({},state.rulesdata, {
+                            [action.ruleId]: {
+                                requesting: true,
+                                requestError:  null,
+                                fields: []
+                            }
+                        })
+                    });
+                }
+            
+                return Object.assign({}, state, { 
+                    modata: Object.assign({},state.rulesdata, {
+                        [action.ruleId]: {
+                            requesting: true,
+                            requestError:  null,
+                            fields: state.rulesdata[action.ruleId].fields
+                        }
+                    })
+                });
+            case RECEIVE_AUDIT_RULE_FIELDS:
+                return Object.assign({}, state, { 
+                        rulesdata: Object.assign({},state.rulesdata, {
+                            [action.ruleId]: {
+                                requesting: false,
+                                requestError:  null,
+                                fields: action.fields
+                            }
+                        })
+                    });
             case RECEIVE_AUDIT_RULES:
                 return Object.assign({}, state, { 
                     requestingRules: false,

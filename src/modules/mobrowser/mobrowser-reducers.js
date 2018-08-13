@@ -29,7 +29,6 @@ let initialState  = {
 export default function mobrowser(state = initialState, action) {
         switch (action.type) {
         case REQUEST_MO_FEILDS:
-            console.log("action.moId:" + action.moId);
             if( typeof state.modata[action.moId]=== 'undefined' ){
                 return Object.assign({}, state, { 
                     modata: Object.assign({},state.modata, {
