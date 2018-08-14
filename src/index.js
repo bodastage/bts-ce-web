@@ -10,6 +10,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 import icons from 'glyphicons'
 
+//Blueprintjs
+import 'normalize.css/normalize.css'
+import '@blueprintjs/icons/lib/css/blueprint-icons.css'
+import '@blueprintjs/core/lib/css/blueprint.css'
+
 // Icons
 import { library } from '@fortawesome/fontawesome-svg-core'
         import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

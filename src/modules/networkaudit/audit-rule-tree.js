@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import './netaudit-panel.css';
 import { getAuditRules, setAuditRuleFilter } from './netaudit-actions';
 import FolderIcon from './folder-icon';
-import Tooltip from 'rc-tooltip';
 import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
+import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
 
 class AuditRuleTree extends React.Component{
     static icon = "wrench";
@@ -20,20 +19,24 @@ class AuditRuleTree extends React.Component{
         
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
         this.dismissError = this.dismissError.bind(this);
-        this.getContextMenu = this.getContextMenu.bind(this);
-        this.onRightClick = this.onRightClick.bind(this);
         this.showMODataTab = this.showMODataTab.bind(this);
+        this.updateNodes = this.updateNodes.bind(this);
+        this.onNodeDoubleClick = this.onNodeDoubleClick.bind(this);
+        this.handleNodeCollapse = this.handleNodeCollapse.bind(this);
 
         this.state = {
           text: this.props.filter.text,
           categories: this.props.filter.categories,
           rules: this.props.filter.rules,
-          selectedKeys: [],
+          nodesChanges: 0,
+          expandedNodes:[]
         };
         
         this.filterRules = this.state.rules;
         this.filterText = this.state.text;
         this.filterCategories = this.state.categories;
+        
+        this.nodes = [];
     }
     
     handleChangeEvent(event){
@@ -76,20 +79,14 @@ class AuditRuleTree extends React.Component{
     
     componentDidMount(){
         this.props.dispatch(getAuditRules());
-
-        this.createContextMenuContainer();
+        
+        this.updateNodes();
     }
     
     dismissError(){
         
     }
     
-    onRightClick(info){
-        console.log('right click', info);
-        //this.getContextMenu(info);
-        this.showMODataTab(info.node.props.title, info.node.props.ruleId );
-    }
-
     
     showMODataTab(ruleName, ruleId){ 
         let tabId = 'netaudit_rule_' + ruleId + "Tab";
@@ -100,50 +97,88 @@ class AuditRuleTree extends React.Component{
         
         $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
-
-    createContextMenuContainer(){
-        if (!this.cmContainer) {
-            this.cmContainer = document.createElement('div');
-            document.body.appendChild(this.cmContainer);
-        }
-        return this.cmContainer;
-    }
     
-    getContextMenu(info){
-        if (this.toolTip) {
-          ReactDOM.unmountComponentAtNode(this.cmContainer);
-          this.toolTip = null;
-        }
-        this.toolTip = (
-          <Tooltip
-            trigger="click" placement="bottomRight" prefixCls="rc-tree-contextmenu"
-            defaultVisible overlay={<h4>{info.node.props.title}</h4>}
-          >
-            <span />
-          </Tooltip>
-        );
-
-        const container = this.createContextMenuContainer();
-        Object.assign(this.cmContainer.style, {
-          position: 'absolute',
-          left: `${info.event.pageX}px`,
-          top: `${info.event.pageY}px`,
-        });
-
-        ReactDOM.render(this.toolTip, container);
-    }
-    
-    render(){
+    updateNodes(){
+        this.nodes = [];
+        
         const filterText = this.state.text;
         const filterOnrules = this.state.rules;
         const filterOnCategories = this.state.categories;
         const noFilter = filterOnrules && filterOnCategories && (filterText === '');
         
-        let that = this;
-        return (
+        for(let key in this.props.rules){
+            let cat = this.props.rules[key];
+            
+            //Filter categories
+            var regex = new RegExp(filterText, 'i');
+            if( (filterText !== "" && filterOnCategories && !regex.test(cat.cat_name)) ||
+                !this.catContainsMatchingRule(cat.rules, filterText)
+              ){ 
+                continue;
+            }
+            
+            const isExpanded = this.state.expandedNodes.indexOf(cat.cat_id) !== -1
+            const icon = isExpanded === true ? "folder-open": "folder-close"
+            let ruleCategory = {
+                id: cat.cat_id,
+                hasCaret: true,
+                icon: icon,
+                label: cat.cat_name,
+                key: cat.cat_id,
+                isExpanded : isExpanded,
+                catId: cat.cat_id,
+                childNodes: []        
+            };
+            
+            //Get rules under category 
+            for (let k in cat.rules){
+                let rule = cat.rules[k];
                 
+                //Filter rules
+                if( (filterText !== "" && filterOnrules && !regex.test(rule.name)) ){
+                    continue;
+                }
+                
+                ruleCategory['childNodes'].push({
+                    id: cat.cat_id + "-" + rule.id,
+                    label:rule.name,
+                    icon:"wrench",
+                    ruleId: rule.id,
+                    catId: cat.cat_id
+                });
+            }
+            this.nodes.push(ruleCategory);
+        }
+    }
+
+    onNodeDoubleClick = (nodeData: ITreeNode) => {
+
+        if(typeof nodeData.ruleId !== 'undefined'){
+            this.showMODataTab(nodeData.label, nodeData.ruleId);
+        }
+    }
+    
+    handleNodeCollapse = (nodeData: ITreeNode) => {
+        const expandedNodes = this.state.expandedNodes.filter((v,k) => v !== nodeData.catId)
+        this.setState({expandedNodes: expandedNodes});
+    };
+
+    handleNodeExpand = (nodeData: ITreeNode) => {
+        
+        let expandedNodes = this.state.expandedNodes;
+        this.state.expandedNodes.indexOf(nodeData.catId) === -1 ? expandedNodes.push(nodeData.catId): true
+        this.setState({expandedNodes: expandedNodes});
+    };
+
+    
+    render(){        
+        this.updateNodes();
+        
+        return (
+            
         <div>
-            <h6><FontAwesomeIcon icon={AuditRuleTree.icon}/> Network Audit Rules</h6>
+
+          <h6><FontAwesomeIcon icon={AuditRuleTree.icon}/> Network Audit Rules</h6>
 
                 <div>
                 <input type="text" name="text" className="form-control form-control-sm" placeholder="Search audit rules" aria-label="Search audit rules" aria-describedby="basic-addon1" value={this.state.text} onChange={this.handleChangeEvent}/>
@@ -169,31 +204,13 @@ class AuditRuleTree extends React.Component{
                     </div>     
                 }
 
-
-                <Tree icon={FolderIcon} defaultExpandAll={filterText !== ''} onRightClick={this.onRightClick}>
-                { this.props.rules
-                    .filter(function(v,k){
-                        var regex = new RegExp(filterText, 'i');
-                        return  filterText === '' || 
-                                (filterOnCategories && regex.test(v.cat_name)) || 
-                                (!filterOnrules && !filterOnCategories) ||
-                                (filterOnrules && that.catContainsMatchingRule(v.rules, filterText));
-                    }).map( (v,k) => 
-                    <TreeNode title={v.cat_name} key={v.cat_id} >
-                        { v.rules
-                            .filter(function(v, k){
-                                var regex = new RegExp(filterText, 'i');
-                            return filterText === '' || 
-                                    (regex.test(v.name) && filterOnrules) || 
-                                    filterOnCategories || 
-                                    (!filterOnrules && !filterOnCategories && regex.test(v.name));
-                            })
-                            .map((val,key)=> <TreeNode isLeaf title={val.name} icon={<FontAwesomeIcon className="mb-2" icon="wrench"/>} key={v.cat_id +"-"+key} ruleId={val.id}/> ) }
-                    </TreeNode>
-                )}
-                </Tree>
-
-                </div>
+            <Tree 
+                contents={this.nodes}
+                onNodeDoubleClick={this.onNodeDoubleClick}
+                onNodeCollapse={this.handleNodeCollapse}
+                onNodeExpand={this.handleNodeExpand}
+            />
+            </div>
         </div>
         );
     }
