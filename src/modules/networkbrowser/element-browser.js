@@ -6,6 +6,7 @@ import {AgGridReact} from 'ag-grid-react';
 import { getEntityFields, getEntities, dismissRequestError, notifyNodesRequestFailure } from './network-browser-actions';
 import axios, { ERROR_CODES } from '../../api/config';
 import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
+import { ProgressBar, Intent, ButtonGroup, Button } from "@blueprintjs/core"; 
 
 class ElementBrowser extends React.Component{
     static icon = "sitemap";
@@ -139,9 +140,7 @@ class ElementBrowser extends React.Component{
             
             {this.props.requesting === false ? "" : 
                 <div className="pb-1">
-                    <div className="progress">
-                      <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: 100 +'%'}}>Processing...</div>
-                    </div>
+                    <ProgressBar intent={Intent.PRIMARY}/>
                 </div>
             }
             
@@ -155,12 +154,13 @@ class ElementBrowser extends React.Component{
             }
             
             <div className="card">
-                <div className="card-body p-3">
+                <div className="card-body p-2">
                 
-                <div className="mb-2">
-                    <a href="#" title="Refresh" onClick={this.refreshData} className="mr-2"><FontAwesomeIcon icon="sync"/></a>
-                    <a href="#" title="Download" onClick={this.downloadData}><FontAwesomeIcon icon="download"/></a>
-                    
+                <div className="mb-1">
+                <ButtonGroup minimal={true}>
+                    <Button icon="refresh" onClick={this.refreshData}></Button>
+                    <Button icon="download" onClick={this.downloadData}></Button>
+                </ButtonGroup>
                 </div>
                 
                     <div className="ag-theme-balham" style={{width: '100%', height: "100%", boxSizing: "border-box"}}>

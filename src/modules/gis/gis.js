@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'leaflet/dist/leaflet.css';
 import './gis.css';
+import { IResizeEntry, ResizeSensor } from "@blueprintjs/core";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -24,6 +25,8 @@ class GIS extends React.Component{
             lng: -0.09,
             zoom: 13
         }
+        
+        this.handleResize = this.handleResize.bind(this);
     }
    
     componentDidMount () {
@@ -35,13 +38,20 @@ class GIS extends React.Component{
         //display:none. This re-renders the map correctly after the tab is shown.
         setTimeout(function(){
             map.invalidateSize();
-        },500);
+        },1000);
         
     }
     
     componentDidUpdate(){
         const map = this.refs.map.leafletElement;
         map.invalidateSize();
+    }
+    
+    handleResize(e){
+        const map = this.refs.map.leafletElement;1
+        setTimeout(function(){
+            map.invalidateSize();
+        },500);
     }
     
     render(){
@@ -55,6 +65,7 @@ class GIS extends React.Component{
             <div className="card">
                 <div className="card-body p-2" >
                     <div className="map-container" >
+                    <ResizeSensor onResize={this.handleResize}>
                     <Map ref='map' center={position} zoom={this.state.zoom} style={{height: height + 'px'}}>
                         <TileLayer
                           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -66,6 +77,7 @@ class GIS extends React.Component{
                           </Popup>
                         </Marker>
                     </Map>
+                    </ResizeSensor>
                     </div>
                 </div>
             </div>

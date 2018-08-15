@@ -183,7 +183,7 @@ class AuditRuleTree extends React.Component{
                 <div>
                 <input type="text" name="text" className="form-control form-control-sm" placeholder="Search audit rules" aria-label="Search audit rules" aria-describedby="basic-addon1" value={this.state.text} onChange={this.handleChangeEvent}/>
 
-                <div>
+                <div className="mb-2">
                     <div className="form-check form-check-inline">
                         <input className="form-check-input" type="checkbox" id="inlineCheckbox1" checked={this.state.categories} name="categories" onChange={this.handleChangeEvent}/>
                         <label className="form-check-label" htmlFor="inlineCheckbox1">Categories</label>

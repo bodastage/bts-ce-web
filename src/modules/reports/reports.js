@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Plot from 'react-plotly.js';
 import { setSidePanel } from '../layout/uilayout-actions';
+import { IResizeEntry, ResizeSensor } from "@blueprintjs/core";
 
 class Reports extends React.Component{
     static icon = "chart-area";
@@ -18,6 +19,7 @@ class Reports extends React.Component{
     }
     
     render(){
+        const height = window.innerHeight - 200;
         return (
         <div>
             <h3><FontAwesomeIcon icon="chart-area"/> Reports</h3>
@@ -29,8 +31,7 @@ class Reports extends React.Component{
             </div>
             
             <div className="card">
-                <div className="card-body p-3">
-                    
+                <div className="card-body p-2">
                 <Plot
                         data={[
                           {
@@ -41,9 +42,11 @@ class Reports extends React.Component{
                             marker: {color: 'red'},
                           },
                           {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
-                        ]}
-                        layout={{width: '100%', height: 480, title: 'A Fancy Plot'}}
-                      />
+                        ]} 
+                        useResizeHandler={true} 
+                        layout={{autosize: true, title: 'A Fancy Plot'}} 
+                        style={{width: "100%", height: height+"px"}}
+                      /> 
                 </div>
             </div>
         </div>
