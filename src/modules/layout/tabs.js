@@ -23,6 +23,8 @@ import MODataBrowser from '../mobrowser/mo-data-browser';
 import NetAuditRuleData from '../networkaudit/netaudit-rule-data';
 import $ from 'jquery';
 import { closeTab, setActiveTab } from './uilayout-actions';
+import { Breadcrumb, OverflowList, Boundary, Position, Classes, MenuItem, 
+    Popover, Menu, Icon } from "@blueprintjs/core";
 
 const Components = {
     "Help": Help,
@@ -51,6 +53,14 @@ class Tabs extends React.Component {
         super(props);
         
         this.closeTab = this.closeTab.bind(this);
+        this.renderOverflow = this.renderOverflow.bind(this);
+        this.renderBreadcrumb = this.renderBreadcrumb.bind(this);
+        this.renderOverflow = this.renderOverflow.bind(this);
+        
+        this.state = {
+            collapseFrom: Boundary.END,
+            width: 50,
+        }
     }
 
     setActiveTab = (tabId) => (e) => { 
@@ -69,68 +79,65 @@ class Tabs extends React.Component {
     }
     
     componentDidMount(){
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
-
-        $('.nav-tabs').tabdrop({text: '||||'});
-        
-        $('#myTab').on('shown.bs.tab', function (e) {
-            let activeTab = window.activeTab + '-tab';
-            $.each($('.tabdrop ul.dropdown-menu li.nav-item>a'),function(index,value){
-
-                if($(value).attr('id') !== activeTab){
-                    $(value).removeClass('active show');
-                }else{
-                    $(value).addClass('active show');
-                }
-            });
-        });
-
             
     }
 	
     componentDidUpdate(){
-        $('.nav-tabs').tabdrop('layout');
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
-        
-        //This is used by the shown.bs.tab event which is called in 
-        //componentDidMount
-        window.activeTab = this.props.activeTab;
       
     } 
     
-    componentWillUnmount(){
-        $('#myTab').off('shown.bs.tab');        
+    componentWillUnmount(){      
+    }
+    
+    renderOverflow = (items) => {
+        const { collapseFrom } = this.state;
+        const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
+        let orderedItems = items;
+        if (this.state.collapseFrom === Boundary.START) {
+            orderedItems = items.slice().reverse();
+        }
+        const menuItems = orderedItems.map(
+                (item, index) => <MenuItem {...item} key={index} onClick={this.setActiveTab(item.tabid)} 
+                                    labelElement={<Icon icon="cross" onClick={this.closeTab(item.tabid)}/>} />);
+        return (
+            <li>
+                <Popover position={position}>
+                    <span className={Classes.BREADCRUMBS_COLLAPSED} />
+                    <Menu>{menuItems}</Menu>
+                </Popover>
+            </li>
+        );
+    };
+    
+    renderBreadcrumb(props: IMenuItemProps, index: number) {
+        const tabId = props.tabid;
+        const Tag = Components[ this.props.tabs[tabId].component];
+        const options = this.props.tabs[tabId].options;
+        
+        const activeClass = this.props.activeTab === tabId ? 'active show' : ""; 
+        
+        return (
+            <li className="nav-item" key={tabId}>
+                <a className={"nav-link " + activeClass} id={tabId+"-tab"} data-toggle="tab" href={"#"+tabId} role="tab" aria-controls={tabId} aria-selected="false" onClick={this.setActiveTab(tabId)}>
+                { this.props.tabs[tabId].component === 'Dashboard' ? "" :
+                <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tabId)}>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                }            
+                <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{options.title}</span>
+
+                </a>
+            </li>
+        );
     }
     
     render(){
-        let tabTitles = [];
-        for (var tabId in this.props.tabs){
-                const Tag = Components[ this.props.tabs[tabId].component];
-                const options = this.props.tabs[tabId].options;
-                const activeClass = ""; 
-        tabTitles.push(
-                <React.Fragment key={tabId}>
-                    <li className="nav-item" key={tabId}>
-                        <a className={"nav-link " + activeClass} id={tabId+"-tab"} data-toggle="tab" href={"#"+tabId} role="tab" aria-controls={tabId} aria-selected="false" onClick={this.setActiveTab(tabId)}>
-                        { this.props.tabs[tabId].component === 'Dashboard' ? "" :
-                        <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tabId)}>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        }            
-                        <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{options.title}</span>
-                        
-                        </a>
-                    </li>
-                </React.Fragment>    
-            );
-        }
         
-
         let tabContents = [];
         for( var tabId in this.props.tabs){
             const Tag = Components[ this.props.tabs[tabId].component];
             const options = this.props.tabs[tabId].options;
-            const activeClass = ""; 
+            const activeClass = this.props.activeTab == tabId ? 'active show' : ""; 
             tabContents.push(
                 <React.Fragment key={tabId}>
                     <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby="contact-tab"><Tag options={options}/></div>
@@ -138,12 +145,31 @@ class Tabs extends React.Component {
             );
         }
         
+        const { collapseFrom, width } = this.state;
+        let items = [];
+        for (var tabId in this.props.tabs){
+            const Tag = Components[ this.props.tabs[tabId].component];
+            const options = this.props.tabs[tabId].options;
+            const activeClass = ""; 
+            items.push(
+                {   href: "#", icon: <FontAwesomeIcon icon={Tag.icon}/>, 
+                    text: options.title, tabid: tabId
+                }
+            );
+        }
         return (
             <div>
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="dropdown d-none float-right tabdrop"><a className="dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span className="display-tab"><FontAwesomeIcon icon="list"/></span><b className="caret"></b></a><ul className="dropdown-menu"></ul></li>
-                  {tabTitles}
                   
+                    <OverflowList
+                        collapseFrom={collapseFrom}
+                        items={items}
+                        overflowRenderer={this.renderOverflow}
+                        visibleItemRenderer={this.renderBreadcrumb}
+                        observeParents={true}
+                        />
+                    
                 </ul>
                 
                 <div className="tab-content" id="myTabContent">

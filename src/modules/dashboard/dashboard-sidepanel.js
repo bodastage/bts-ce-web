@@ -1,6 +1,4 @@
-import React from 'react'
-import jQuery from '../../utils/jquery';
-import $ from 'jquery';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as DashboardCSS from './dashboard.css';
 import { connect } from 'react-redux';
@@ -19,8 +17,6 @@ class DashboardSidePanel extends React.Component {
 
         let tabId = options.component;
         this.props.dispatch(addTab(tabId, options.component, {title: options.title}));
-                
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     render(){

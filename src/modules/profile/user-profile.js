@@ -60,7 +60,7 @@ class UserProfile extends React.Component{
             }
             
             {this.props.updateError == null ? "" : 
-                    <div className="alert alert-danger" role="alert">
+                    <div className="alert alert-danger p-2" role="alert">
                         {this.props.updateError}
                         <button type="button" className="close"  aria-label="Close" onClick={this.dismissError}>
                             <span aria-hidden="true">&times;</span>

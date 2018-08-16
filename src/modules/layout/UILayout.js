@@ -46,7 +46,6 @@ class UILayout extends React.Component {
                 },
                 center: {
                     onresize_end: function () {
-                        $('.nav-tabs').tabdrop('layout');
                     }
                 }
             });

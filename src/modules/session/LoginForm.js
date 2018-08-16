@@ -73,7 +73,7 @@ class LoginForm extends React.Component {
                     <Loading show={this.props.authenticating}/>
                     
                     {this.props.loginError == null ? "" :
-                        <div className="alert alert-danger" role="alert">
+                        <div className="alert alert-danger p-2" role="alert">
                             {this.props.loginError}
                         <button type="button" className="close"  aria-label="Close" onClick={this.dismissError}>
                             <span aria-hidden="true">&times;</span>
@@ -121,7 +121,7 @@ class LoginForm extends React.Component {
                         </FormGroup>
 
 
-                    <Button type="submit" text="Sign in" intent={Intent.PRIMARY}/>
+                    <Button type="submit" text="Sign in" intent={Intent.PRIMARY} disabled={this.props.authenticating}/>
                     
                     {typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null? 
                     <div className="input-group">
