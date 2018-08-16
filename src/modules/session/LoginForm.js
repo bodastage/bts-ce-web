@@ -8,6 +8,7 @@ import LoginFormCSS from './LoginForm.css';
 import Loading from './loading';
 import axios from 'axios';
 import { attemptAuthentication, clearAuthError, clearOldSession } from '../session/session-actions';
+import { Button, Intent, FormGroup, InputGroup  } from "@blueprintjs/core";
 
 class LoginForm extends React.Component {
     constructor(props){
@@ -82,17 +83,16 @@ class LoginForm extends React.Component {
                     
                     {typeof this.props.userDetails === 'undefined' || this.props.userDetails === null? 
                         <React.Fragment>
-                            <label htmlFor="session_email" className="sr-only">Email address</label>
-                            <div className="input-group">
-                                    <div className="input-group-prepend">
-                                            <span className="input-group-text"><FontAwesomeIcon icon="at" /></span>
-                                    </div>
-                                    <input type="email" id="session_email" 
-                                        value={this.state.username || ''}  
-                                        onChange={this.handleInputChange}  
-                                        name="username" className="form-control" placeholder="Email address" required autoFocus
-                                       />
-                            </div>
+                            <FormGroup
+                                label=""
+                                labelFor="session_email"
+
+                            >
+                                <InputGroup id="session_email" placeholder="Placeholder text" 
+                                    leftIcon="user" 
+                                    name="username"
+                                    onChange={this.handleInputChange} />
+                            </FormGroup>
                         </React.Fragment>
                     :''}
                     
@@ -103,18 +103,25 @@ class LoginForm extends React.Component {
                             <span className="font-weight-light">Login as </span>  &nbsp;
                                 <span className="font-weight-bold">{this.props.userDetails.first_name + " " +  this.props.userDetails.last_name}</span>
                             </div>
+                            
                         </React.Fragment>     
                     }
                     
-                    <label htmlFor="session_password" className="sr-only">Password</label>
-                    <div className="input-group">
-                            <div className="input-group-prepend">
-                                    <span className="input-group-text"><FontAwesomeIcon icon="lock" /></span>
-                            </div>
-                            <input type="password" id="session_password" onChange={this.handleInputChange} name="password" className="form-control" placeholder="Password" required/>
-                    </div>
+                    
+                        <FormGroup
+                            label=""
+                            labelFor="session_password"
 
-                    <button className="btn btn-lg btn-primary btn-block" type="submit" data-placeholder="Sign in">Sign in</button>
+                        >
+                            <InputGroup id="session_password" placeholder="Password" 
+                                leftIcon="lock" 
+                                name="password"
+                                type="password"
+                                onChange={this.handleInputChange} />
+                        </FormGroup>
+
+
+                    <Button type="submit" text="Sign in" intent={Intent.PRIMARY}/>
                     
                     {typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null? 
                     <div className="input-group">
@@ -127,13 +134,6 @@ class LoginForm extends React.Component {
             );
     }
 }
-
-//LoginForm.propTypes = {
-//  username: PropTypes.string.isRequired,
-//  password: PropTypes.string.isRequired,
-//  handleInputChange: PropTypes.func.isRequired,
-//  onSubmit: PropTypes.func.isRequired
-//}
 
 function mapStateToProps(state) {
   return {
