@@ -86,11 +86,12 @@ class LoginForm extends React.Component {
                             <FormGroup
                                 label=""
                                 labelFor="session_email"
-
                             >
-                                <InputGroup id="session_email" placeholder="Placeholder text" 
+                                <InputGroup id="session_email" placeholder="Email" 
+                                    required={true}
                                     leftIcon="user" 
                                     name="username"
+                                    type="email"
                                     onChange={this.handleInputChange} />
                             </FormGroup>
                         </React.Fragment>
@@ -117,16 +118,15 @@ class LoginForm extends React.Component {
                                 leftIcon="lock" 
                                 name="password"
                                 type="password"
+                                required={true}
                                 onChange={this.handleInputChange} />
                         </FormGroup>
 
 
-                    <Button type="submit" text="Sign in" intent={Intent.PRIMARY} disabled={this.props.authenticating}/>
+        <Button type="submit" text="Sign in" intent={Intent.PRIMARY} disabled={this.props.authenticating}/> &nbsp;
                     
                     {typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null? 
-                    <div className="input-group">
-                        <a href="#" onClick={this.clearOldSession}>Login as different user</a>
-                    </div>
+                        <a href="#" onClick={this.clearOldSession}> as different user</a>
                     :''}
                 </form>
 

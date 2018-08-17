@@ -12,7 +12,6 @@ import Dashboard from '../dashboard/dashboard';
 import Tabs from './tabs';
 import * as UILayoutActions from './uilayout-actions';
 import SidePanel from './side-panel';
-import BSTabDrop from 'stefanpetre-bootstrap-tabdrop/js/bootstrap-tabdrop';
 import UILayoutCSS from './UILayout.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

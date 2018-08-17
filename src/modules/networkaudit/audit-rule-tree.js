@@ -6,7 +6,6 @@ import 'rc-tree/assets/index.css';
 import './netaudit-panel.css';
 import { getAuditRules, setAuditRuleFilter } from './netaudit-actions';
 import FolderIcon from './folder-icon';
-import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
 import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
 
@@ -94,8 +93,6 @@ class AuditRuleTree extends React.Component{
             title: ruleName,
             ruleId: ruleId
         }));
-        
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     updateNodes(){

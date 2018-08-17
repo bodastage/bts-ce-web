@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
 
 
@@ -21,8 +20,6 @@ class NetworkBrowser extends React.Component{
             title: options.title,
             endpoint: '/api/network/live/' + options.endpoit
         }));
-        
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     render(){

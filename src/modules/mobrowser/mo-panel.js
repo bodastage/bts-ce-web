@@ -5,7 +5,6 @@ import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
 import './mo-panel.css';
-import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
 
 class MOBrowserPanel extends React.Component{
@@ -47,8 +46,6 @@ class MOBrowserPanel extends React.Component{
             title: moName,
             moId: moId
         }));
-        
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     reload(){

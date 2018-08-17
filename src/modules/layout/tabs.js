@@ -97,7 +97,8 @@ class Tabs extends React.Component {
             orderedItems = items.slice().reverse();
         }
         const menuItems = orderedItems.map(
-                (item, index) => <MenuItem {...item} key={index} onClick={this.setActiveTab(item.tabid)} 
+                (item, index) => <MenuItem {...item} key={index} 
+                                    onClick={this.setActiveTab(item.tabid)} 
                                     labelElement={<Icon icon="cross" onClick={this.closeTab(item.tabid)}/>} />);
         return (
             <li>
@@ -132,12 +133,11 @@ class Tabs extends React.Component {
     }
     
     render(){
-        
         let tabContents = [];
-        for( var tabId in this.props.tabs){
+        for( let tabId in this.props.tabs){
             const Tag = Components[ this.props.tabs[tabId].component];
             const options = this.props.tabs[tabId].options;
-            const activeClass = this.props.activeTab == tabId ? 'active show' : ""; 
+            const activeClass = this.props.activeTab === tabId ? 'active show' : ""; 
             tabContents.push(
                 <React.Fragment key={tabId}>
                     <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby="contact-tab"><Tag options={options}/></div>
@@ -152,16 +152,15 @@ class Tabs extends React.Component {
             const options = this.props.tabs[tabId].options;
             const activeClass = ""; 
             items.push(
-                {   href: "#", icon: <FontAwesomeIcon icon={Tag.icon}/>, 
+                {   href: "#", 
+                    icon: <FontAwesomeIcon icon={Tag.icon}/>, 
                     text: options.title, tabid: tabId
                 }
             );
         }
         return (
             <div>
-                <ul className="nav nav-tabs" id="myTab" role="tablist">
-                <li className="dropdown d-none float-right tabdrop"><a className="dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span className="display-tab"><FontAwesomeIcon icon="list"/></span><b className="caret"></b></a><ul className="dropdown-menu"></ul></li>
-                  
+                <ul className="nav nav-tabs" id="bts_tabs" role="tablist">
                     <OverflowList
                         collapseFrom={collapseFrom}
                         items={items}
@@ -172,7 +171,7 @@ class Tabs extends React.Component {
                     
                 </ul>
                 
-                <div className="tab-content" id="myTabContent">
+                <div className="tab-content" id="bts_tabs_content">
                     {tabContents}
                 </div>      
             </div>
