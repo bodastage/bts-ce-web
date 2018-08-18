@@ -21,7 +21,6 @@ import Reports from '../reports/reports.js';
 import GIS from '../gis/gis.js';
 import MODataBrowser from '../mobrowser/mo-data-browser';
 import NetAuditRuleData from '../networkaudit/netaudit-rule-data';
-import $ from 'jquery';
 import { closeTab, setActiveTab } from './uilayout-actions';
 import { Breadcrumb, OverflowList, Boundary, Position, Classes, MenuItem, 
     Popover, Menu, Icon } from "@blueprintjs/core";
@@ -137,11 +136,10 @@ class Tabs extends React.Component {
         for( let tabId in this.props.tabs){
             const Tag = Components[ this.props.tabs[tabId].component];
             const options = this.props.tabs[tabId].options;
-            const activeClass = this.props.activeTab === tabId ? 'active show' : ""; 
+            const activeClass = this.props.activeTab === tabId ? "active show" : ""; 
+            console.log("tabId:",tabId," activeClass:", activeClass, " this.props.activeTab:", this.props.activeTab );
             tabContents.push(
-                <React.Fragment key={tabId}>
-                    <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby="contact-tab"><Tag options={options}/></div>
-                </React.Fragment>    
+                    <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby={ tabId + "-tab"}><Tag options={options}/></div>
             );
         }
         

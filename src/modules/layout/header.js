@@ -32,8 +32,6 @@ class Header extends React.Component {
 
         let tabId = options.component;
         this.props.dispatch(addTab(tabId, options.component, {title: options.title}));
-        
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     render(){   

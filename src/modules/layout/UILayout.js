@@ -6,8 +6,6 @@ import $ from 'jquery';
 import layout from 'layout/dist/jquery.layout_and_plugins';
 import LayoutCSS from 'layout/dist/layout-default.css'
 import Header from './header.js';
-import Popper from 'popper.js';
-import Bootsrap from 'bootstrap/dist/js/bootstrap.js';
 import Dashboard from '../dashboard/dashboard';
 import Tabs from './tabs';
 import * as UILayoutActions from './uilayout-actions';
@@ -79,7 +77,7 @@ class UILayout extends React.Component {
 	}
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     tabs: state.uiLayout.tabs,
     activeTab: state.uiLayout.activeTab
