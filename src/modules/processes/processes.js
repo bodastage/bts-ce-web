@@ -17,8 +17,6 @@ class Processes extends React.Component{
         e.preventDefault();
         
         this.props.dispatch(addTab(name, name, {title:name}));
-        
-        $('#myTab li #'+this.props.activeTab+"-tab").tab('show');
     }
     
     render(){

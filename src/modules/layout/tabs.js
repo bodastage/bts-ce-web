@@ -77,17 +77,6 @@ class Tabs extends React.Component {
         this.props.dispatch(closeTab(tabId));
     }
     
-    componentDidMount(){
-            
-    }
-	
-    componentDidUpdate(){
-      
-    } 
-    
-    componentWillUnmount(){      
-    }
-    
     renderOverflow = (items) => {
         const { collapseFrom } = this.state;
         const position = collapseFrom === Boundary.END ? Position.BOTTOM_RIGHT : Position.BOTTOM_LEFT;
@@ -137,7 +126,7 @@ class Tabs extends React.Component {
             const Tag = Components[ this.props.tabs[tabId].component];
             const options = this.props.tabs[tabId].options;
             const activeClass = this.props.activeTab === tabId ? "active show" : ""; 
-            console.log("tabId:",tabId," activeClass:", activeClass, " this.props.activeTab:", this.props.activeTab );
+
             tabContents.push(
                     <div key={tabId} className={"tab-pane fade " + activeClass} id={tabId} role="tabpanel" aria-labelledby={ tabId + "-tab"}><Tag options={options}/></div>
             );

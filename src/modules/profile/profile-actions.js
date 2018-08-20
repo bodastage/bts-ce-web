@@ -41,9 +41,11 @@ export function updateUserProfile(profileData){
     return (dispatch, getState) => {
         dispatch(sendProfileUpdateRequest());
         
-        let apiToken = getState().session.userDetails.token;
+        const apiToken = getState().session.userDetails.token;
+        const userId = getState().session.userDetails.id;
+        const endPoint = '/api/users/' + userId;
         
-        axios.post('/api/users',profileData,{
+        axios.post(endPoint,profileData,{
             headers: { 'Authorization': apiToken }
         })
         .then( response => {

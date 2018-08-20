@@ -18,6 +18,7 @@ class ElementBrowser extends React.Component{
         this.dismissError = this.dismissError.bind(this);
         this.updateColumnDefs = this.updateColumnDefs.bind(this);
         this.refreshData = this.refreshData.bind(this);
+        this.downloadData = this.downloadData.bind(this);
         
         this.fields = [];
         
@@ -51,7 +52,7 @@ class ElementBrowser extends React.Component{
     }
     
     downloadData(){
-        
+        console.log("entity:", this.props.options.entity);
     }
     
     updateColumnDefs(){

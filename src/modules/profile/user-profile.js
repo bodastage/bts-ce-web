@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { updateUserProfile, clearProfileUpdateError } from './profile-actions';
+import { Button, Intent, ProgressBar } from "@blueprintjs/core";
 
 class UserProfile extends React.Component{
     static icon = "user";
@@ -19,9 +20,8 @@ class UserProfile extends React.Component{
             first_name: this.props.userDetails.first_name,
             last_name: this.props.userDetails.last_name,
             other_names: this.props.userDetails.other_names,
-            job_tilte: this.props.userDetails.job_title,
+            job_title: this.props.userDetails.job_title,
             phone_number: this.props.userDetails.phone_number,
-            password: this.props.userDetails.username,
             token: this.props.userDetails.token
         };
         
@@ -32,7 +32,7 @@ class UserProfile extends React.Component{
         const name = event.target.name;
         const value = event.target.value;
         this.setState({
-            name: value
+            [name]: value
         });
     }
     
@@ -53,9 +53,7 @@ class UserProfile extends React.Component{
 
             {this.props.updating === false ? "" : 
                 <div className="pb-1">
-                    <div className="progress">
-                      <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: 100 +'%'}}>Updating...</div>
-                    </div>
+                    <ProgressBar intent={Intent.PRIMARY}/>
                 </div>
             }
             
@@ -87,7 +85,7 @@ class UserProfile extends React.Component{
               <div className="form-group row">
                 <label htmlFor="profileInputFirstName" className="col-sm-2 col-form-label">First name</label>
                 <div className="col-sm-6">
-                    <input type="text" name="first_name" onChange={this.handleInputChange} className="form-control form-control-sm" value={this.state.first_name} id="profileInputFirstName" placeholder="First name"/>
+                    <input type="text" value={this.state.first_name || "" } name="first_name" onChange={this.handleInputChange} className="form-control form-control-sm"  id="profileInputFirstName" placeholder="First name"/>
                 </div>
               </div>
               
@@ -120,14 +118,6 @@ class UserProfile extends React.Component{
               </div>
               
               <div className="form-group row">
-                <label htmlFor="profileInputPassword1" className="col-sm-2 col-form-label">Password</label>
-                <div className="col-sm-6">
-                    <input type="password" className="form-control form-control-sm" id="profileInputPassword1" placeholder="Password"/>
-                </div>
-              </div>
-              
-              
-              <div className="form-group row">
                 <label htmlFor="staticAPIToken" className="col-sm-2 col-form-label">API Token</label>
                 <div className="col-sm-6">
                     <input type="text" readOnly className="form-control-plaintext form-control-sm text-muted font-italic font-weight-light" id="staticAPIToken" value={this.state.token}/>
@@ -136,7 +126,7 @@ class UserProfile extends React.Component{
               </div>
               
 
-              <button type="submit" className="btn btn-primary btn-sm">Update</button>
+              <Button type="submit" text="Update" intent={Intent.PRIMARY} disabled={this.props.updating}/> &nbsp;
             </form>  
             
                 </div>
