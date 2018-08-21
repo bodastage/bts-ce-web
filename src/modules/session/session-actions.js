@@ -10,7 +10,7 @@ export const CLEAR_OLD_SESSION = 'CLEAR_OLD_SESSION';
 
 export function clearAuthError(){
     return {
-        type: CLEAR_AUTH_ERROR,
+        type: CLEAR_AUTH_ERROR
     };
 }
 
