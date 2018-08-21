@@ -48,7 +48,7 @@ class GIS extends React.Component{
     }
     
     handleResize(e){
-        const map = this.refs.map.leafletElement;1
+        const map = this.refs.map.leafletElement;
         setTimeout(function(){
             map.invalidateSize();
         },500);

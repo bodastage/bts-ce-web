@@ -47,13 +47,22 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test:jsdom": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "babel-7-jest": "^21.3.3",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.4.2",
     "chai": "^4.1.2",
     "chai-immutable": "^1.6.0",
+    "jest": "^23.5.0",
     "mocha": "^5.2.0",
-    "redux-devtools": "^3.4.1"
+    "redux-devtools": "^3.4.1",
+    "regenerator-runtime": "^0.12.1"
   }
 }
