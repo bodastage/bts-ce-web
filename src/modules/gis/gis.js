@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'leaflet/dist/leaflet.css';
 import './gis.css';
-import { IResizeEntry, ResizeSensor } from "@blueprintjs/core";
+import { ResizeSensor } from "@blueprintjs/core";
 
 delete L.Icon.Default.prototype._getIconUrl;
 

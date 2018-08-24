@@ -1,13 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import 'rc-tree/assets/index.css';
-import './netaudit-panel.css';
 import { getAuditRules, setAuditRuleFilter } from './netaudit-actions';
-import FolderIcon from './folder-icon';
 import { addTab } from '../layout/uilayout-actions';
 import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
+
+import 'rc-tree/assets/index.css';
+import './netaudit-panel.css';
 
 class AuditRuleTree extends React.Component{
     static icon = "wrench";

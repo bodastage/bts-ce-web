@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DashboardSidePanel from '../dashboard/dashboard-sidepanel';
 import { connect } from 'react-redux';
 import AuditRuleTree from '../networkaudit/audit-rule-tree';
@@ -13,11 +11,8 @@ const SidePanels = {
     "ReportsPanel": ReportsPanel,
     "MOBrowserPanel": MOBrowserPanel
 };
-class SidePanel extends React.Component{
-    constructor(props){
-        super(props)
-    }
 
+class SidePanel extends React.Component{
     render(){
         const CurrentPanel = SidePanels[this.props.activePanel] || DashboardSidePanel;
         return (

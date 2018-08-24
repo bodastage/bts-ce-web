@@ -1,16 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import jQuery from '../../utils/jquery';
 import $ from 'jquery';
 import layout from 'layout/dist/jquery.layout_and_plugins';
-import LayoutCSS from 'layout/dist/layout-default.css'
+import 'layout/dist/layout-default.css'
 import Header from './header.js';
 import Dashboard from '../dashboard/dashboard';
 import Tabs from './tabs';
 import * as UILayoutActions from './uilayout-actions';
 import SidePanel from './side-panel';
-import UILayoutCSS from './UILayout.css';
+import  './UILayout.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class UILayout extends React.Component {

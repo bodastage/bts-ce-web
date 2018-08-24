@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import $ from 'jquery';
 import {AgGridReact} from 'ag-grid-react';
 import { getEntityFields, getEntities, dismissRequestError, notifyNodesRequestFailure } from './network-browser-actions';
-import axios, { ERROR_CODES } from '../../api/config';
+import axios from '../../api/config';
 import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
 import { ProgressBar, Intent, ButtonGroup, Button } from "@blueprintjs/core"; 
 
@@ -94,7 +93,6 @@ class ElementBrowser extends React.Component{
                 
                 let page = params.startRow;
                 let length= params.endRow - params.startRow;
-                let gridColumns = _columnApi.getAllColumns();
                 
                 let apiEndPoint = "/api/network/live/nodes";
                 if ( entity === 'node') apiEndPoint = "/api/network/live/nodes?start=" + page + "&length=" + length;

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as DashboardCSS from './dashboard.css';
+import  './dashboard.css';
 import { connect } from 'react-redux';
 import { addTab } from '../layout/uilayout-actions';
 
@@ -52,7 +52,7 @@ class Dashboard extends React.Component {
                                 <div className="icon-label">Network Audit</div>
                             </div>
                             <div className="col-md-2">
-                                <div className="icon-display"><a title="Managed Object Browser" href="#/mobrowser" title="Managed Object Browser" 
+                                <div className="icon-display"><a href="#/mobrowser" title="Managed Object Browser" 
                                 onClick={this.addTab({
                                     component: 'MOBrowser',
                                     title: 'MO Browser'})}> <FontAwesomeIcon icon="puzzle-piece"/></a></div>

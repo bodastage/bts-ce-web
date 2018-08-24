@@ -7,8 +7,13 @@ class NetworkBaseline extends React.Component{
     
     constructor(props){
         super(props)
+        
+        this.loadData = this.loadData.bind(this);
     }
     
+    loadData(){
+        
+    }
     render(){
         return (<div></div>);
     }

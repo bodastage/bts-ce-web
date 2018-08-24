@@ -1,16 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { API_URL } from '../../api/config';
 
 export default class Airflow extends React.Component{
     static icon = "cogs";
     static label = "Airflow";
-    
-    constructor(props){
-        super(props);
-    }
-
     
     render(){
         return (

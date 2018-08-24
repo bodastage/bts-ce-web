@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import $ from 'jquery';
 import { getRuleFields } from './netaudit-actions';
 import { AgGridReact } from 'ag-grid-react';
 import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
-import axios, { ERROR_CODES } from '../../api/config';
+import axios from '../../api/config';
 import { ProgressBar, Intent, ButtonGroup, Button } from "@blueprintjs/core"; 
 
 class NetAuditRuleData extends React.Component{

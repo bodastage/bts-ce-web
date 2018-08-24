@@ -7,6 +7,12 @@ class Settings extends React.Component{
     static label = "Settings";
     constructor(props){
         super(props);
+        
+        this.showCMLeftPanel = this.showCMLeftPanel.bind(this);
+    }
+    
+    showCMLeftPanel(){
+        
     }
     
     render(){
@@ -16,7 +22,7 @@ class Settings extends React.Component{
 
             <div className="card">
                 <div className="card-body p-3">
-                    <a href="#" className="launch-cm-menu"><FontAwesomeIcon icon="arrow-right"/> Configuration management</a>
+                    <a href={null} className="launch-cm-menu"><FontAwesomeIcon icon="arrow-right"/> Configuration management</a>
                 </div>
             </div>
         </div>

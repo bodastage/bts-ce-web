@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Plot from 'react-plotly.js';
 import { setSidePanel } from '../layout/uilayout-actions';
-import { IResizeEntry, ResizeSensor } from "@blueprintjs/core";
 
 class Reports extends React.Component{
     static icon = "chart-area";

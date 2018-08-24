@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import $ from 'jquery';
 import { addTab } from '../layout/uilayout-actions';
 
 class TelecomLib extends React.Component{

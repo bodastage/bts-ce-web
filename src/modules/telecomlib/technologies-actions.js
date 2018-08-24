@@ -40,20 +40,18 @@ export function notifyTechnologiesRequestFailure(errorMessage){
 
 export function getTechnologies(){
     return (dispatch, getState) => {
-        dispatch(requestTechnologies);
+        dispatch(requestTechnologies());
         
         const authToken = getState().session.userDetails.token;
         
-        console.log("authToken" + authToken);
-        
-        axios.get('/api/technologies',{
+        return axios.get('/api/technologies',{
             headers: { "Authorization": authToken }
         })
         .then(response => {
-            return dispatch(receiveTechnologies(response.data));
+            dispatch(receiveTechnologies(response.data));
         })
         .catch(function(error){
-            return dispatch(notifyTechnologiesRequestFailure("Failed to fetch data"));
+            dispatch(notifyTechnologiesRequestFailure("Failed to fetch data"));
         });
     }
 }

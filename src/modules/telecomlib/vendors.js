@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/ag-theme-balham.css';
 import {AgGridReact} from 'ag-grid-react';
-import axios from 'axios';
 import { getVendors, dismissRequestError } from './vendors-actions';
 
 class Vendors extends React.Component{

@@ -33,10 +33,10 @@ export function logOutOfApp(){
     };
 }
 
-export function authenticateUser(userDetails){
+export function authenticateUser(loginDetails){
     return {
         type: AUTHENTICATE,
-        userDetails
+        loginDetails
     };
 }
 
@@ -48,26 +48,26 @@ export function markLoginAsFailed(error){
 }
 
 
-export function attemptAuthentication(userDetails){
+export function attemptAuthentication(loginDetails){
     return (dispatch, getState) => {
-        dispatch(authenticateUser(userDetails));
+        dispatch(authenticateUser(loginDetails));
         
         const params = new URLSearchParams();
-        params.append('username', userDetails.username);
-        params.append('password', userDetails.password);
+        params.append('username', loginDetails.username);
+        params.append('password', loginDetails.password);
     
-        axios.post("/authenticate", params, {
+        return axios.post("/authenticate", params, {
             header: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .then(response => {
               if(response.status === 200){
-                  return dispatch(logIntoApp(response.data));
+                  dispatch(logIntoApp(response.data));
               }else{
-                   return dispatch(markLoginAsFailed());
+                   dispatch(markLoginAsFailed());
               }
         })
         .catch(function (response) {
-            return dispatch(markLoginAsFailed("Login attempt failed"));
+            dispatch(markLoginAsFailed("Login attempt failed"));
         });
     }
 }

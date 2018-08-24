@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as DashboardCSS from './dashboard.css';
+import  './dashboard.css';
 import { connect } from 'react-redux';
 import { addTab } from '../layout/uilayout-actions';
 

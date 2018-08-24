@@ -1,17 +1,10 @@
 import React from 'react'
-import jQuery from '../../utils/jquery';
-import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import * as DashboardCSS from './dashboard.css';
 
 export default class Help extends React.Component {
         
      static icon = "question-circle";
      static label = "Help"
-     
-    constructor(props){
-        super(props);
-    }
         
     render(){
         return (
@@ -31,10 +24,10 @@ export default class Help extends React.Component {
                     <h4 className="card-title">Resources </h4>
 
                     <ul>
-                        <li>Support is provided through the <b><a href="http://www.telecomhall.net"  target="_blank">Telecomhall</a></b> forum.</li>
-                        <li>Project home page <b><a href="http://www.bodastage.org"  target="_blank">http://www.bodastage.org</a></b></li>
-                        <li>Documentation can be found at <b><a href="http://bts.bodastage.org"  target="_blank">http://bts.bodastage.org</a></b></li>
-                        <li>Issues with the application should be logged at the project's <b><a href="https://github.com/bodastage/bts-ce/issues" target="_blank"> github issue tracker</a></b></li>
+                        <li>Support is provided through the <b><a href="http://www.telecomhall.net"  target="_blank" rel="noopener noreferrer">Telecomhall</a></b> forum.</li>
+                        <li>Project home page <b><a href="http://www.bodastage.org"  target="_blank" rel="noopener noreferrer">http://www.bodastage.org</a></b></li>
+                        <li>Documentation can be found at <b><a href="http://bts.bodastage.org"  target="_blank" rel="noopener noreferrer">http://bts.bodastage.org</a></b></li>
+                        <li>Issues with the application should be logged at the project's <b><a href="https://github.com/bodastage/bts-ce/issues" target="_blank" rel="noopener noreferrer"> github issue tracker</a></b></li>
                     </ul>    
 
 

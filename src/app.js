@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import React from 'react';
 import configureStore from './configure-store';
 import LoginForm from './modules/session/LoginForm';
 import UILayout from './modules/layout/UILayout';
-import $ from 'jquery';
 import { connect } from 'react-redux';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props){
       super(props)
   }

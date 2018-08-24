@@ -1,6 +1,4 @@
 import React from 'react'
-import jQuery from '../../utils/jquery';
-import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import logo from '../../images/logo-no-text.svg';
