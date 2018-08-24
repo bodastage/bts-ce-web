@@ -1,4 +1,10 @@
 import * as actions from '../../src/modules/session/session-actions'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
+import fetchMock from 'fetch-mock'
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
 
 describe('session.actions', () => {
     it('should create an action to clear the auth error', () => {
@@ -56,6 +62,17 @@ describe('session.actions', () => {
     });
   
 
+
+
+});
+
+
+describe('session.actions.async', () => {
+    afterEach(() => {
+        fetchMock.reset()
+        fetchMock.restore()
+    });
+  
     it('should create an action to attemp user authentication', () => {
         const userDetails = {
             username: "btsuser@bodastage.org", 
@@ -69,5 +86,4 @@ describe('session.actions', () => {
         
         expect(typeof actions.attemptAuthentication(userDetails)).toEqual("function");
     });
-
-})
+});
