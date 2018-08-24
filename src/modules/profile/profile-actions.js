@@ -45,18 +45,18 @@ export function updateUserProfile(profileData){
         const userId = getState().session.userDetails.id;
         const endPoint = '/api/users/' + userId;
         
-        axios.post(endPoint,profileData,{
+        return axios.post(endPoint,profileData,{
             headers: { 'Authorization': apiToken }
         })
         .then( response => {
             if(response.status === 200){
-                return dispatch(notifyProfileUpdateSuccess());
+                dispatch(notifyProfileUpdateSuccess());
             }else{
-                return dispatch(notifyProfileUpdateFailure("Update failed"));
+                dispatch(notifyProfileUpdateFailure("Update failed"));
             }
         })
         .catch(function(error){
-            return dispatch(notifyProfileUpdateFailure("Update failed"));
+            dispatch(notifyProfileUpdateFailure("Update failed"));
         });
     }
 }
