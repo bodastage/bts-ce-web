@@ -9,9 +9,7 @@ export default class Help extends React.Component {
     render(){
         return (
             <div>
-                <div className="bd-notice"></div>
                 <h3><FontAwesomeIcon icon="question-circle"/> Help</h3>
-
 
                 <div className="card">
                 

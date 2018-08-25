@@ -22,29 +22,29 @@ class DashboardSidePanel extends React.Component {
     render(){
         return (
         <div>
-                <span className="dropdown-item-text legend w-100">Radio Access Network</span>
-                <a title="Network Browser" className="dropdown-item" href="#" onClick={this.addTab({
-                                component: 'NetworkBrowser',
-                                title: 'Network Browser'
-                                })}> <FontAwesomeIcon icon="sitemap" /> Network Browser</a>
-                                
-                <a title="Network Audit" className="dropdown-item" href="#" onClick={this.addTab({
-                                    component: 'NetworkAudit',
-                                    title: 'Network Audit'
+            <span className="dropdown-item-text legend w-100">Radio Access Network</span>
+            <a title="Network Browser" className="dropdown-item" href="#" onClick={this.addTab({
+                                            component: 'NetworkBrowser',
+                                            title: 'Network Browser'
+                                })}> <FontAwesomeIcon icon="sitemap" /> Network Browser</a>  
+
+            <a title="Network Audit" className="dropdown-item" href="#" onClick={this.addTab({
+                                                component: 'NetworkAudit',
+                                                title: 'Network Audit'
                                 })}><FontAwesomeIcon icon="wrench"/> Network Audit</a>
-                                
-                <a title="Managed Object Browser" className="dropdown-item" href="#" onClick={this.addTab({
-                                    component: 'MOBrowser',
-                                    title: 'MO Browser'})}><FontAwesomeIcon icon="puzzle-piece"/> MO Browser</a>
-                                    
-                <a title="Network Baseline" className="dropdown-item" href="#" onClick={this.addTab({
-                                    component: 'NetworkBaseline',
-                                    title: 'Network Baseline'
+
+            <a title="Managed Object Browser" className="dropdown-item" href="#" onClick={this.addTab({
+                                        component: 'MOBrowser',
+                                        title: 'MO Browser'})}><FontAwesomeIcon icon="puzzle-piece"/> MO Browser</a>
+
+            <a title="Network Baseline" className="dropdown-item" href="#" onClick={this.addTab({
+                                            component: 'NetworkBaseline',
+                                            title: 'Network Baseline'
                                 })}> <FontAwesomeIcon icon="stop-circle"/>  Network Baseline</a>
-                                
-                <a title="Telecom Library" className="dropdown-item" href="#" onClick={this.addTab({
-                                component: 'TelecomLib',
-                                title: 'Telecom Library'
+
+            <a title="Telecom Library" className="dropdown-item" href="#" onClick={this.addTab({
+                                                component: 'TelecomLib',
+                                                title: 'Telecom Library'
                                 })}> <FontAwesomeIcon icon="university"/>  Telecom Library</a>
                                 
                 <span className="dropdown-item-text legend w-100">Service Assurance</span>

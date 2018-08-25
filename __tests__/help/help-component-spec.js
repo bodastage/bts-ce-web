@@ -8,19 +8,9 @@ import { Provider } from 'react-redux';
 
 // Move this to a single file to include in all test files 
 import { library } from '@fortawesome/fontawesome-svg-core'
-        import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-        import { faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
-            faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
-            faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
-            faChartArea, faBrain, faGem, faUserMd, faGlobeAfrica, faPeopleCarry,
-            faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen
-        } from '@fortawesome/free-solid-svg-icons'
-
-        library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
-        faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
-        faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
-        faChartArea, faBrain, faGem, faUserMd, faGlobeAfrica, faPeopleCarry,
-        faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen);
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+library.add(faQuestionCircle);
         
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
