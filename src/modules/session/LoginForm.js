@@ -7,7 +7,7 @@ import  './LoginForm.css';
 import Loading from './loading';
 import axios from 'axios';
 import { attemptAuthentication, clearAuthError, clearOldSession } from '../session/session-actions';
-import { Button, Intent, FormGroup, InputGroup  } from "@blueprintjs/core";
+import { Button, Intent, FormGroup, InputGroup } from "@blueprintjs/core";
 
 class LoginForm extends React.Component {
     constructor(props){
@@ -28,7 +28,6 @@ class LoginForm extends React.Component {
     
     componentDidMount(){
         if(typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null ){
-            console.log(this.props);
             this.setState({username: this.props.userDetails.username});
         }
     }

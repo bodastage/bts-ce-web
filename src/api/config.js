@@ -1,4 +1,5 @@
 import axios from 'axios';
+import 'url-polyfill';
 
 //server host
 let url = new URL(window.location.href);
