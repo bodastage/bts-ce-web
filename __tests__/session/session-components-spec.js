@@ -23,7 +23,6 @@ const userDetails = {
 
 const store = mockStore({session: {userDetails: userDetails}})
 
-
 Enzyme.configure({ adapter: new Adapter() })
 
 function setup() {
@@ -31,9 +30,9 @@ function setup() {
   
     const enzymeWrapper = mount(
             <Provider store={store}>
-                <LoginForm {...props} />
+                <LoginForm {...props}/>
             </Provider>            
-            )
+        )
   
     return {
         props,
@@ -42,15 +41,12 @@ function setup() {
   
 }
 
-
 describe('session components', () => {
     
     describe('<LoginForm/>', () => {
         it('should render login form', () => {
             const { enzymeWrapper } = setup()
-            
             expect(enzymeWrapper.find('form.form-signin')).toHaveLength(1)
-            
         })
     })
     

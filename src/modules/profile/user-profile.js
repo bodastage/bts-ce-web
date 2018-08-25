@@ -24,8 +24,6 @@ class UserProfile extends React.Component{
             phone_number: this.props.userDetails.phone_number,
             token: this.props.userDetails.token
         };
-        
-        
     }
     
     handleInputChange(event){
@@ -48,7 +46,7 @@ class UserProfile extends React.Component{
     
     render(){
         return (
-        <div>
+        <div className="user-profile-form">
             <h3><FontAwesomeIcon icon={UserProfile.icon}/> Profile</h3>
 
             {this.props.updating === false ? "" : 
