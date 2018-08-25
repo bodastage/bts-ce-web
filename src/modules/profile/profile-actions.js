@@ -36,10 +36,9 @@ export function clearProfileUpdateError(){
     }
 }
 
-
 export function updateUserProfile(profileData){
     return (dispatch, getState) => {
-        dispatch(sendProfileUpdateRequest());
+        dispatch(sendProfileUpdateRequest(profileData));
         
         const apiToken = getState().session.userDetails.token;
         const userId = getState().session.userDetails.id;

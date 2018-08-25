@@ -1,4 +1,5 @@
 import * as actions from '../../src/modules/profile/profile-actions'
+import { API_URL } from '../../src/api/config'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import fetchMock from 'fetch-mock'
@@ -75,7 +76,7 @@ describe('profile.actions.async', () => {
         const expectedActions = [
             {
                 type: actions.SEND_PROFILE_UPDATE_REQUEST,
-                 data: profileData
+                data: profileData
             },{
                 type: actions.NOTIFY_PROFILE_UPDATE_SUCCESS
           }

@@ -68,14 +68,14 @@ export function getEntityFields(entity){
         if ( entity === 'umts_externals') apiEndPoint = "/api/network/live/externals/umts/fields" ;
         if ( entity === 'lte_externals') apiEndPoint = "/api/network/live/externals/lte/fields";
 
-        axios.get(apiEndPoint,{
+        return axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }
         })
         .then(response => {
-            return dispatch(receiveNodeFields(entity, response.data));
+            dispatch(receiveNodeFields(entity, response.data));
         })
         .catch(function(error){
-            return dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
+            dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
         });
     }
 }
@@ -100,14 +100,14 @@ export function getEntities(entity, page, length){
         if ( entity === 'umts_externals') apiEndPoint = "/api/network/live/externals/umts?start=" + page + "&length=" + length;
         if ( entity === 'lte_externals') apiEndPoint = "/api/network/live/externals/lte?start=" + page + "&length=" + length;
         
-        axios.get(apiEndPoint,{
+        return axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }
         })
         .then(response => {
-            return dispatch(receiveNodes(entity, response.data));
+            dispatch(receiveNodes(entity, response.data));
         })
         .catch(function(error){
-            return dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
+            dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
         });
     }
 }
