@@ -1,10 +1,11 @@
 import axios from 'axios';
 import 'url-polyfill';
 
-//server host
-let url = new URL(window.location.href);
+//Get the API_URL
+const hostURL = window.location.protocol + "//" + window.location.hostname
+let url = new URL(window.location.href)
 let host = url.searchParams.get("api_server");
-let apiURL = host || "http://localhost";
+let apiURL = host || hostURL;
 apiURL = apiURL + ':8181';
 
 axios.defaults.baseURL = apiURL;
@@ -18,5 +19,6 @@ export const ERROR_CODES = {
 
 
 export const API_URL = apiURL;
+export const HOST_URL = hostURL;
 export default axios;
     

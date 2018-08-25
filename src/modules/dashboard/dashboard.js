@@ -18,7 +18,6 @@ class Dashboard extends React.Component {
 
     }
     
-    
     addTab = (options) => (e) => { 
         e.preventDefault();
 

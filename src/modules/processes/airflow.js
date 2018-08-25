@@ -1,5 +1,5 @@
 import React from 'react';
-import { API_URL } from '../../api/config';
+import { HOST_URL } from '../../api/config';
 
 export default class Airflow extends React.Component{
     static icon = "cogs";
@@ -10,7 +10,7 @@ export default class Airflow extends React.Component{
                 
         <div>
             <div className="airflow-container">
-                <iframe src={API_URL + ":8080"} width="500" height="500" frameBorder="0" className="airflow-frame">Browser not compatible.</iframe>    
+                <iframe src={HOST_URL + ":8080"} width="500" height="500" frameBorder="0" className="airflow-frame">Browser not compatible.</iframe>    
             </div>
         </div>
         
