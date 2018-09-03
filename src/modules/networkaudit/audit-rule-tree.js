@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getAuditRules, setAuditRuleFilter } from './netaudit-actions';
 import { addTab } from '../layout/uilayout-actions';
-import { Classes, Icon, ITreeNode, Tooltip, Tree } from "@blueprintjs/core";
+import { Classes, Icon, ITreeNode, Tooltip, Tree, FormGroup, InputGroup } from "@blueprintjs/core";
 
 import 'rc-tree/assets/index.css';
 import './netaudit-panel.css';
@@ -177,8 +177,22 @@ class AuditRuleTree extends React.Component{
           <h6><FontAwesomeIcon icon={AuditRuleTree.icon}/> Network Audit Rules</h6>
 
                 <div>
-                <input type="text" name="text" className="form-control form-control-sm" placeholder="Search audit rules" aria-label="Search audit rules" aria-describedby="basic-addon1" value={this.state.text} onChange={this.handleChangeEvent}/>
 
+                <FormGroup
+                    label=""
+                    labelFor="search_network"
+                >
+                    <InputGroup 
+                        id="search_network" 
+                        placeholder="Search audit rules..." 
+                        leftIcon="search" 
+                        name="text"
+                        type="text"
+                        value={this.state.text} 
+                        onChange={this.handleChangeEvent}
+                    />
+                </FormGroup>
+                
                 <div className="mb-2">
                     <div className="form-check form-check-inline">
                         <input className="form-check-input" type="checkbox" id="inlineCheckbox1" checked={this.state.categories} name="categories" onChange={this.handleChangeEvent}/>

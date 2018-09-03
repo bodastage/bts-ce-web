@@ -10,8 +10,23 @@ export const RECEIVE_NODES_FIELDS = 'RECEIVE_NODES_FIELDS';
 
 export const NOTIFY_NODE_REQUEST_FAILURE = 'NOTIFY_NODE_REQUEST_FAILURE';
 
-//Dismiss the error message
 export const DISMISS_NODES_REQUEST_ERROR = 'DISMISS_NODES_REQUEST_ERROR';
+
+export const ADD_TO_EXPANDED_LIVE_NODES = 'ADD_TO_EXPANDED_LIVE_NODES';
+
+export const REMOVE_FROM_EXPANDED_LIVE_NODES = 'REMOVE_FROM_EXPANDED_LIVE_NODES';
+
+export const ADD_TO_EXPANDED_PLAN_NODES = 'ADD_TO_EXPANDED_PLAN_NODES';
+
+export const REMOVE_FROM_EXPANDED_PLAN_NODES = 'REMOVE_FROM_EXPANDED_PLAN_NODES';
+
+export const REQUEST_LIVE_NETWORK_TREE_DATA = 'REQUEST_LIVE_NETWORK_TREE_DATA';
+
+export const STOP_REQUESTING_LIVE_NETWORK_TREE_DATA = 'STOP_REQUESTING_LIVE_NETWORK_TREE_DATA';
+
+export const NOTIFY_LIVE_NET_TREE_DATA_REQ_FAILURE = 'NOTIFY_LIVE_NET_TREE_DATA_REQ_FAILURE';
+
+export const RECEIVE_LIVE_NETWORK_TREE_DATA = 'RECEIVE_LIVE_NETWORK_TREE_DATA';
 
 export function requestNodes(entity){
     return {
@@ -49,6 +64,98 @@ export function notifyNodesRequestFailure(entity, errorMessage){
         entity: entity,
         error: errorMessage
     };
+}
+
+export function addToExpandedLiveNodes(nodeId){
+    return {
+        type: ADD_TO_EXPANDED_LIVE_NODES,
+        nodeId: nodeId
+    }
+}
+
+export function removeFromExpandedLiveNodes(nodeId){
+    return {
+        type: REMOVE_FROM_EXPANDED_LIVE_NODES,
+        nodeId: nodeId
+    }
+}
+
+export function addToExpandedPlanNodes(nodeId){
+    return {
+        type: ADD_TO_EXPANDED_PLAN_NODES,
+        nodeId: nodeId
+    }
+}
+
+export function removeFromExpandedPlanNodes(nodeId){
+    return {
+        type: REMOVE_FROM_EXPANDED_PLAN_NODES,
+        nodeId: nodeId
+    }
+}
+
+export function requestLiveNetworkTreeData(){
+    return {
+        type: REQUEST_LIVE_NETWORK_TREE_DATA
+    }
+}
+
+export function stopRequestingLiveNetworkTreeData(){
+    return {
+        type: STOP_REQUESTING_LIVE_NETWORK_TREE_DATA
+    }
+}
+
+export function notifyTreeDataRequestFailure(error){
+    return {
+        type: NOTIFY_LIVE_NET_TREE_DATA_REQ_FAILURE,
+        error: error
+    }
+}
+
+export function receiveLiveNetworkTreeData(data, type){
+    return {
+        type: RECEIVE_LIVE_NETWORK_TREE_DATA,
+        data: data,
+        entityType: type
+    }
+}
+
+export function populateNetworkTree(requestState){
+    return (dispatch, getState) => {
+        dispatch(requestLiveNetworkTreeData());
+        
+        const authToken = getState().session.userDetails.token;
+        let apiEndPoint = "/api/network/live/nodes";
+        
+        if(requestState.type === 'nodes'){
+            apiEndPoint = "/api/network/live/nodes?start=" + requestState.start;
+            apiEndPoint += '&length=' + requestState.length;
+        }
+        
+        if(requestState.type === 'sites'){
+            apiEndPoint = "/api/network/live/sites?start=" + requestState.start;
+            apiEndPoint += '&length=' + requestState.length;
+        }
+        
+        if(requestState.type === 'cells'){
+            apiEndPoint = "/api/network/live/cells/umts?start=" + requestState.start;
+            apiEndPoint += '&length=' + requestState.length;
+        }
+        
+        console.log("apiEndPoint:", apiEndPoint);
+        console.log("requestState:", requestState);
+        
+        return axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            dispatch(receiveLiveNetworkTreeData(response.data, requestState.type));
+        })
+        .catch(function(error){
+            dispatch(notifyTreeDataRequestFailure("Failed to fetch data"));
+        });
+    }
 }
 
 export function getEntityFields(entity){
