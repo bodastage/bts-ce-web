@@ -10,6 +10,7 @@ class MOBrowser extends React.Component{
     constructor(props){
         super(props)
         this.setSidePanel = this.setSidePanel.bind(this);
+
     }
     
     setSidePanel(){

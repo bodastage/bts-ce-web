@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Tree, { TreeNode } from 'rc-tree';
 import 'rc-tree/assets/index.css';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
 import './mo-panel.css';
 import { addTab } from '../layout/uilayout-actions';
+import { Classes, Icon, ITreeNode, Tooltip, Tree, FormGroup, InputGroup } from "@blueprintjs/core";
 
 class MOBrowserPanel extends React.Component{
     static icon = "puzzle-piece";
@@ -21,10 +21,15 @@ class MOBrowserPanel extends React.Component{
         this.reload = this.reload.bind(this);
         this.rightClick = this.rightClick.bind(this);
         
+        this.onNodeDoubleClick = this.onNodeDoubleClick.bind(this);
+        this.updateTreeNodes = this.updateTreeNodes.bind(this);
+        
         
         this.text = this.props.filter.text;
         this.technology = this.props.filter.technology;
         this.vendor = this.props.filter.vendor;
+        
+        this.treeNodes = []
     }
     
     componentDidMount(){
@@ -35,9 +40,12 @@ class MOBrowserPanel extends React.Component{
     }
     
     rightClick(info){
-        this.showMODataTab(info.node.props.title, info.node.props.moId );
+        
     }
     
+    onNodeDoubleClick = (nodeData: ITreeNode) => {
+        this.showMODataTab(nodeData.label, nodeData.moId );
+    }
     
     showMODataTab(moName, moId){ 
         console.log('.moId:', moId);
@@ -75,8 +83,35 @@ class MOBrowserPanel extends React.Component{
         this.props.dispatch(dismissMOsFetchError());
     }
     
-    render(){
+    updateTreeNodes(){
+        this.treeNodes = []
+        
+        const vendorTechKey = this.props.filter.vendor + '-' + this.props.filter.technology
         const filterText = this.props.filter.text;
+        
+
+        
+        for(let vtKey in  this.props.mos[vendorTechKey]){
+            let node = this.props.mos[vendorTechKey][vtKey]
+            
+            if(filterText != ''){
+                var regex = new RegExp(filterText, 'i');
+                if ( !regex.test(node.name) ) continue;
+            }
+            
+            this.treeNodes.push({
+                icon: <FontAwesomeIcon className="mb-2" icon="puzzle-piece" className="mb-0"/>, 
+                id: node.pk, 
+                moId: node.pk,
+                label: node.name
+            });
+        }
+    }
+    
+    render(){
+        
+        
+        this.updateTreeNodes()
         
         return (
         <div>
@@ -122,15 +157,10 @@ class MOBrowserPanel extends React.Component{
                     </div>     
                 }
 
-                    <Tree  onRightClick={this.rightClick}>
-                    { this.props.mos[this.props.filter.vendor + '-' + this.props.filter.technology]
-                        .filter(function(v,k){
-                            var regex = new RegExp(filterText, 'i');
-                            return filterText === '' || regex.test(v.name);
-                        }).map( (v,k) => 
-                         <TreeNode title={v.name} isLeaf icon={<FontAwesomeIcon className="mb-2" icon="puzzle-piece"/>} key={v.name} moId={v.pk}/>
-                    )}
-                    </Tree>
+                    <Tree className="mo-browser-tree"
+                        contents={this.treeNodes}
+                        onNodeDoubleClick={this.onNodeDoubleClick}
+                    />
                 </div>
         </div>
         );
