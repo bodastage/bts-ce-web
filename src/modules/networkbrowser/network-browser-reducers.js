@@ -1,7 +1,8 @@
 import { REQUEST_NODES, RECEIVE_NODES, NOTIFY_NODE_REQUEST_FAILURE, 
         DISMISS_NODES_REQUEST_ERROR, RECEIVE_NODES_FIELDS, 
         ADD_TO_EXPANDED_LIVE_NODES, REMOVE_FROM_EXPANDED_LIVE_NODES,
-        REQUEST_LIVE_NETWORK_TREE_DATA, RECEIVE_LIVE_NETWORK_TREE_DATA } 
+        REQUEST_LIVE_NETWORK_TREE_DATA, RECEIVE_LIVE_NETWORK_TREE_DATA,
+        FILTER_NETWORK_TREE } 
      from './network-browser-actions';
 
 let initialState = {
@@ -14,7 +15,8 @@ let initialState = {
     plan_tree: [],
     live_expanded_nodes: [],
     requesting_tree_data: true,
-    live_tree_request_state: {type: "nodes",start:0,length:1000, total:null}
+    live_tree_request_state: {type: "nodes",start:0,length:1000, total:null},
+    tree_filter: {text: ""}
 };
 
 
@@ -110,6 +112,11 @@ export default function networkbrowser(state = initialState, action) {
             return {
                 ...state,
                 requesting_tree_data: true
+            }
+        case FILTER_NETWORK_TREE:
+            return {
+                ...state,
+                tree_filter: {text: action.searchText }
             }
         case RECEIVE_LIVE_NETWORK_TREE_DATA:
             let nodes = state.live_tree

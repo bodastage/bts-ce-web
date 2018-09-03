@@ -28,6 +28,9 @@ export const NOTIFY_LIVE_NET_TREE_DATA_REQ_FAILURE = 'NOTIFY_LIVE_NET_TREE_DATA_
 
 export const RECEIVE_LIVE_NETWORK_TREE_DATA = 'RECEIVE_LIVE_NETWORK_TREE_DATA';
 
+export const FILTER_NETWORK_TREE = 'FILTER_NETWORK_TREE';
+
+
 export function requestNodes(entity){
     return {
         type: REQUEST_NODES,
@@ -118,6 +121,13 @@ export function receiveLiveNetworkTreeData(data, type){
         type: RECEIVE_LIVE_NETWORK_TREE_DATA,
         data: data,
         entityType: type
+    }
+}
+
+export function filterNetworkTree(searchText){
+    return {
+        type: FILTER_NETWORK_TREE,
+        searchText: searchText
     }
 }
 
