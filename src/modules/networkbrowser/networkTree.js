@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addTab } from '../layout/uilayout-actions';
-import { Tree, ITreeNode, Button, Intent, FormGroup, InputGroup, Icon } 
+import { Tree, ITreeNode, Button, Intent, FormGroup, InputGroup, Icon,
+         Classes, ContextMenu, ContextMenuTarget, Menu, MenuDivider, MenuItem } 
     from "@blueprintjs/core";
 import { addToExpandedLiveNodes, removeFromExpandedLiveNodes, populateNetworkTree,
     filterNetworkTree } from '../networkbrowser/network-browser-actions'
@@ -16,6 +17,9 @@ class NetworkTree extends React.Component{
         this.handleNodeCollapse = this.handleNodeCollapse.bind(this)
         this.onNodeDoubleClick = this.onNodeDoubleClick.bind(this)
         this.handleChangeEvent = this.handleChangeEvent.bind(this)
+        this.showContextMenu = this.showContextMenu.bind(this)
+        
+        this.state = { isContextMenuOpen: false };
     }
     
     componentDidMount(){
@@ -24,8 +28,6 @@ class NetworkTree extends React.Component{
         }
 
     }
-    
-    
     
     onNodeDoubleClick(nodeData){
         console.log("nodeData", nodeData)
@@ -56,6 +58,27 @@ class NetworkTree extends React.Component{
 
     }
     
+    showContextMenu(node, nodePath, e){
+        e.preventDefault();
+        return;
+        
+        
+        // Add context menu based on entity type
+        ContextMenu.show(
+            <Menu>
+                <MenuItem icon="search-around" text="Search around..." />
+                <MenuItem icon="search" text="Object viewer" />
+                <MenuItem icon="graph-remove" text="Remove" />
+                <MenuItem icon="group-objects" text="Group" />
+                <MenuDivider />
+                <MenuItem disabled={true} text="Clicked on node" />
+            </Menu>,
+            { left: e.clientX, top: e.clientY },
+            () => this.setState({ isContextMenuOpen: false }),
+        );
+
+        this.setState({ isContextMenuOpen: true });
+    }
     /**
      * Create BluePrint node list
      * 
@@ -113,6 +136,7 @@ class NetworkTree extends React.Component{
     
     render(){
         this.updateNodes();
+        
         return (
             <div>
                 <h6><FontAwesomeIcon icon="sitemap"/> Network Tree</h6>
@@ -139,6 +163,7 @@ class NetworkTree extends React.Component{
             onNodeDoubleClick={this.onNodeDoubleClick}
             onNodeExpand={this.handleNodeExpand}
             onNodeCollapse={this.handleNodeCollapse}
+            onNodeContextMenu={this.showContextMenu}
         />
             
             </div> 

@@ -74,6 +74,60 @@ describe('networkbrowser.actions', () => {
         expect(actions.notifyNodesRequestFailure(entity, errorMessage)).toEqual(expectedAction)
     })
     
+    
+    it('should create an action to add a node to the expanded live node list', () => {
+        const nodeId = 'mscs';
+        
+        const expectedAction = {
+          type: actions.ADD_TO_EXPANDED_LIVE_NODES,
+          nodeId: nodeId
+        }
+        expect(actions.addToExpandedLiveNodes(nodeId)).toEqual(expectedAction)
+    })
+    
+    it('should create an action to from a node from the expanded live node list', () => {
+        const nodeId = 'mscs';
+        
+        const expectedAction = {
+          type: actions.REMOVE_FROM_EXPANDED_LIVE_NODES,
+          nodeId: nodeId
+        }
+        expect(actions.removeFromExpandedLiveNodes(nodeId)).toEqual(expectedAction)
+    })
+    
+    it('should create an action to add a node to the expanded plan node list', () => {
+        const nodeId = 'mscs';
+        
+        const expectedAction = {
+          type: actions.ADD_TO_EXPANDED_PLAN_NODES,
+          nodeId: nodeId
+        }
+        expect(actions.addToExpandedPlanNodes(nodeId)).toEqual(expectedAction)
+    })
+    
+    it('should create an action to from a node from the expanded plan node list', () => {
+        const nodeId = 'mscs';
+        
+        const expectedAction = {
+          type: actions.REMOVE_FROM_EXPANDED_PLAN_NODES,
+          nodeId: nodeId
+        }
+        expect(actions.removeFromExpandedPlanNodes(nodeId)).toEqual(expectedAction)
+    })
+    
+    it('should create an action to request live network tree data', () => {
+        const expectedAction = {
+          type: actions.REQUEST_LIVE_NETWORK_TREE_DATA
+        }
+        expect(actions.requestLiveNetworkTreeData()).toEqual(expectedAction)
+    })
+    
+    it('should create an action to stop requesting live network tree data', () => {
+        const expectedAction = {
+          type: actions.STOP_REQUESTING_LIVE_NETWORK_TREE_DATA
+        }
+        expect(actions.stopRequestingLiveNetworkTreeData()).toEqual(expectedAction)
+    })
 });
 
 describe('networkbrowser.actions.async', () => {
