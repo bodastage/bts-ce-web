@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import 'rc-tree/assets/index.css';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
 import './mo-panel.css';
 import { addTab } from '../layout/uilayout-actions';
