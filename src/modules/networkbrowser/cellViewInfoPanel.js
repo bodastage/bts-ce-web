@@ -18,14 +18,24 @@ export default class CellViewInfoPanel extends React.Component{
     handleTabChange = (navbarTabId) => this.setState({ activeTab: navbarTabId });
     
     render(){
+        console.log("this.props.panelHeight:", this.props.panelHeight)
+        const height = this.props.panelHeight - 30
         return(
-            <Tabs id="TabsExample" onChange={this.handleTabChange} selectedTabId={this.state.activeTab} className="p-1" animate={true}>
-                <Tab id="info" title="Parameters" panel={<CellViewParameters />} />
-                <Tab id="kpi" title="KPIs" panel={<CellViewKPI />} />
-                <Tab id="nbrs" title="Relations" panel={<CellViewRelations />} />
-                <Tabs.Expander />
-                <input className="bp3-input" type="text" placeholder="Search..." />
-            </Tabs>
+            <div className="card">
+                <div className="card-header">
+                    Configuration
+                </div>
+                <div style={{height: height + "px", overflowY: "scroll"}}>
+                <Tabs id="TabsExample" onChange={this.handleTabChange} 
+                      selectedTabId={this.state.activeTab} 
+                      className="p-1" animate={true}>
+                    <Tab id="info" title="Parameters" panel={<CellViewParameters cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>}/>
+                    <Tab id="kpi" title="KPIs" panel={<CellViewKPI panelHeight={this.props.panelHeight}/>} />
+                    <Tab id="nbrs" title="Relations" panel={<CellViewRelations panelHeight={this.props.panelHeight}/>} />
+                </Tabs>
+                </div>
+            </div>
+
         )
     }
 }

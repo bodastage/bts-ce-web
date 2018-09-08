@@ -2,13 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addTab } from '../layout/uilayout-actions';
-
+import { setSidePanel } from '../layout/uilayout-actions';
 
 class NetworkBrowser extends React.Component{
     static icon = "sitemap";
     static label = "Network Browser";
+    
     constructor(props){
         super(props);
+        
+        this.showNetworkTree = this.showNetworkTree.bind(this)
     }
     
     launchEntityTab = (options) => (e) => { 
@@ -22,6 +25,10 @@ class NetworkBrowser extends React.Component{
         }));
     }
     
+    showNetworkTree(){
+        this.props.dispatch(setSidePanel('NetworkTree'));
+    }
+    
     render(){
         return (
                 
@@ -30,7 +37,7 @@ class NetworkBrowser extends React.Component{
 
             <div className="card  mb-2">
                 <div className="card-body p-3">
-                    <a href="#" className="launch-network-tree"><FontAwesomeIcon icon="arrow-right"/> Launch tree browser</a>        
+                    <a href="#" className="launch-network-tree" onClick={this.showNetworkTree}><FontAwesomeIcon icon="arrow-right"/> View network tree</a>        
                 </div>
             </div>
             
@@ -60,4 +67,4 @@ class NetworkBrowser extends React.Component{
     }
 }
 
-export default connect()(NetworkBrowser);
+export default connect()(NetworkBrowser)

@@ -17,3 +17,22 @@
     -webkit-box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.2);
     box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.2);
 }
+
+
+.bp3-tab-panel {
+    margin-top: 2px !important;
+}
+
+
+.card-header {
+    padding: .5rem 1.25rem !important;
+    cursor: grabbing;
+}
+
+.overflow-y{
+    overflow-y: scroll;
+}
+
+.cellview-map-container{
+    margin:2px !important;
+}

@@ -35,7 +35,8 @@ class NetworkTree extends React.Component{
             const cellId = nodeData.entityId
             let tabId = 'cell_view_' + cellId + "_Tab";
             this.props.dispatch(addTab(tabId, 'CellView', {
-                title: nodeData.label
+                title: nodeData.label,
+                cellId: nodeData.entityId
             }));
         }
 
@@ -61,7 +62,6 @@ class NetworkTree extends React.Component{
     showContextMenu(node, nodePath, e){
         e.preventDefault();
         return;
-        
         
         // Add context menu based on entity type
         ContextMenu.show(

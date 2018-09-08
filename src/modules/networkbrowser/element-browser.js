@@ -170,7 +170,7 @@ class ElementBrowser extends React.Component{
                             components={this.state.components}
                             enableColResize={true}
                             rowBuffer={this.state.rowBuffer}
-                            debug={true}
+                            debug={false}
                             rowSelection={this.state.rowSelection}
                             rowDeselection={true}
                             rowModelType={this.state.rowModelType}

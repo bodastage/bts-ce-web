@@ -1,34 +1,71 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import 'ag-grid/dist/styles/ag-grid.css';
+import 'ag-grid/dist/styles/ag-theme-balham.css';
+import {AgGridReact} from 'ag-grid-react';
 
-export default class CellViewParameters extends React.Component{
+
+class CellViewParameters extends React.Component{
+    constructor(props){
+        super(props);
+        
+        this.updateRowData = this.updateRowData.bind(this)
+        
+        this.state = {
+                columnDefs: [
+                    {headerName: "Name", field: "name",  filter: "agTextColumnFilter"},
+                    {headerName: "Network Value", field: "value",  filter: "agTextColumnFilter"}
+
+                ],
+                rowData: [
+                ]
+        }
+        
+        this.rowData = []
+    }
+    
+    updateRowData(){
+        this.rowData = []
+        for(let name in this.props.parameters){
+            const value = this.props.parameters[name]
+            this.rowData.push({"name":name.toUpperCase(), "value": value })
+        }
+    }
+    
     render(){
+        
+        this.updateRowData();
+        
         return (<div>
-<table className="bp3-html-table .modifier">
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>Description</th>
-      <th>Technologies</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Blueprint</td>
-      <td>CSS framework and UI toolkit</td>
-      <td>Sass, TypeScript, React</td>
-    </tr>
-    <tr>
-      <td>TSLint</td>
-      <td>Static analysis linter for TypeScript</td>
-      <td>TypeScript</td>
-    </tr>
-    <tr>
-      <td>Plottable</td>
-      <td>Composable charting library built on top of D3</td>
-      <td>SVG, TypeScript, D3</td>
-    </tr>
-  </tbody>
-</table>            
+                    <div
+                        className="ag-theme-balham "
+                        style={{width: '100%'}}
+                    >
+                        <AgGridReact
+                            enableColResize={true}
+                            gridAutoHeight={true}
+                            columnDefs={this.state.columnDefs}
+                            enableFilter={true}
+                            enableSorting={true}
+                            rowData={this.rowData}>
+                        </AgGridReact>
+                    </div>      
         </div>)
     }
 }
+
+
+function mapStateToProps(state, ownProps) {
+    if (typeof state.networkbrowser.cells[ownProps.cellId] === 'undefined'){
+        return {
+            parameters: null
+        };
+    }
+    
+  return {
+    parameters: state.networkbrowser.cells[ownProps.cellId]["parameters"]
+  };
+}
+
+export default connect(mapStateToProps)(CellViewParameters);

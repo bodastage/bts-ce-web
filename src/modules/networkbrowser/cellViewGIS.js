@@ -29,10 +29,13 @@ class CellViewGIS extends React.Component{
         }
         
         this.handleResize = this.handleResize.bind(this);
+        
+        this.refId = "map_" + props.cellId
+        
     }
    
     componentDidMount () {
-        const map = this.refs.map.leafletElement;
+        const map = this.refs[this.refId].leafletElement;
         
         //By the time the GIS tab is shown, the GIS component has already
         //been mounted. As a result, leaflet does not display correctly because
@@ -45,7 +48,7 @@ class CellViewGIS extends React.Component{
     }
     
     componentDidUpdate(){
-        const map = this.refs.map.leafletElement;
+        const map = this.refs[this.refId].leafletElement;
         map.invalidateSize();
         
         L.semiCircle([this.state.lat, this.state.lng], {radius: 1000, color: "#FF5733"})
@@ -56,8 +59,7 @@ class CellViewGIS extends React.Component{
     handleResize(resizeEntries){
         this.setState({height: resizeEntries[0].contentRect.height})
         
-        console.log("resizeEntries[0].contentRect.height:", resizeEntries[0].contentRect.height);
-        const map = this.refs.map.leafletElement;
+        const map = this.refs[this.refId].leafletElement;
         setTimeout(function(){
             map.invalidateSize();
         },500);
@@ -65,14 +67,17 @@ class CellViewGIS extends React.Component{
     
     render(){
         const position = [this.state.lat, this.state.lng]
-        const height = this.props.mapHeight;
+        const height = this.props.mapHeight-10;
+         
         return (
-                <div className="map-container" >
+                <div className="cellview-map-container" >
                 <ResizeSensor onResize={this.handleResize}>
-                <Map ref="map" center={position} zoom={this.state.zoom} style={{height: height + 'px'}}>
-                    <TileLayer
-                      attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                <Map ref={this.refId} center={position} 
+                    attributionControl={false}
+                    zoom={this.state.zoom} 
+                    style={{height: height + 'px'}}>
+                    <TileLayer    
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                 </Map>
                 </ResizeSensor>

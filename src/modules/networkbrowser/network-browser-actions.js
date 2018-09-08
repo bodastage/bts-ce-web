@@ -30,6 +30,17 @@ export const RECEIVE_LIVE_NETWORK_TREE_DATA = 'RECEIVE_LIVE_NETWORK_TREE_DATA';
 
 export const FILTER_NETWORK_TREE = 'FILTER_NETWORK_TREE';
 
+export const REQUEST_CELL_PARAMETERS = 'REQUEST_CELL_PARAMETERS';
+
+export const RECEIVE_CELL_PARAMETERS = 'RECEIVE_CELL_PARAMETERS';
+
+export const NOTIFY_CELL_PARAMETERS_REQUEST_FAILURE = 'NOTIFY_CELL_PARAMETERS_REQUEST_FAILURE';
+
+export const REQUEST_CELL_RELATIONS = 'REQUEST_CELL_RELATIONS';
+
+export const RECEIVE_CELL_RELATIONS = 'RECEIVE_CELL_RELATIONS';
+
+export const NOTIFY_CELL_RELATIONS_REQUEST_FAILURE = 'NOTIFY_CELL_RELATIONS_REQUEST_FAILURE';
 
 export function requestNodes(entity){
     return {
@@ -131,6 +142,63 @@ export function filterNetworkTree(searchText){
     }
 }
 
+export function requestCellParameters(cellId){
+    return {
+        type: REQUEST_CELL_PARAMETERS,
+        cellId: cellId
+    }    
+}
+
+export function receiveCellParameters(cellId, data){
+    return {
+        type: RECEIVE_CELL_PARAMETERS,
+        cellId: cellId,
+        data: data
+    }    
+}
+
+export function requestCellRelations(cellId){
+    return {
+        type: REQUEST_CELL_RELATIONS,
+        cellId: cellId
+    }    
+}
+
+export function receiveCellRelations(cellId, data){
+    return {
+        type: RECEIVE_CELL_RELATIONS,
+        cellId: cellId,
+        data: data
+    }    
+}
+
+export function notifyCellParametersRequestFailure(cellId, error){
+    return {
+        type: NOTIFY_CELL_PARAMETERS_REQUEST_FAILURE,
+        error: error,
+        cellId: cellId
+    }
+}
+
+export function getCellParameters(cellId){
+    return (dispatch, getState) => {
+        dispatch(requestCellParameters(cellId));
+        const authToken = getState().session.userDetails.token;
+        let apiEndPoint = "/api/network/live/cell/" + cellId;
+        
+        return axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            dispatch(receiveCellParameters(cellId, response.data));
+        })
+        .catch(function(error){
+            dispatch(notifyCellParametersRequestFailure(cellId, "Failed to fetch data"));
+        });
+        
+    }
+}
+
 export function populateNetworkTree(requestState){
     return (dispatch, getState) => {
         dispatch(requestLiveNetworkTreeData());
@@ -152,9 +220,6 @@ export function populateNetworkTree(requestState){
             apiEndPoint = "/api/network/live/cells/umts?start=" + requestState.start;
             apiEndPoint += '&length=' + requestState.length;
         }
-        
-        console.log("apiEndPoint:", apiEndPoint);
-        console.log("requestState:", requestState);
         
         return axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }
