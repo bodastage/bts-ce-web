@@ -36,3 +36,7 @@
 .cellview-map-container{
     margin:2px !important;
 }
+
+.cell-view .card {
+    border: 0px !important;
+}

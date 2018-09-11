@@ -7,7 +7,7 @@ export default class CellViewPerformance extends React.Component{
     }
     
     render(){
-        const height = this.props.panelHeight - 30
+        const height = this.props.panelHeight - 35
         return (<div>
             <Plot
                 data={[

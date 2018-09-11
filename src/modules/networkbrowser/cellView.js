@@ -8,6 +8,7 @@ import '../../../node_modules/react-resizable/css/styles.css'
 import './cellView.css';
 import CellViewGIS from './cellViewGIS'
 import CellViewPerformance from './cellViewPerformance'
+import CellViewOptimization from './cellViewOptimization'
 import CellViewInfoPanel from './cellViewInfoPanel'
 import { Button, Card, Elevation, ResizeSensor } from "@blueprintjs/core";
 import { getCellParameters } from './network-browser-actions'
@@ -27,7 +28,9 @@ class CellView extends React.Component{
             rowHeight: (window.innerHeight - 150)/4,
             mapHeight: initPanelHeight,
             pmHeight: initPanelHeight,
-            cmHeight: initPanelHeight
+            cmHeight: initPanelHeight,
+            optHeight: initPanelHeight
+            
         }
         
         this.handleResize = this.handleResize.bind(this)
@@ -52,11 +55,13 @@ class CellView extends React.Component{
         const mapHeight = rowHeight * layoutH - 30;
         const pmHeight  = rowHeight * layout[2].h
         const cmPanelHeight  = rowHeight * layout[1].h
+        const optHeight  = rowHeight * layout[3].h
         this.setState(
                 {
                     mapHeight: mapHeight,
                     pmHeight: pmHeight,
-                    cmHeight: cmPanelHeight
+                    cmHeight: cmPanelHeight,
+                    optHeight: optHeight
                 })
     }
     
@@ -73,7 +78,7 @@ class CellView extends React.Component{
           {i: 'd', x: 0, y: 0, w: 1, h: 2}
         ];
         return (
-        <div>
+        <div className="cell-view">
            <h3><FontAwesomeIcon icon="rss"/> {this.props.options.title}</h3>
            <div><ResizeSensor onResize={this.handleResize}>
             <GridLayout className="layout" 
@@ -108,6 +113,7 @@ class CellView extends React.Component{
                     <div className="card-header">
                       Optimzation
                     </div>
+                    <CellViewOptimization panelHeight={this.state.optHeight}/>
                   </div>
               </div>
             </GridLayout>

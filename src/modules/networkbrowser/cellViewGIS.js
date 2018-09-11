@@ -23,8 +23,8 @@ class CellViewGIS extends React.Component{
         this.state = {
             lat: this.props.latitude,
             lng: this.props.longitude,
+            azimuth: this.props.azimuth,
             zoom: 13,
-            height: window.innerHeight - 150,
             cellId: 'W_0221'
         }
         
@@ -52,7 +52,7 @@ class CellViewGIS extends React.Component{
         map.invalidateSize();
         
         L.semiCircle([this.state.lat, this.state.lng], {radius: 1000, color: "#FF5733"})
-            .setDirection(90, 45)
+            .setDirection(this.state.azimuth, 45)
             .addTo(map);
     }
     
@@ -66,7 +66,7 @@ class CellViewGIS extends React.Component{
     }
     
     render(){
-        const position = [this.state.lat, this.state.lng]
+        const position = [this.props.latitude, this.props.longitude]
         const height = this.props.mapHeight-10;
          
         return (
@@ -86,10 +86,22 @@ class CellViewGIS extends React.Component{
     }
 }
 
-function mapStateToProps(state){
-    return {
-        latitude: 51.505,
-        longitude: -0.09
-    };
+function mapStateToProps(state, ownProps){
+    
+    if (typeof state.networkbrowser.cells[ownProps.cellId] === 'undefined'){
+        return {
+            latitude: 51.505,
+            longitude: -0.09,
+            azimuth: 0
+        };
+    }
+    
+  return {
+    latitude: state.networkbrowser.cells[ownProps.cellId]["parameters"].latitude,
+    longitude: state.networkbrowser.cells[ownProps.cellId]["parameters"].longitude,
+    azimuth: state.networkbrowser.cells[ownProps.cellId]["parameters"].azimuth
+  };
+  
+
 }
 export default connect(mapStateToProps)(CellViewGIS);
