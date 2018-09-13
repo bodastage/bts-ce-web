@@ -11,7 +11,7 @@ import CellViewPerformance from './cellViewPerformance'
 import CellViewOptimization from './cellViewOptimization'
 import CellViewInfoPanel from './cellViewInfoPanel'
 import { Button, Card, Elevation, ResizeSensor } from "@blueprintjs/core";
-import { getCellParameters } from './network-browser-actions'
+import { getCellParameters, getCellRelations } from './network-browser-actions'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -41,6 +41,11 @@ class CellView extends React.Component{
         //Fetch cell parameters
         if(this.props.parameters === null){
             this.props.dispatch(getCellParameters(this.props.options.cellId))
+        }
+        
+        //Fetch cell relations
+        if(this.props.relations === null){
+            this.props.dispatch(getCellRelations(this.props.options.cellId))
         }
     }
     
@@ -126,12 +131,14 @@ class CellView extends React.Component{
 function mapStateToProps(state, ownProps) {
     if (typeof state.networkbrowser.cells[ownProps.options.cellId] === 'undefined'){
         return {
-            parameters: null
+            parameters: null,
+            relations: null
         };
     }
     
   return {
-    parameters: state.networkbrowser.cells[ownProps.options.cellId]["parameters"]
+    parameters: state.networkbrowser.cells[ownProps.options.cellId]["parameters"],
+    relations: state.networkbrowser.cells[ownProps.options.cellId]["relations"]
   };
 }
 

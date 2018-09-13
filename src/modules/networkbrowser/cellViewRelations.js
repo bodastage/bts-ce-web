@@ -1,34 +1,55 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {AgGridReact} from 'ag-grid-react';
 
-export default class CellViewRelations extends React.Component{
+class CellViewRelations extends React.Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            columnDefs: [
+                
+                {headerName: "SVRCELL", field: "svrcell",  filter: "agTextColumnFilter"},
+                {headerName: "NBRCELL", field: "nbrcell",  filter: "agTextColumnFilter"},
+                {headerName: "SVRVENDOR", field: "svrvendor",  filter: "agTextColumnFilter"},
+                {headerName: "NBRVENDOR", field: "nbrvendor",  filter: "agTextColumnFilter"}
+            ],
+            rowData: [
+            ]
+        }
+        
+        this.rowData = []
+    }
+    
     render(){
         return (<div>
-        <table className="bp3-html-table .modifier">
-          <thead>
-            <tr>
-              <th>Project</th>
-              <th>Description</th>
-              <th>Technologies</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Blueprint</td>
-              <td>CSS framework and UI toolkit</td>
-              <td>Sass, TypeScript, React</td>
-            </tr>
-            <tr>
-              <td>TSLint</td>
-              <td>Static analysis linter for TypeScript</td>
-              <td>TypeScript</td>
-            </tr>
-            <tr>
-              <td>Plottable</td>
-              <td>Composable charting library built on top of D3</td>
-              <td>SVG, TypeScript, D3</td>
-            </tr>
-          </tbody>
-        </table>            
+                    <div
+                    className="ag-theme-balham "
+                    style={{width: '100%'}}
+                >
+                    <AgGridReact
+                        enableColResize={true}
+                        gridAutoHeight={true}
+                        columnDefs={this.state.columnDefs}
+                        enableFilter={true}
+                        enableSorting={true}
+                        rowData={this.props.relations}>
+                    </AgGridReact>
+                </div>             
         </div>)
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    if (typeof state.networkbrowser.cells[ownProps.cellId] === 'undefined'){
+        return {
+            relations: []
+        };
+    }
+    
+  return {
+    relations: state.networkbrowser.cells[ownProps.cellId]["relations"]
+  };
+}
+
+export default connect(mapStateToProps)(CellViewRelations);

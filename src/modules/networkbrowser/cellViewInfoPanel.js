@@ -30,9 +30,9 @@ export default class CellViewInfoPanel extends React.Component{
                       selectedTabId={this.state.activeTab} 
                       className="p-1" animate={true}>
                     <Tab id="info" title="Parameters" panel={<CellViewParameters cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>}/>
-                    <Tab id="nbrs" title="Relations" panel={<CellViewRelations panelHeight={this.props.panelHeight}/>} />
-                    <Tab id="core_def" title="Core Definitions" panel={<CellViewRelations panelHeight={this.props.panelHeight}/>} />
-                    <Tab id="ext_def" title="External Definitions" panel={<CellViewRelations panelHeight={this.props.panelHeight}/>} />
+                    <Tab id="nbrs" title="Relations" panel={<CellViewRelations cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
+                    <Tab id="core_def" title="Core Definitions" panel={<CellViewRelations cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
+                    <Tab id="ext_def" title="External Definitions" panel={<CellViewRelations cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
                 </Tabs>
                 </div>
             </div>

@@ -2,7 +2,8 @@ import { REQUEST_NODES, RECEIVE_NODES, NOTIFY_NODE_REQUEST_FAILURE,
         DISMISS_NODES_REQUEST_ERROR, RECEIVE_NODES_FIELDS, 
         ADD_TO_EXPANDED_LIVE_NODES, REMOVE_FROM_EXPANDED_LIVE_NODES,
         REQUEST_LIVE_NETWORK_TREE_DATA, RECEIVE_LIVE_NETWORK_TREE_DATA,
-        FILTER_NETWORK_TREE, REQUEST_CELL_PARAMETERS, RECEIVE_CELL_PARAMETERS } 
+        FILTER_NETWORK_TREE, REQUEST_CELL_PARAMETERS, RECEIVE_CELL_PARAMETERS,
+        RECEIVE_CELL_RELATIONS, REQUEST_CELL_RELATIONS} 
      from './network-browser-actions';
 
 let initialState = {
@@ -166,7 +167,7 @@ export default function networkbrowser(state = initialState, action) {
 
                     nodeId = "rnc-" + n.node ;
                     siteId = "site-" + n.site
-                    nodes['rncs'].children[nodeId].children[siteId].children[id] = {"id": id, "entityId": n.ci, "name": n.cellname, "type": "cell"}
+                    nodes['rncs'].children[nodeId].children[siteId].children[id] = {"id": id, "entityId": n.cell_pk, "name": n.cellname, "type": "cell"}
                     //nodes['rncs'].children[nodeId].children[siteId].count = typeof nodes['rncs'].children[nodeId].children[siteId].count === 'undefined' ? 0 : nodes['rncs'].children[nodeId].children[siteId].count + 1
                     
                 }
@@ -211,7 +212,17 @@ export default function networkbrowser(state = initialState, action) {
                 ...state,
                 cells: {
                     ...state.cells, 
-                    [action.cellId]: { parameters: action.data }
+                    [action.cellId]: { ...state.cells[action.cellId], parameters: action.data }
+                }
+           }
+        case REQUEST_CELL_RELATIONS:
+            return state;
+        case RECEIVE_CELL_RELATIONS:
+            return {
+                ...state,
+                cells: {
+                    ...state.cells, 
+                    [action.cellId]: { ...state.cells[action.cellId], relations: action.data }
                 }
            }
         default:

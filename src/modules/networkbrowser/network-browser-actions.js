@@ -180,6 +180,14 @@ export function notifyCellParametersRequestFailure(cellId, error){
     }
 }
 
+export function notifyCellRelationsRequestFailure(cellId, error){
+    return {
+        type: NOTIFY_CELL_RELATIONS_REQUEST_FAILURE,
+        error: error,
+        cellId: cellId
+    }
+}
+
 export function getCellParameters(cellId){
     return (dispatch, getState) => {
         dispatch(requestCellParameters(cellId));
@@ -194,6 +202,24 @@ export function getCellParameters(cellId){
         })
         .catch(function(error){
             dispatch(notifyCellParametersRequestFailure(cellId, "Failed to fetch data"));
+        });
+    }
+}
+
+export function getCellRelations(cellId){
+    return (dispatch, getState) => {
+        dispatch(requestCellRelations(cellId));
+        const authToken = getState().session.userDetails.token;
+        let apiEndPoint = "/api/network/live/cellrelations/" + cellId;
+        
+        return axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            dispatch(receiveCellRelations(cellId, response.data));
+        })
+        .catch(function(error){
+            dispatch(notifyCellRelationsRequestFailure(cellId, "Failed to fetch data"));
         });
         
     }
