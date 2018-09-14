@@ -2,25 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {AgGridReact} from 'ag-grid-react';
 
-class CellViewRelations extends React.Component{
+class CellViewCoreDefinitions extends React.Component{
     constructor(props){
         super(props);
 
         this.state = {
             columnDefs: [
                 
-                {headerName: "SVRCELL", field: "svrcell",  filter: "agTextColumnFilter"},
-                {headerName: "NBRCELL", field: "nbrcell",  filter: "agTextColumnFilter"},
-                {headerName: "SVRSITE", field: "svrsite",  filter: "agTextColumnFilter"},
-                {headerName: "NBRSITE", field: "nbrsite",  filter: "agTextColumnFilter"},
-                {headerName: "SVRVENDOR", field: "svrvendor",  filter: "agTextColumnFilter"},
-                {headerName: "NBRVENDOR", field: "nbrvendor",  filter: "agTextColumnFilter"}
+                {headerName: "NODENAME", field: "nodename",  filter: "agTextColumnFilter"},
+                {headerName: "CELLNAME", field: "cellname",  filter: "agTextColumnFilter"},
+                {headerName: "CGI", field: "cgi",  filter: "agTextColumnFilter"}
             ],
-            rowData: [
-            ]
+            rowData: []
         }
-        
-        this.rowData = []
     }
     
     render(){
@@ -35,7 +29,7 @@ class CellViewRelations extends React.Component{
                         columnDefs={this.state.columnDefs}
                         enableFilter={true}
                         enableSorting={true}
-                        rowData={this.props.relations}>
+                        rowData={this.props.core_defs}>
                     </AgGridReact>
                 </div>             
         </div>)
@@ -45,13 +39,19 @@ class CellViewRelations extends React.Component{
 function mapStateToProps(state, ownProps) {
     if (typeof state.networkbrowser.cells[ownProps.cellId] === 'undefined'){
         return {
-            relations: []
+            core_defs: []
+        };
+    }
+    
+    if (typeof state.networkbrowser.cells[ownProps.cellId]["core_defs"] === 'undefined'){
+        return {
+            core_defs: []
         };
     }
     
   return {
-    relations: state.networkbrowser.cells[ownProps.cellId]["relations"]
+    core_defs: state.networkbrowser.cells[ownProps.cellId]["core_defs"]
   };
 }
 
-export default connect(mapStateToProps)(CellViewRelations);
+export default connect(mapStateToProps)(CellViewCoreDefinitions);

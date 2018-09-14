@@ -3,6 +3,8 @@ import { Tab, Tabs } from "@blueprintjs/core";
 import CellViewParameters from './cellViewParameters'
 import CellViewKPI from './cellViewKPI'
 import CellViewRelations from './cellViewRelations'
+import CellViewCoreDefinitions from './cellViewCoreDefs'
+import CellViewExternalDefinitions from './cellViewExtDefs'
 
 export default class CellViewInfoPanel extends React.Component{
     constructor(props){
@@ -18,7 +20,6 @@ export default class CellViewInfoPanel extends React.Component{
     handleTabChange = (navbarTabId) => this.setState({ activeTab: navbarTabId });
     
     render(){
-        console.log("this.props.panelHeight:", this.props.panelHeight)
         const height = this.props.panelHeight - 30
         return(
             <div className="card">
@@ -31,8 +32,8 @@ export default class CellViewInfoPanel extends React.Component{
                       className="p-1" animate={true}>
                     <Tab id="info" title="Parameters" panel={<CellViewParameters cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>}/>
                     <Tab id="nbrs" title="Relations" panel={<CellViewRelations cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
-                    <Tab id="core_def" title="Core Definitions" panel={<CellViewRelations cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
-                    <Tab id="ext_def" title="External Definitions" panel={<CellViewRelations cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
+                    <Tab id="core_def" title="Core Definitions" panel={<CellViewCoreDefinitions cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
+                    <Tab id="ext_def" title="External Definitions" panel={<CellViewExternalDefinitions cellId={this.props.cellId} panelHeight={this.props.panelHeight}/>} />
                 </Tabs>
                 </div>
             </div>

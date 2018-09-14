@@ -51,10 +51,15 @@ class CellViewGIS extends React.Component{
         const map = this.refs[this.refId].leafletElement;
         map.invalidateSize();
         
-        L.semiCircle([this.state.lat, this.state.lng], {radius: 1000, color: "#FF5733"})
+        
+        let semiCircle = L.semiCircle([this.state.lat, this.state.lng], 
+                                        {radius: 1000, color: "#FF5733"}
+                                     )
             .setDirection(this.state.azimuth, 45)
             .addTo(map);
+
     }
+    
     
     handleResize(resizeEntries){
         this.setState({height: resizeEntries[0].contentRect.height})
