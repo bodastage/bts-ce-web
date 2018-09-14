@@ -25,7 +25,7 @@ class CellViewGIS extends React.Component{
             lng: this.props.longitude,
             azimuth: this.props.azimuth,
             zoom: 13,
-            cellId: 'W_0221'
+            addedToMap: false
         }
         
         this.handleResize = this.handleResize.bind(this);
@@ -56,8 +56,12 @@ class CellViewGIS extends React.Component{
                                         {radius: 1000, color: "#FF5733"}
                                      )
             .setDirection(this.state.azimuth, 45)
-            .addTo(map);
-
+//            .addTo(map);   
+        if(this.state.addedToMap === false) {
+            setTimeout(() => semiCircle.addTo(map),600);
+            this.setState({addedToMap: true});
+        }
+        
     }
     
     

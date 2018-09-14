@@ -6,6 +6,11 @@ export default class CellViewPerformance extends React.Component{
         super(props)
     }
     
+    componentDidMount(){
+
+    }
+    
+    
     render(){
         const height = this.props.panelHeight - 35
         return (<div>
