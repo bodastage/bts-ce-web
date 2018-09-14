@@ -11,7 +11,9 @@ let initialState = {
         "mscs": {name: "MSCs", id: "mscs", children: {}},
         "bscs": {name: "BSCs", id: "bscs", children: {}},
         "rncs":{name: "RNCs", id: "rncs", children: {}},
-        "enodebs":{name: "eNodeBs", id: "enodebs", children: []}
+        "enodebs":{name: "eNodeBs", id: "enodebs", children: []},
+        "mmes":{name: "MMEs", id: "mmes", children: []},
+        "nrs":{name: "5G-NRs", id: "nrs", children: []}
     },
     plan_tree: [],
     live_expanded_nodes: [],

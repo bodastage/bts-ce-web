@@ -62,12 +62,12 @@ class CellView extends React.Component{
         const cmPanelHeight  = rowHeight * layout[1].h
         const optHeight  = rowHeight * layout[3].h
         this.setState(
-                {
-                    mapHeight: mapHeight,
-                    pmHeight: pmHeight,
-                    cmHeight: cmPanelHeight,
-                    optHeight: optHeight
-                })
+            {
+                mapHeight: mapHeight,
+                pmHeight: pmHeight,
+                cmHeight: cmPanelHeight,
+                optHeight: optHeight
+            })
     }
     
     render(){
@@ -96,7 +96,7 @@ class CellView extends React.Component{
               <div key="a" className="rgl-border">
                   <div className="card">
                     <div className="card-header">
-                      Visual
+                      GIS
                     </div>
                     <CellViewGIS mapHeight={this.state.mapHeight} cellId={this.props.options.cellId}></CellViewGIS>
                   </div>

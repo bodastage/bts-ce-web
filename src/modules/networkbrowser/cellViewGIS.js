@@ -52,13 +52,13 @@ class CellViewGIS extends React.Component{
         map.invalidateSize();
         
         
-        let semiCircle = L.semiCircle([this.state.lat, this.state.lng], 
+        let servingCell = L.semiCircle([this.state.lat, this.state.lng], 
                                         {radius: 1000, color: "#FF5733"}
                                      )
             .setDirection(this.state.azimuth, 45)
-//            .addTo(map);   
+     
         if(this.state.addedToMap === false) {
-            setTimeout(() => semiCircle.addTo(map),600);
+            setTimeout(() => servingCell.addTo(map),600);
             this.setState({addedToMap: true});
         }
         
@@ -101,16 +101,17 @@ function mapStateToProps(state, ownProps){
         return {
             latitude: 51.505,
             longitude: -0.09,
-            azimuth: 0
+            azimuth: 0,
+            relations: []
         };
     }
     
   return {
     latitude: state.networkbrowser.cells[ownProps.cellId]["parameters"].latitude,
     longitude: state.networkbrowser.cells[ownProps.cellId]["parameters"].longitude,
-    azimuth: state.networkbrowser.cells[ownProps.cellId]["parameters"].azimuth
+    azimuth: state.networkbrowser.cells[ownProps.cellId]["parameters"].azimuth,
+    relations: state.networkbrowser.cells[ownProps.cellId]["relations"]
   };
   
-
 }
 export default connect(mapStateToProps)(CellViewGIS);
