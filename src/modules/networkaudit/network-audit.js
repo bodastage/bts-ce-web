@@ -25,13 +25,12 @@ class NetworkAudit extends React.Component{
 
             <div className="card  mb-2">
                 <div className="card-body p-3">
-                    <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> Launch audit rules</a>        
+                    <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> View audit rules</a>        
                 </div>
             </div>
         </div>
         );
     }
-    
 }
 
 export default connect()(NetworkAudit);

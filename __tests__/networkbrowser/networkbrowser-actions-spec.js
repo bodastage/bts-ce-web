@@ -128,6 +128,44 @@ describe('networkbrowser.actions', () => {
         }
         expect(actions.stopRequestingLiveNetworkTreeData()).toEqual(expectedAction)
     })
+    
+    it('should create an action to notify failure in requesting live network tree data', () => {
+        const expectedAction = {
+          type: actions.NOTIFY_LIVE_NET_TREE_DATA_REQ_FAILURE
+        }
+        expect(actions.notifyTreeDataRequestFailure()).toEqual(expectedAction)
+    })
+    
+    it('should create an action to receive the live network tree data', () => {
+        const entityType = 'rnc';
+        const data = [];
+        const expectedAction = {
+          type: actions.RECEIVE_LIVE_NETWORK_TREE_DATA,
+          entityType: entityType,
+          data: data
+        }
+        expect(actions.receiveLiveNetworkTreeData(data, entityType)).toEqual(expectedAction)
+    })
+    
+    it('should create an action to request cell parameter data', () => {
+        const cellId = 1;
+        const expectedAction = {
+          type: actions.REQUEST_CELL_PARAMETERS,
+          cellId: cellId
+        }
+        expect(actions.requestCellParameters(cellId)).toEqual(expectedAction)
+    })
+    
+    it('should create an action to receive cell parameter data', () => {
+        const cellId = 1;
+        const data = [];
+        const expectedAction = {
+          type: actions.RECEIVE_CELL_PARAMETERS,
+          cellId: cellId,
+          data: data
+        }
+        expect(actions.receiveCellParameters(cellId, data)).toEqual(expectedAction)
+    })
 });
 
 describe('networkbrowser.actions.async', () => {

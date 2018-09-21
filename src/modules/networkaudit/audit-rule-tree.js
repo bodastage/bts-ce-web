@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getAuditRules, setAuditRuleFilter } from './netaudit-actions';
 import { addTab } from '../layout/uilayout-actions';
 import { Classes, Icon, ITreeNode, Tooltip, Tree, FormGroup, InputGroup } from "@blueprintjs/core";
-
-import 'rc-tree/assets/index.css';
 import './netaudit-panel.css';
 
 class AuditRuleTree extends React.Component{

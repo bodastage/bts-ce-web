@@ -16,10 +16,8 @@ class CellViewParameters extends React.Component{
                 columnDefs: [
                     {headerName: "Name", field: "name",  filter: "agTextColumnFilter"},
                     {headerName: "Network Value", field: "value",  filter: "agTextColumnFilter"}
-
                 ],
-                rowData: [
-                ]
+                rowData: []
         }
         
         this.rowData = []

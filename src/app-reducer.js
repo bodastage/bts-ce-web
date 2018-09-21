@@ -8,6 +8,7 @@ import profile from './modules/profile/profile-reducers';
 import networkbrowser from './modules/networkbrowser/network-browser-reducers';
 import mobrowser from './modules/mobrowser/mobrowser-reducers';
 import netaudit from './modules/networkaudit/netaudit-reducers';
+import performance from './modules/performance/performance-reducer';
 
 
 const appReducer = combineReducers({
@@ -19,7 +20,8 @@ const appReducer = combineReducers({
   profile,
   networkbrowser,
   mobrowser,
-  netaudit
+  netaudit,
+  performance
 });
 
 export default appReducer;

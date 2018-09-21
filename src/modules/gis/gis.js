@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'leaflet/dist/leaflet.css';
 import './gis.css';
-import { ResizeSensor } from "@blueprintjs/core";
+import { ResizeSensor, Popover, Button, Intent, PopoverInteractionKind } from "@blueprintjs/core";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -23,12 +23,18 @@ class GIS extends React.Component{
         this.state = {
             lat: 51.505,
             lng: -0.09,
-            zoom: 13
+            zoom: 13,
+            height: window.innerHeight-150
         }
         
         this.handleResize = this.handleResize.bind(this);
+        this.click = this.click.bind(this);
     }
-   
+    
+    click(e){
+        console.log(e)
+    }
+    
     componentDidMount () {
         const map = this.refs.map.leafletElement;
         
@@ -47,7 +53,9 @@ class GIS extends React.Component{
         map.invalidateSize();
     }
     
-    handleResize(e){
+    handleResize(resizeEntries){
+
+        //this.setState({height: resizeEntries[0].contentRect.height})
         const map = this.refs.map.leafletElement;
         setTimeout(function(){
             map.invalidateSize();
@@ -56,12 +64,11 @@ class GIS extends React.Component{
     
     render(){
         const position = [this.state.lat, this.state.lng]
-        const height = window.innerHeight - 150;
-        
+        const height = this.state.height;
         return (
         <div>
             <h3><FontAwesomeIcon icon="globe-africa"/> GIS</h3>
-
+            
             <div className="card">
                 <div className="card-body p-2" >
                     <div className="map-container" >
@@ -72,9 +79,7 @@ class GIS extends React.Component{
                           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                         <Marker position={position}>
-                          <Popup>
-                            A pretty CSS3 popup. <br /> Easily customizable.
-                          </Popup>
+                            <Popup className="bp3-popover bp3-popover-content-sizing">A pretty CSS3 popup.<br />Easily customizable.</Popup>
                         </Marker>
                     </Map>
                     </ResizeSensor>

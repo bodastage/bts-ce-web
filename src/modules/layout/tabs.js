@@ -5,6 +5,7 @@ import Dashboard from '../dashboard/dashboard';
 import Settings from '../settings/settings';
 import NetworkBrowser from '../networkbrowser/network-browser';
 import ElementBrowser from '../networkbrowser/element-browser';
+import CellView from '../networkbrowser/cellView';
 import NetworkAudit from '../networkaudit/network-audit';
 import MOBrowser from '../mobrowser/mo-browser';
 import NetworkBaseline from '../networkbaseline/network-baseline';
@@ -18,7 +19,11 @@ import UserProfile from '../profile/user-profile';
 import Help from '../help/help.js';
 import Reports from '../reports/reports.js';
 import GIS from '../gis/gis.js';
+import SiteStats from '../performance/siteStats.js';
 import MODataBrowser from '../mobrowser/mo-data-browser';
+import NMSConnectionDetails from '../settings/nmsConnectionDetails';
+import CMScheduler from '../settings/cmScheduler';
+import CMDumpLocations from '../settings/cmDumpLocations';
 import NetAuditRuleData from '../networkaudit/netaudit-rule-data';
 import { closeTab, setActiveTab } from './uilayout-actions';
 import { Breadcrumb, OverflowList, Boundary, Position, Classes, MenuItem, 
@@ -44,6 +49,11 @@ const Components = {
     "GIS": GIS,
     "MODataBrowser": MODataBrowser,
     "NetAuditRuleData": NetAuditRuleData,
+    "NMSConnectionDetails": NMSConnectionDetails,
+    "CMScheduler": CMScheduler,
+    "CMDumpLocations": CMDumpLocations,
+    "CellView": CellView,
+    "SiteStats": SiteStats
     };
 
 class Tabs extends React.Component {

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import  './dashboard.css';
 import { connect } from 'react-redux';
 import { addTab } from '../layout/uilayout-actions';
+import { Icon } from "@blueprintjs/core";
 
 //import * as UILayoutActions from './uilayout-actions';
 
@@ -75,7 +76,8 @@ class Dashboard extends React.Component {
                                 <div className="icon-label">Telecom Library</div>
                             </div>
 
-                        </div>                    
+                        </div>        
+
                 </fieldset>		
                
                 
@@ -84,9 +86,9 @@ class Dashboard extends React.Component {
                     
                     <div className="row dashboard-icon">
                         <div className="col-md-2">
-                            <div className="icon-display"><a title="Reports" className="text-muted" href="#" onClick={this.addTab({
-                                component: 'Reports', title: 'Reports'})}><FontAwesomeIcon icon="chart-area"/></a></div>
-                            <div className="icon-label">Reports</div>
+                            <div className="icon-display"><a title="Performance" href="#" onClick={this.addTab({
+                                component: 'SiteStats', title: 'Performance'})}><FontAwesomeIcon icon="chart-line"/></a></div>
+                            <div className="icon-label">Performance</div>
                         </div>
 
                         <div className="col-md-2">
@@ -116,6 +118,7 @@ class Dashboard extends React.Component {
                             <div className="icon-label">WorkFlow</div>
                         </div>
                     </div>
+ 
                 </fieldset>
                 
                 <fieldset className="col-md-12 fieldset">    	

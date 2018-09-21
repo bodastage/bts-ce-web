@@ -23,7 +23,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
             faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
             faChartArea, faBrain, faGem, faUserMd, faGlobeAfrica, faPeopleCarry,
             faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen,
-            faLink, faClock, faRss
+            faLink, faClock, faRss, faChartLine, faSquare
         } from '@fortawesome/free-solid-svg-icons'
 
         library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
@@ -31,7 +31,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
         faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
         faChartArea, faBrain, faGem, faUserMd, faGlobeAfrica, faPeopleCarry,
         faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen, 
-        faLink, faClock, faRss);
+        faLink, faClock, faRss, faChartLine, faSquare);
 
 const store = configureStore();
 

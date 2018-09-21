@@ -15,22 +15,17 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
-class CellViewGIS extends React.Component{
+class PMGIS extends React.Component{
     static icon = "globe-africa";
     static label = "GIS";
     constructor(props){
         super(props);
         this.state = {
-            lat: this.props.latitude,
-            lng: this.props.longitude,
-            azimuth: this.props.azimuth,
             zoom: 13,
             addedToMap: false
         }
         
         this.handleResize = this.handleResize.bind(this);
-        
-        this.refId = "map_" + props.cellId
         
     }
    
@@ -85,7 +80,7 @@ class CellViewGIS extends React.Component{
         return (
                 <div className="cellview-map-container" >
                 <ResizeSensor onResize={this.handleResize}>
-                <Map ref={this.refId} center={position} 
+                <Map ref="site_stats" center={position} 
                     attributionControl={false}
                     zoom={this.state.zoom} 
                     style={{height: height + 'px'}}>
@@ -103,21 +98,13 @@ function mapStateToProps(state, ownProps){
     
     if (typeof state.networkbrowser.cells[ownProps.cellId] === 'undefined'){
         return {
-            latitude: 0,
-            longitude: 0,
-            azimuth: 0,
-            relations: [],
-            cellname: ""
+            data: []
         };
     }
     
   return {
-    latitude: state.networkbrowser.cells[ownProps.cellId]["parameters"].latitude,
-    longitude: state.networkbrowser.cells[ownProps.cellId]["parameters"].longitude,
-    azimuth: state.networkbrowser.cells[ownProps.cellId]["parameters"].azimuth,
-    relations: state.networkbrowser.cells[ownProps.cellId].relations,
-    cellname: state.networkbrowser.cells[ownProps.cellId]["parameters"].cellname
+    data: state.pm.site_stats
   };  
 }
 
-export default connect(mapStateToProps)(CellViewGIS);
+export default connect(mapStateToProps)(PMGIS);

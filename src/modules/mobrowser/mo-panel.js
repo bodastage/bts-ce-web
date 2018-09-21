@@ -4,8 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setFilter, initializeMOBrowser, dismissMOsFetchError } from './mobrowser-actions';
 import './mo-panel.css';
 import { addTab } from '../layout/uilayout-actions';
-import { Classes, Icon, ITreeNode, Tooltip, Tree, FormGroup, InputGroup } from "@blueprintjs/core";
+import { Classes, Icon, ITreeNode, Tooltip, Tree, FormGroup, InputGroup, ProgressBar, Intent } from "@blueprintjs/core";
 
+/**
+ * MO Browser Panel
+ * 
+ * Displays a list of managed objects for a selected vendor and technology
+ */
 class MOBrowserPanel extends React.Component{
     static icon = "puzzle-piece";
     static label = "";
@@ -141,10 +146,8 @@ class MOBrowserPanel extends React.Component{
 
                 {this.props.fetchingMOs === false ? '': 
                     <div className="pb-1">
-                        <div className="progress">
-                          <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: 100 +'%'}}>Loading...</div>
-                        </div>
-                    </div>        
+                        <ProgressBar intent={Intent.PRIMARY}/>
+                    </div>       
                 }
 
                 {this.props.fetchError === null ? '': 

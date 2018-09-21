@@ -4,12 +4,18 @@ import { connect } from 'react-redux';
 import AuditRuleTree from '../networkaudit/audit-rule-tree';
 import ReportsPanel from '../reports/reports-panel';
 import MOBrowserPanel from '../mobrowser/mo-panel';
+import NetworkTree from '../networkbrowser/networkTree';
+import CMSettingsOptions from '../settings/cmSettingsOptions';
+import CMDumpLocations from '../settings/cmDumpLocations';
 
 const SidePanels = {
     "DashboardSidePanel": DashboardSidePanel,
     "AuditRuleTree": AuditRuleTree,
     "ReportsPanel": ReportsPanel,
-    "MOBrowserPanel": MOBrowserPanel
+    "MOBrowserPanel": MOBrowserPanel,
+    "NetworkTree": NetworkTree,
+    "CMSettingsOptions": CMSettingsOptions,
+    "CMDumpLocations": CMDumpLocations,
 };
 
 class SidePanel extends React.Component{
