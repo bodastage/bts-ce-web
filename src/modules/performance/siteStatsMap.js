@@ -1,12 +1,13 @@
 import React from 'react'
-import { Map, TileLayer, Marker, CircleMarker, Popup, SemiCircle } from 'react-leaflet';
+import { Map, TileLayer, Marker, CircleMarker, Popup, SemiCircle, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 import  'leaflet-semicircle'
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'leaflet/dist/leaflet.css';
-import { ResizeSensor, Icon } from "@blueprintjs/core";
+import { ResizeSensor, Icon, HTMLSelect } from "@blueprintjs/core";
 import SingleSiteGraph from './singleSiteGraph';
+import { DISTRICTS } from './uganda_districts'
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -70,15 +71,46 @@ class SiteStatsMap extends React.Component{
         },500);
     }
     
+    onEachFeature(feature, layer) {
+        if (feature.properties && feature.properties.DNAME_2006) {
+            const regionName = feature.properties.DNAME_2006
+            layer.bindPopup(`
+                <div class="row" style="width: 500px">
+                    <div class="col">
+                        <b>${regionName.toUpperCase()}</b>
+                        <table class="bp3-html-table bp3-small bp3-html-table-striped">
+                        <tbody>
+                            <tr><td>Utilization</td><td>60%</td></tr>
+                            <tr><td>HR Rate Traffic</td><td>70%</td></tr>
+                            <tr><td>Voice Erlang Capacity</td><td>120</td></tr>
+                        </tbody>
+                        </table>
+                        <br />  
+                        
+                    </div>
+                </div>
+            `
+            );
+        }
+    }
     render(){
         const position = [0.34186,32.57085]
-        const height = this.props.panelHeight-30;
+        const height = this.props.panelHeight-50;
         
         let siteMarkers = []
+        //Show regions
+        if(this.props.aggregate_level === 'regions'){
+              siteMarkers.push(<GeoJSON data={DISTRICTS} 
+              onEachFeature={this.onEachFeature}
+            />)
+        }
+        
+        //Show sites 
+        if (this.props.aggregate_level === 'sites'){
         for (let k in this.props.data){
             const d = this.props.data[k]
             const pos = [ d.latitude, d.longitude ]
-            const color = this.getErlangColor(d.voice_erlang_capacity)
+            const color = this.getErlangColor(d[this.props.kpi])
             siteMarkers.push(<CircleMarker center={pos} radius={5} color={color} fillColor={color} fill={true} fillOpacity={1} key={k}>
                 <Popup maxWidth={560}>
                     <div className="row" style={{width: 500+"px"}}>
@@ -92,6 +124,15 @@ class SiteStatsMap extends React.Component{
                             <tr><td>Voice Erlang Capacity</td><td>{d.voice_erlang_capacity}</td></tr>
                         </tbody>
                         </table>
+                        <br/>
+                        Plot : &nbsp; 
+                            <HTMLSelect minimal={true} 
+                            options={[
+                                {label:"Voice Erlang Traffic", value: "voice_erlang_traffic"},
+                                {label:"Utilization", value: "utilization"},
+                                {label:"Congestion", value: "congestion"}
+                            ]}>
+                            </HTMLSelect>
                         </div > 
                         <div className="col">
                             <SingleSiteGraph/>
@@ -100,6 +141,8 @@ class SiteStatsMap extends React.Component{
                 </Popup>    
                 </CircleMarker>)
         }
+    }
+        
          
         return (
                 <div className="cellview-map-container" >
