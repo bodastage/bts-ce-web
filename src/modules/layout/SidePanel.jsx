@@ -1,10 +1,10 @@
 import React from 'react';
-import DashboardSidePanel from '../dashboard/dashboard-sidepanel';
+import DashboardSidePanel from '../dashboard/DashboardSidepanel';
 import { connect } from 'react-redux';
-import AuditRuleTree from '../networkaudit/audit-rule-tree';
-import ReportsPanel from '../reports/reports-panel';
-import MOBrowserPanel from '../mobrowser/mo-panel';
-import NetworkTree from '../networkbrowser/networkTree';
+import AuditRuleTree from '../networkaudit/AuditRuleTree';
+import ReportsPanel from '../reports/ReportsPanel';
+import MOBrowserPanel from '../mobrowser/MOBrowserPanel';
+import NetworkTree from '../networkbrowser/NetworkTree';
 import CMSettingsOptions from '../settings/cmSettingsOptions';
 import CMDumpLocations from '../settings/cmDumpLocations';
 

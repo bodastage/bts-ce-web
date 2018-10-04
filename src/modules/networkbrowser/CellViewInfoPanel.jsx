@@ -1,10 +1,10 @@
 import React from 'react';
 import { Tab, Tabs } from "@blueprintjs/core";
-import CellViewParameters from './cellViewParameters'
-import CellViewKPI from './cellViewKPI'
-import CellViewRelations from './cellViewRelations'
-import CellViewCoreDefinitions from './cellViewCoreDefs'
-import CellViewExternalDefinitions from './cellViewExtDefs'
+import CellViewParameters from './CellViewParameters'
+import CellViewKPI from './CellViewKPI'
+import CellViewRelations from './CellViewRelations'
+import CellViewCoreDefinitions from './CellViewCoreDefs'
+import CellViewExternalDefinitions from './CellViewExtDefs'
 
 export default class CellViewInfoPanel extends React.Component{
     constructor(props){

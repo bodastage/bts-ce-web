@@ -4,11 +4,11 @@ import jQuery from '../../utils/jquery';
 import $ from 'jquery';
 import layout from 'layout/dist/jquery.layout_and_plugins';
 import 'layout/dist/layout-default.css'
-import Header from './header.js';
-import Dashboard from '../dashboard/dashboard';
-import Tabs from './tabs';
+import Header from './Header';
+import Dashboard from '../dashboard/Dashboard';
+import Tabs from './Tabs';
 import * as UILayoutActions from './uilayout-actions';
-import SidePanel from './side-panel';
+import SidePanel from './SidePanel';
 import  './UILayout.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

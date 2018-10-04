@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as sessionActions from './session-actions';
 import  './LoginForm.css';
-import Loading from './loading';
+import Loading from './Loading';
 import axios from 'axios';
 import { attemptAuthentication, clearAuthError, clearOldSession } from '../session/session-actions';
 import { Button, Intent, FormGroup, InputGroup } from "@blueprintjs/core";

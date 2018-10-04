@@ -6,10 +6,10 @@ import GridLayout , { WidthProvider, Responsive  } from 'react-grid-layout';
 import '../../../node_modules/react-grid-layout/css/styles.css'
 import '../../../node_modules/react-resizable/css/styles.css'
 import './cellView.css';
-import CellViewGIS from './cellViewGIS'
-import CellViewPerformance from './cellViewPerformance'
-import CellViewOptimization from './cellViewOptimization'
-import CellViewInfoPanel from './cellViewInfoPanel'
+import CellViewGIS from './CellViewGIS'
+import CellViewPerformance from './CellViewPerformance'
+import CellViewOptimization from './CellViewOptimization'
+import CellViewInfoPanel from './CellViewInfoPanel'
 import { Button, Card, Elevation, ResizeSensor } from "@blueprintjs/core";
 import { getCellParameters, getCellRelations } from './network-browser-actions'
 

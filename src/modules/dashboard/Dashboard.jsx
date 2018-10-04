@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { addTab } from '../layout/uilayout-actions';
 import { Icon } from "@blueprintjs/core";
 
-//import * as UILayoutActions from './uilayout-actions';
-
 class Dashboard extends React.Component {
     
     static icon = "home";
@@ -115,7 +113,7 @@ class Dashboard extends React.Component {
 
                         <div className="col-md-2">
                             <div className="icon-display "><a title="Works Authorisation" href="#" className="text-muted" ><FontAwesomeIcon icon="people-carry"/></a></div>
-                            <div className="icon-label">WorkFlow</div>
+                            <div className="icon-label">WorkOrders</div>
                         </div>
                     </div>
  

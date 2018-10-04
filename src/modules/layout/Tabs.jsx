@@ -1,30 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Dashboard from '../dashboard/dashboard';
-import Settings from '../settings/settings';
-import NetworkBrowser from '../networkbrowser/network-browser';
-import ElementBrowser from '../networkbrowser/element-browser';
-import CellView from '../networkbrowser/cellView';
-import NetworkAudit from '../networkaudit/network-audit';
-import MOBrowser from '../mobrowser/mo-browser';
-import NetworkBaseline from '../networkbaseline/network-baseline';
-import TelecomLib from '../telecomlib/telecomlib';
-import Vendors from '../telecomlib/vendors';
-import Technologies from '../telecomlib/technologies';
-import Processes from '../processes/processes';
-import Airflow from '../processes/airflow';
-import RabbitMQ from '../processes/rabbitmq';
-import UserProfile from '../profile/user-profile';
-import Help from '../help/help.js';
-import Reports from '../reports/reports.js';
+import Dashboard from '../dashboard/Dashboard';
+import Settings from '../settings/Settings';
+import NetworkBrowser from '../networkbrowser/NetworkBrowser';
+import ElementBrowser from '../networkbrowser/ElementBrowser';
+import CellView from '../networkbrowser/CellView';
+import NetworkAudit from '../networkaudit/NetworkAudit';
+import MOBrowser from '../mobrowser/MOBrowser';
+import NetworkBaseline from '../networkbaseline/NetworkBaseline';
+import TelecomLib from '../telecomlib/Telecomlib';
+import Vendors from '../telecomlib/Vendors';
+import Technologies from '../telecomlib/Technologies';
+import Processes from '../processes/Processes';
+import Airflow from '../processes/Airflow';
+import RabbitMQ from '../processes/Rabbitmq';
+import UserProfile from '../profile/UserProfile';
+import Help from '../help/Help';
+import Reports from '../reports/Reports';
 import GIS from '../gis/gis.js';
 import SiteStats from '../performance/siteStats.js';
-import MODataBrowser from '../mobrowser/mo-data-browser';
-import NMSConnectionDetails from '../settings/nmsConnectionDetails';
-import CMScheduler from '../settings/cmScheduler';
-import CMDumpLocations from '../settings/cmDumpLocations';
-import NetAuditRuleData from '../networkaudit/netaudit-rule-data';
+import MODataBrowser from '../mobrowser/MODataBrowser';
+import NMSConnectionDetails from '../settings/NMSConnectionDetails';
+import CMScheduler from '../settings/CMScheduler';
+import CMDumpLocations from '../settings/CMDumpLocations';
+import NetAuditRuleData from '../networkaudit/NetauditRuleData';
 import { closeTab, setActiveTab } from './uilayout-actions';
 import { Breadcrumb, OverflowList, Boundary, Position, Classes, MenuItem, 
     Popover, Menu, Icon } from "@blueprintjs/core";
@@ -164,7 +164,6 @@ class Tabs extends React.Component {
                         visibleItemRenderer={this.renderBreadcrumb}
                         observeParents={true}
                         />
-                    
                 </ul>
                 
                 <div className="tab-content" id="bts_tabs_content">

@@ -39,10 +39,9 @@ class NetworkTree extends React.Component{
                 cellId: nodeData.entityId
             }));
         }
-
     }
     
-    handleNodeExpand = (nodeData: ITreeNode) => {
+    handleNodeExpand = (nodeData) => {
         this.props.dispatch(addToExpandedLiveNodes(nodeData.id));
     };
     
