@@ -36,8 +36,8 @@ class Header extends React.Component {
         return (
             <div className="navbar-nav d-flex flex-column flex-md-row align-items-center px-md-2  bg-white">
               <h5 className="my-0 mr-md-auto font-weight-normal">
-              <img src={logo} width="30px" alt="Boda Telecom Suite - CE" /> &nbsp;
-                Boda Telecom Suite - CE
+              <img src={logo} width="30px" alt="Boda Telecom Suite - EE" /> &nbsp;
+                Boda Telecom Suite - EE
               </h5>
               
               <nav className="my-2 my-md-0 mr-md-3">
