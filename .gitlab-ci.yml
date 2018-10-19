@@ -1,6 +1,26 @@
 image: node:latest
 
+before_script:
+    - npm prune
+    - npm update -q
+  
+  stages:
+    - test
+    - build
+    
 test:
+    stage: test
     script:
-      - npm install --force
+      - npm install
       - npm run test
+      
+build:
+    stage: build
+    artifacts:
+        expire_in: 1 day
+        paths:
+        - dist/
+      
+    script:
+        - npm run build
+      
