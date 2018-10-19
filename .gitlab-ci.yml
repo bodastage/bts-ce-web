@@ -1,0 +1,6 @@
+image: node:latest
+
+test:
+    script:
+      - npm install --force
+      - npm run test
