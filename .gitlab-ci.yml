@@ -1,9 +1,16 @@
 image: node:8.11.4
 
+variables:
+  CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
 before_script:
     - npm prune
     - npm update -q  
-    
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  
 stages:
   - install
   - build
@@ -14,6 +21,7 @@ install_npm_modules:
     stage: install
     script: 
         - npm install
+        - npm install --force git+https://github.com/erssebaggala/layout.git
   
 test_client:
     stage: test
@@ -22,10 +30,15 @@ test_client:
 build_client:
     stage: build
     script: 
+        - npm install --force git+https://github.com/erssebaggala/layout.git
         - npm run build
     
 build_image:
     stage: deploy
     script: 
-        - apt-get install docker
+        - sudo apt-get install docker-ce
+        - docker pull $CONTAINER_IMAGE:latest || true
+        - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:latest .
+        - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
+        - docker push $CONTAINER_IMAGE:latest
      
