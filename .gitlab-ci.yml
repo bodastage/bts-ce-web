@@ -12,7 +12,8 @@ stages:
   
 install_npm_modules:
     stage: install
-    script: npm install
+    script: 
+        - npm install
   
 test_client:
     stage: test
@@ -20,9 +21,11 @@ test_client:
       
 build_client:
     stage: build
-    script: npm run build
+    script: 
+        - npm run build
     
 build_image:
     stage: deploy
-    script: apt-get install docker
+    script: 
+        - apt-get install docker
      
