@@ -12,7 +12,7 @@ stages:
   
 install_npm_modules:
     stage: install
-    script: npm install --force
+    script: npm install
   
 test_client:
     stage: test
