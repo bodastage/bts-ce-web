@@ -1,0 +1,28 @@
+image: node:8.11.4
+
+stages:
+  - install
+  - build
+  - test
+  - deploy
+  
+install_npm_modules:
+    stage: install
+    script: npm install --force
+  
+test_client:
+    stage: test
+    script: npm run test
+      
+build_client:
+    stage: build
+    script: npm run build
+    
+build_image:
+    stage: deploy
+    script: apt-get install docker
+    
+only:
+     master
+     
+     
