@@ -1,5 +1,9 @@
 image: node:8.11.4
 
+before_script:
+    - npm prune
+    - npm update -q  
+    
 stages:
   - install
   - build
@@ -21,8 +25,4 @@ build_client:
 build_image:
     stage: deploy
     script: apt-get install docker
-    
-only:
-     master
-     
      
