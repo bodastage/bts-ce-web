@@ -36,7 +36,6 @@
     "react-redux": "^5.0.7",
     "react-resizable": "^1.7.5",
     "redux": "^3.7.2",
-    "redux-devtools": "^3.4.1",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
