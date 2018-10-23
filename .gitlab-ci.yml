@@ -1,15 +1,21 @@
-image: node:8.11.4
+image: docker:latest
+
+services:
+  - docker:dind
 
 variables:
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-
+  NODEJS_VERSION: 8.12.0
+  
 before_script:
+    - apk --no-cache add curl 
+    - apk add --update nodejs
     - npm prune
     - npm update -q  
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   
 stages:
   - install
