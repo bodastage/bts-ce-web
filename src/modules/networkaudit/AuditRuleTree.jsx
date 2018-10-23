@@ -157,10 +157,15 @@ class AuditRuleTree extends React.Component{
         this.setState({expandedNodes: expandedNodes});
     };
 
-    handleNodeExpand = (nodeData: ITreeNode) => {
+    handleNodeExpand = (nodeData) => {
         
         let expandedNodes = this.state.expandedNodes;
-        this.state.expandedNodes.indexOf(nodeData.catId) === -1 ? expandedNodes.push(nodeData.catId): true
+        if(this.state.expandedNodes.indexOf(nodeData.catId) === -1 ){
+            expandedNodes.push(nodeData.catId)
+        }else{
+            return true;
+        }
+        
         this.setState({expandedNodes: expandedNodes});
     };
 
