@@ -1,5 +1,5 @@
 import React from 'react'
-import Settings from '../../src/modules/settings/settings'
+import Settings from '../../src/modules/settings/Settings'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import Enzyme, { mount, shallow } from 'enzyme'
@@ -40,6 +40,6 @@ describe('<Settings/>', () => {
         )
 
     expect(enzymeWrapper.contains(<h3><FontAwesomeIcon icon="cog"/> Settings</h3>)).toBe(true)
-    expect(enzymeWrapper.contains(<a href="#" className="launch-cm-menu"><FontAwesomeIcon icon="arrow-right"/> Configuration management</a>)).toBe(true)
+    expect(enzymeWrapper.contains(<span> Configuration management</span>)).toBe(true)
     })
 })

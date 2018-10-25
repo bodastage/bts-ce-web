@@ -1,6 +1,6 @@
 import React from 'react'
-import Dashboard from '../../src/modules/dashboard/dashboard'
-import DashboardSidePanel from '../../src/modules/dashboard/dashboard-sidepanel'
+import Dashboard from '../../src/modules/dashboard/Dashboard'
+import DashboardSidePanel from '../../src/modules/dashboard/DashboardSidepanel'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import Enzyme, { mount, shallow } from 'enzyme'
@@ -46,12 +46,12 @@ describe('<Dashboard/>', () => {
         expect(enzymeWrapper.contains(<div className="icon-label">Network Baseline</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Telecom Library</div>)).toBe(true)
         expect(enzymeWrapper.contains(<legend className="legend">Service Assurance</legend>)).toBe(true)
-        expect(enzymeWrapper.contains(<div className="icon-label">Reports</div>)).toBe(true)
+        expect(enzymeWrapper.contains(<div className="icon-label">Performance</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">SON</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">CEM</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Faults</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">GIS</div>)).toBe(true)
-        expect(enzymeWrapper.contains(<div className="icon-label">WorkFlow</div>)).toBe(true)
+        expect(enzymeWrapper.contains(<div className="icon-label">WorkOrders</div>)).toBe(true)
         expect(enzymeWrapper.contains(<legend className="legend">System</legend>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Processes</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Profile</div>)).toBe(true)
