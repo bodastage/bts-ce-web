@@ -36,6 +36,7 @@ build_client:
     script: 
         - npm install --force git+https://github.com/erssebaggala/layout.git
         - export NODE_OPTIONS=--max_old_space_size=4096
+        - unset CI
         - npm run build
     
 build_image:
