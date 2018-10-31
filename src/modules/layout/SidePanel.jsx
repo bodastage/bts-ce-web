@@ -5,8 +5,8 @@ import AuditRuleTree from '../networkaudit/AuditRuleTree';
 import ReportsPanel from '../reports/ReportsPanel';
 import MOBrowserPanel from '../mobrowser/MOBrowserPanel';
 import NetworkTree from '../networkbrowser/NetworkTree';
-import CMSettingsOptions from '../settings/cmSettingsOptions';
-import CMDumpLocations from '../settings/cmDumpLocations';
+import CMSettingsOptions from '../settings/CMSettingsOptions';
+import CMDumpLocations from '../settings/CMDumpLocations';
 
 const SidePanels = {
     "DashboardSidePanel": DashboardSidePanel,
