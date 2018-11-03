@@ -59,10 +59,13 @@ class LoginForm extends React.Component {
     }
     
     render(){
-        //console.log("this.state.username:", this.state.username);
+            //The type of alert to use when the user fails to login. 
+            //This can either be danger for a wrong passworg or info for database
+            //setup pending
+            let errorAlertType = this.props.waitingForDB === true? 'info' : 'danger';
+            
             return (
             <div className="login-mask">
-
                 <div className="login-logo">
                     <img src={logo} width="320px" alt="Boda Telecom Suite - CE" />
                 </div>
@@ -71,7 +74,7 @@ class LoginForm extends React.Component {
                     <Loading show={this.props.authenticating}/>
                     
                     {this.props.loginError == null ? "" :
-                        <div className="alert alert-danger p-2" role="alert">
+                        <div className={`alert alert-${errorAlertType} p-2`} role="alert">
                             {this.props.loginError}
                         <button type="button" className="close"  aria-label="Close" onClick={this.dismissError}>
                             <span aria-hidden="true">&times;</span>
@@ -138,6 +141,7 @@ function mapStateToProps(state) {
     authenticating: state.session.authenticating,
     loginError: state.session.loginError,
     userDetails: state.session.userDetails,
+    waitingForDB: state.session.waitingForDB
   }
 }
 
