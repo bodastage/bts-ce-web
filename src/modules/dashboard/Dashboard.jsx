@@ -106,7 +106,7 @@ class Dashboard extends React.Component {
 
                         <div className="col-md-2">
                             <div className="icon-display "><a title="Geo-Location" href="#" className="text-muted" ><FontAwesomeIcon icon="globe-africa"/></a></div>
-                            <div className="icon-label">GIS</div>
+                            <div className="icon-label">Geo-Location</div>
                         </div>
                         
 
