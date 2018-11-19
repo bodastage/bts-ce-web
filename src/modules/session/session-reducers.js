@@ -43,7 +43,9 @@ function session(state = initialState, action) {
         case WAIT_FOR_DATABASE_SETUP:
             return Object.assign({}, state, {
                 loginError: action.message,
-                waitingForDB: true
+                waitingForDB: true,
+                authenticating: false,
+                authenticated: false,
             });
         case CLEAR_OLD_SESSION:
             return Object.assign({}, state, {
