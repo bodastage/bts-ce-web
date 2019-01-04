@@ -84,8 +84,7 @@ class Dashboard extends React.Component {
                     
                     <div className="row dashboard-icon">
                         <div className="col-md-2">
-                            <div className="icon-display"><a title="Performance" href="#" onClick={this.addTab({
-                                component: 'SiteStats', title: 'Performance'})}><FontAwesomeIcon icon="chart-line"/></a></div>
+                            <div className="icon-display"><a title="Performance" href="#" className="text-muted"><FontAwesomeIcon icon="chart-line"/></a></div>
                             <div className="icon-label">Performance</div>
                         </div>
 
