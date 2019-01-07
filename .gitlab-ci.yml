@@ -9,6 +9,7 @@ variables:
   DOCKER_DRIVER: overlay2
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   NODEJS_VERSION: 8.12.0
+  NPM_VERSION=6.4.1
   
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -19,7 +20,7 @@ cache:
 
 before_script:
     - apk --no-cache add curl 
-    - apk add --update nodejs nodejs-npm git
+    - apk add --update nodejs=$NODEJS_VERSION nodejs-npm=$NPM_VERSION git
   
 stages:
   - install
