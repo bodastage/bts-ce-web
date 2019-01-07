@@ -20,7 +20,7 @@ cache:
 
 before_script:
     - apk --no-cache add curl 
-    - apk add --update nodejs=$NODEJS_VERSION nodejs-npm=$NPM_VERSION git
+    - apk add nodejs=$NODEJS_VERSION nodejs-npm=$NPM_VERSION git
   
 stages:
   - install
