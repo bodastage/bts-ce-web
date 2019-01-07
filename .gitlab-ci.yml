@@ -19,8 +19,10 @@ cache:
 
 
 before_script:
+    - rm package-lock.json
     - apk --no-cache add curl 
-    - apk add nodejs=$NODEJS_VERSION nodejs-npm=$NPM_VERSION git
+    - apk add nodejs nodejs-npm git
+#    - apk add nodejs=$NODEJS_VERSION nodejs-npm=$NPM_VERSION git
   
 stages:
   - install
