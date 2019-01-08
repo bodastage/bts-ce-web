@@ -22,7 +22,7 @@ class Settings extends React.Component{
                 <h3><FontAwesomeIcon icon="cog"/> Settings</h3>
                 <div className="card">
                     <div className="card-body p-3">
-                    <a href="#" className="launch-cm-menu" onClick={this.showCMLeftPanel}><FontAwesomeIcon icon="arrow-right"/><span> Configuration management</span></a>
+                    <a href="#" className="launch-cm-menu"><FontAwesomeIcon icon="arrow-right"/><span> Configuration management</span></a>
                     </div>
                 </div>
             </div>
