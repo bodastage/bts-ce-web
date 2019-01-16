@@ -4,24 +4,18 @@ import { SET_MO_FILTER, FETCH_MOS, NOTIFY_MOS_FETCH_FAILURE, RECEIVE_MOS,
 
 let initialState  = {
     technologies: ['GSM','UMTS','LTE'],
-    vendors: ['Ericsson','Huawei','ZTE'],
+    vendors: ['Ericsson','Huawei','ZTE','Nokia'],
     fetchError: null,
     filter: {
         text: '',
         vendor: 'Ericsson',
-        technology: 'GSM'
     },
     fetchingMOs: false,
     mos: {
-        'Ericsson-GSM': [],
-        'Ericsson-UMTS': [],
-        'Ericsson-LTE': [],
-        'Huawei-GSM': [],
-        'Huawei-UMTS': [],
-        'Huawei-LTE': [],
-        'ZTE-GSM': [],
-        'ZTE-UMTS': [],
-        'ZTE-LTE': [],
+        'Ericsson': [],
+        'Huawei': [],
+        'ZTE': [],
+        'Nokia': [],
     },
     modata: {}
 };
@@ -61,21 +55,21 @@ export default function mobrowser(state = initialState, action) {
             case DISMISS_MOS_FETCH_ERROR:
                 return Object.assign({}, state, { fetchError: null });
             case RECEIVE_MOS:
-                let vendorTech = action.vendor + '-' + action.technology;
+                let vendorKey = action.vendor;
                 return Object.assign({}, state, { 
                     fetchingMOs: false,
                     fetchError: null,
                     mos: Object.assign({},state.mos, {
-                        [vendorTech]: action.mos
+                        [vendorKey]: action.mos
                     })
                 });
             case RECEIVE_MO_FIELDS:
-                return Object.assign({}, state, { 
+                return Object.assign({}, state, {
                         modata: Object.assign({},state.modata, {
-                            [action.moId]: {
+                            [action.moAndVendor]: {
                                 requesting: false,
                                 requestError:  null,
-                                token: state.modata[action.moId].token,
+                                token: state.modata[action.moAndVendor].token,
                                 fields: action.fields
                             }
                         })

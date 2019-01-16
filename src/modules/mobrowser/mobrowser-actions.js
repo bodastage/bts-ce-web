@@ -26,20 +26,19 @@ export function fetchMOs(){
     };
 }
 
-export function receiveMOs(vendor, technology, mos){
+export function receiveMOs(vendor, mos){
     return {
         type: RECEIVE_MOS,
         vendor: vendor,
-        technology: technology,
         mos: mos
     };
 }
 
-export function receiveMOFields(moId, fields){
+export function receiveMOFields(moAndVendor, fields){
     return {
         type: RECEIVE_MO_FIELDS,
         fields: fields,
-        moId: moId
+        moAndVendor: moAndVendor
     };
 }
 
@@ -86,21 +85,26 @@ export function notifyFetchMOFieldFailure(modId, error){
     }
 }
 
-export function getMOFields(moId){
+/**
+ * 
+ * @param {type} moAndVendor MO - Vendor
+ * @returns {Function}
+ */
+export function getMOFields(moAndVendor){
     return (dispatch, getState) => {
-        dispatch(requestMOFields(moId));
+        dispatch(requestMOFields(moAndVendor));
         
         const authToken = getState().session.userDetails.token;
-        let apiEndPoint = "/api/managedobjects/fields/" + moId;
+        let apiEndPoint = "/api/managedobjects/fields/" + moAndVendor;
         
         axios.get(apiEndPoint,{
             headers: { "Authorization": authToken }
         })
         .then(response => {
-            return dispatch(receiveMOFields(moId, response.data));
+            return dispatch(receiveMOFields(moAndVendor, response.data));
         })
         .catch(function(error){
-            return dispatch(notifyFetchMOFieldFailure( moId, "Failed to get MO fields"));
+            return dispatch(notifyFetchMOFieldFailure( moAndVendor, "Failed to get MO fields"));
         });
     }
 }
@@ -110,31 +114,25 @@ export function initializeMOBrowser(){
         dispatch(fetchMOs());
         
         const authToken = getState().session.userDetails.token;
-        let apiEndPoint = "/api/managedobjects/ericsson/gsm";
+        let apiEndPoint = "/api/managedobjects/ericsson";
         
         const apiEndPoints = {
-            'Ericsson-GSM': '/api/managedobjects/ericsson/gsm',
-            'Ericsson-UMTS': '/api/managedobjects/ericsson/umts',
-            'Ericsson-LTE': '/api/managedobjects/ericsson/lte',
-            'Huawei-GSM': '/api/managedobjects/huawei/gsm',
-            'Huawei-UMTS': '/api/managedobjects/huawei/umts',
-            'Huawei-LTE': '/api/managedobjects/huawei/lte',
-            'ZTE-GSM': '/api/managedobjects/zte/gsm',
-            'ZTE-UMTS': '/api/managedobjects/zte/umts',
-            'ZTE-LTE': '/api/managedobjects/zte/lte',
+            'Ericsson': '/api/managedobjects/ericsson',
+            'Huawei': '/api/managedobjects/huawei',
+            'ZTE': '/api/managedobjects/zte',
+            'NOKIA': '/api/managedobjects/nokia',
         };
         
-        for(let vendorTechKey in apiEndPoints){
-            let apiEndPoint = apiEndPoints[vendorTechKey];
-            let vendor = vendorTechKey.split('-')[0];
-            let tech = vendorTechKey.split('-')[1];
+        for(let vendorKey in apiEndPoints){
+            let apiEndPoint = apiEndPoints[vendorKey];
+            let vendor = vendorKey;
             
             //Get ericsson GSM
             axios.get(apiEndPoint,{
                 headers: { "Authorization": authToken }
             })
             .then(response => {
-                return dispatch(receiveMOs(vendor, tech, response.data));
+                return dispatch(receiveMOs(vendor, response.data));
             })
             .catch(function(error){
                 return dispatch(notifyFetchMOsFailure( "Failed to fetch Ericsson GSM data MOs"));

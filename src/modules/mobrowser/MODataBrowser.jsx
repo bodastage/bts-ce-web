@@ -31,7 +31,9 @@ class MODataBrowser extends React.Component{
     
     componentDidMount() {
         if(this.props.fields.length === 0 ){
-            this.props.dispatch(getMOFields(this.props.options.moId));
+            let moName = this.props.options.moName;
+            let vendorName = this.props.options.vendorName;
+            this.props.dispatch(getMOFields(moName + '-' + vendorName));
         }
         
     }
@@ -56,16 +58,19 @@ class MODataBrowser extends React.Component{
         this.gridColumnApi = params.columnApi;
         let _columnApi =  params.columnApi;
         let token = this.props.token;
+        
         let _fields = this.props.fields;
         let _dispatch = this.props.dispatch;
-        let moId = this.props.options.moId;
+        let moName = this.props.options.moName;
+        let vendorName = this.props.options.vendorName;
         
         let dataSource = {  
             rowCount: null,
             getRows: function(params) {
                 let page = params.startRow;
                 let length= params.endRow - params.startRow;
-                let apiEndPoint = "/api/managedobjects/dt/" + moId + "?start="+  page + "&length=" + length;;
+                let moAndVendor = moName + '-' + vendorName;
+                let apiEndPoint = "/api/managedobjects/dt/" + moAndVendor + "?start="+  page + "&length=" + length;;
                 
                 let query = getQueryForAGGridSortAndFilter( _fields, 
                         params.sortModel, params.filterModel, _columnApi.getAllColumns());
@@ -130,7 +135,8 @@ class MODataBrowser extends React.Component{
 
 function mapStateToProps(state, ownProps){
     
-    if ( typeof state.mobrowser.modata[ownProps.options.moId] === 'undefined'){
+    let moDataId = ownProps.options.moName + '-' + ownProps.options.vendorName;
+    if ( typeof state.mobrowser.modata[moDataId] === 'undefined'){
         return {
             requesting: false,
             requestError:  null,
@@ -140,10 +146,10 @@ function mapStateToProps(state, ownProps){
     }
     
     return {
-            requesting: state.mobrowser.modata[ownProps.options.moId].requesting,
-            requestError:  state.mobrowser.modata[ownProps.options.moId].requestError,
+            requesting: state.mobrowser.modata[moDataId].requesting,
+            requestError:  state.mobrowser.modata[moDataId].requestError,
             token: state.session.userDetails.token,
-            fields: state.mobrowser.modata[ownProps.options.moId].fields
+            fields: state.mobrowser.modata[moDataId].fields
     };
 }
 

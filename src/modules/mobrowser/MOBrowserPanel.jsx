@@ -18,7 +18,7 @@ class MOBrowserPanel extends React.Component{
         super(props);
         
         this.selectVendor = this.selectVendor.bind(this);
-        this.selectTechnology = this.selectTechnology.bind(this);
+//        this.selectTechnology = this.selectTechnology.bind(this);
         this.changeEvent = this.changeEvent.bind(this);
         this.updateFilter = this.updateFilter.bind(this);
         this.dismissError = this.dismissError.bind(this);
@@ -38,7 +38,7 @@ class MOBrowserPanel extends React.Component{
     
     componentDidMount(){
         //Initialize if this is the fast time or if it as refresh
-        if (this.props.mos['Ericsson-GSM'].length === 0){
+        if (this.props.mos['Ericsson'].length === 0){
             this.props.dispatch(initializeMOBrowser());            
         }
     }
@@ -47,16 +47,17 @@ class MOBrowserPanel extends React.Component{
         
     }
     
-    onNodeDoubleClick = (nodeData: ITreeNode) => {
-        this.showMODataTab(nodeData.label, nodeData.moId );
+    onNodeDoubleClick = (nodeData) => {
+        this.showMODataTab(nodeData.label, nodeData.vendorName );
     }
     
-    showMODataTab(moName, moId){ 
-        console.log('.moId:', moId);
-        let tabId = moName + '_' + moId + "Tab";
+    showMODataTab(moName, vendorName){ 
+
+        let tabId = moName + '_' + vendorName + "_Tab";
         this.props.dispatch(addTab(tabId, 'MODataBrowser', {
             title: moName,
-            moId: moId
+            moName: moName,
+            vendorName: vendorName
         }));
     }
     
@@ -77,11 +78,6 @@ class MOBrowserPanel extends React.Component{
         this.vendor = e.target.value;
         this.updateFilter();
     }
-
-    selectTechnology(e){
-        this.technology = e.target.value;
-        this.updateFilter();
-    }
     
     dismissError(){
         this.props.dispatch(dismissMOsFetchError());
@@ -90,13 +86,12 @@ class MOBrowserPanel extends React.Component{
     updateTreeNodes(){
         this.treeNodes = []
         
-        const vendorTechKey = this.props.filter.vendor + '-' + this.props.filter.technology
+        const vendorKey = this.props.filter.vendor;
         const filterText = this.props.filter.text;
-        
 
         
-        for(let vtKey in  this.props.mos[vendorTechKey]){
-            let node = this.props.mos[vendorTechKey][vtKey]
+        for(let vtKey in  this.props.mos[vendorKey]){
+            let node = this.props.mos[vendorKey][vtKey]
             
             if(filterText != ''){
                 var regex = new RegExp(filterText, 'i');
@@ -107,6 +102,7 @@ class MOBrowserPanel extends React.Component{
                 icon: <FontAwesomeIcon className="mb-2" icon="puzzle-piece" className="mb-0"/>, 
                 id: node.pk, 
                 moId: node.pk,
+                vendorName: vendorKey,
                 label: node.name
             });
         }
@@ -130,16 +126,6 @@ class MOBrowserPanel extends React.Component{
                         <select className="form-control form-control-sm mb-1" value={this.props.filter.vendor} onChange={this.selectVendor} >
                             <option disabled>--Vendors--</option>
                             {this.props.vendors.map((v,k) => <option value={v} key={v}>{v}</option> )}
-                        </select>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-sm-4">Technologies</div>
-                    <div className="col-sm-8">
-                        <select className="form-control form-control-sm mb-1" value={this.props.filter.technology} onChange={this.selectTechnology} >
-                            <option disabled>--Technologies--</option>
-                            {this.props.technologies.map((v,k)  => <option value={v} key={v}>{v}</option> )}
                         </select>
                     </div>
                 </div>
@@ -172,7 +158,6 @@ class MOBrowserPanel extends React.Component{
 function mapStateToProps(state){
     return {
         vendors: state.mobrowser.vendors,
-        technologies: state.mobrowser.technologies,
         filter: state.mobrowser.filter,
         mos: state.mobrowser.mos,
         fetchingMOs: state.mobrowser.fetchingMOs,
