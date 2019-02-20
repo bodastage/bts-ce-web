@@ -10,6 +10,7 @@ import mobrowser from './modules/mobrowser/mobrowser-reducers';
 import netaudit from './modules/networkaudit/netaudit-reducers';
 import baseline from './modules/networkbaseline/networkbaseline-reducers';
 import performance from './modules/performance/performance-reducer';
+import reports from './modules/reports/reports-reducers';
 
 
 const appReducer = combineReducers({
@@ -23,7 +24,8 @@ const appReducer = combineReducers({
   mobrowser,
   netaudit,
   baseline,
-  performance
+  performance,
+  reports
 });
 
 export default appReducer;
