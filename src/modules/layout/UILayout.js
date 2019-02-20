@@ -65,7 +65,7 @@ class UILayout extends React.Component {
                 </div>
                 <div className="ui-layout-south">
                     <div id="ui_layout_south">
-                    <span className="text-secondary">Copyright &copy; 2018. <a href="http://www.bodastage.com" target="_blank">Bodastage Solutions</a> </span>
+                    <span className="text-secondary">Copyright &copy; 2019. <a href="http://www.bodastage.com" target="_blank">Bodastage Solutions</a> </span>
                     </div>
                 </div>
                 <div className="ui-layout-west">

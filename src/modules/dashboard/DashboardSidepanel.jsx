@@ -48,7 +48,10 @@ class DashboardSidePanel extends React.Component {
                                 })}> <FontAwesomeIcon icon="university"/>  Telecom Library</a>
                                 
                 <span className="dropdown-item-text legend w-100">Service Assurance</span>
-                <a className="dropdown-item text-muted" title="Reports" href="#" onClick={this.addTab('Reports')}> <FontAwesomeIcon icon="chart-area"/>  Reports</a>
+                <a className="dropdown-item text-muted" title="Reports" href="#" onClick={this.addTab({
+                                component: 'Reports',
+                                title: 'Reports'
+                                })}> <FontAwesomeIcon icon="chart-area"/>  Reports</a>
                 <a className="dropdown-item text-muted" title="Self Network Optimisation Functions" href="#" > <FontAwesomeIcon icon="brain"/>  SON</a>
                 <a className="dropdown-item text-muted" href="#" title="Customer Experience Management"> <FontAwesomeIcon icon="gem"/>  CEM</a>
                 <a className="dropdown-item text-muted" href="#" title="Fault Management" > <FontAwesomeIcon icon="user-md"/>  Faults</a>

@@ -3,127 +3,135 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Plot from 'react-plotly.js';
 import Plotly from 'plotly.js';
-import { setSidePanel } from '../layout/uilayout-actions';
-import { ResizeSensor } from "@blueprintjs/core";
+import { setSidePanel, addTab } from '../layout/uilayout-actions';
+import { Dialog, Classes, InputGroup, Intent, TextArea, FormGroup, Button, 
+         Spinner } from "@blueprintjs/core";
+import { saveCategory } from "./reports-actions"
 
 class Reports extends React.Component{
-    static icon = "chart-area";
+    static icon = "table";
     static label = "Reports";
     constructor(props){
         super(props);
         this.setSidePanel = this.setSidePanel.bind(this);
         
-        this.updataRowData = this.updataRowData.bind(this)
-        this.handleResize = this.handleResize.bind(this)
+        this.createReport = this.createReport.bind(this)
+        this.openCreateCategoryDialog = this.openCreateCategoryDialog.bind(this)
+        this.handleSave = this.handleSave.bind(this)
         
         this.state = { 
-            count: 1,
-            width: "100%"}
+            autoFocus: true,
+            canEscapeKeyClose: true,
+            canOutsideClickClose: true,
+            enforceFocus: true,
+            isOpen: false,
+            usePortal: true,
+        }
         
-        this.layout = {
-            title: 'Availability and Congestion',
-            xaxis: {
-                autorange: true,
-                range: ['2015-02-17', '2017-02-16'],
-                rangeselector: {buttons: [
-                    {
-                      count: 1,
-                      label: '1m',
-                      step: 'month',
-                      stepmode: 'backward'
-                    },
-                    {
-                      count: 6,
-                      label: '6m',
-                      step: 'month',
-                      stepmode: 'backward'
-                    },
-                    {step: 'all'}
-                  ]},
-                rangeslider: {range: ['2015-02-17', '2017-02-16']},
-                type: 'date'
-            },
-            yaxis: {
-              autorange: true,
-              range: [86.8700008333, 138.870004167],
-              type: 'linear'
-            }
-        };
+        this.layout = {};
         
         this.data = [];
         
-    }
-    
-    updataRowData(err, rows){
-        function unpack(rows, key) {
-          return rows.map(function(row) { return row[key]; });
-        }
-
-
-        var trace1 = {
-          name: "Availability",
-          type: "scatter",
-          mode: "lines",
-          x: unpack(rows, 'Date'),
-          y: unpack(rows, 'AAPL.High'),
-          line: {color: '#17BECF'}
-        }
-
-        var trace2 = {
-            name: "Congestion",
-          type: "scatter",
-          mode: "lines",
-          x: unpack(rows, 'Date'),
-          y: unpack(rows, 'AAPL.Low'),
-          line: {color: '#7F7F7F'}
-        }
-
-        this.data = [trace1,trace2];
+        //This shows the saving spinner when true
+        this.isSaving  = false;
         
-        this.setState({count: 2})
-
+        this.catNames = "Category name";
+        this.catNotes = "Category notes";
+        
     }
+ 
+    handleNotesChange = (event) => this.catNotes = event.target.value
+    handleCatNameChange = (event) => this.catName = event.target.value
     
     componentDidMount(){
-        Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv", this.updataRowData)
+
+    }
+    
+    createReport(){
+        let tabId  = 'create_report'
+        this.props.dispatch(addTab(tabId, 'CreateReport', {
+            title: 'Create Report'
+        }));
+    }
+    
+    handleSave = () => {
+        this.props.dispatch(saveCategory(this.catName, this.catNotes));
+        this.isSaving  = true;
     }
     
     setSidePanel(){
-        this.props.dispatch(setSidePanel('ReportsPanel'));
+        this.props.dispatch(setSidePanel('ReportsTree'));
     }
     
-    handleResize(resizeEntries){
-        this.setState({width: resizeEntries[0].contentRect.width + "px"})
-    }
+    openCreateCategoryDialog = () => this.setState({ isOpen: true });
+    closeCreateCategoryDialog = () => this.setState({ isOpen: false });
     
     render(){
         const height = window.innerHeight - 200;
         return (
         <div>
-            <h3><FontAwesomeIcon icon="chart-area"/> Reports</h3>
+            <h3><FontAwesomeIcon icon="table"/> Reports</h3>
 
             <div className="card  mb-2">
                 <div className="card-body p-3">
                     <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> Show report tree</a>        
+                    <br/>
+                    <br/>
+                    <a href="#" className="launch-network-tree" onClick={this.createReport}><FontAwesomeIcon icon="arrow-right"/> Create report</a>        
+                   
+                    <br/>
+                    <br/>
+                    <a href="#" className="launch-network-tree" onClick={this.openCreateCategoryDialog}><FontAwesomeIcon icon="arrow-right"/> Create report category</a>        
+                   
                 </div>
             </div>
             
-            <div className="card">
-                <div className="card-body p-2">
-                <ResizeSensor onResize={this.handleResize}>
-                <Plot
-                        data={this.data}
+                <Dialog
+                icon="folder-new"
+                title="Add report category"
+                {...this.state}
+                onClose={this.closeCreateCategoryDialog}
+                >
+                
+                    <div className={Classes.DIALOG_BODY}>
+                        <FormGroup
+                            helperText=""
+                            label="Category Name"
+                            labelFor="text-input"
+                            labelInfo=""
+                        >
+                        <InputGroup id="text-input" placeholder="Report category name" className='mb-1' onChange={this.handleCatNameChange}/>
+                        </FormGroup>       
                         
-                        useResizeHandler={true} 
-                        layout={this.layout} 
-                        style={{width: this.state.width, height: height+"px"}}
-                      /> 
-                </ResizeSensor>
-                </div>
-            </div>
+                        <FormGroup
+                            helperText=""
+                            label="Notes"
+                            labelFor=""
+                            labelInfo=""
+                        >
+                            <TextArea
+                                placeholder="Report category notes"
+                                large={true}
+                                intent={Intent.PRIMARY}
+                                onChange={this.handleNotesChange}
+                                value={this.state.notesValue}
+                                className='mb-1'
+                                fill={true}
+                            />
+                        </FormGroup>
+                        
+                        <Button icon="plus" intent='success' text="Save" onClick={this.handleSave} disabled={this.props.requesting} />  {this.props.requesting === true ? <Spinner intent={Intent.PRIMARY} size={Spinner.SIZE_SMALL}/> : ""}
+                    </div>
+                </Dialog>
         </div>
         );
     }
 }
 
-export default connect()(Reports);
+function mapStateToProps(state){
+    return {
+        requesting: state.reports.new_cat.requesting,
+    };
+}
+
+export default connect(mapStateToProps)(Reports);

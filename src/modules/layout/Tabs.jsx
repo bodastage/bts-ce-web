@@ -18,6 +18,8 @@ import RabbitMQ from '../processes/Rabbitmq';
 import UserProfile from '../profile/UserProfile';
 import Help from '../help/Help';
 import Reports from '../reports/Reports';
+import TableReport from '../reports/TableReport';
+import CreateReport from '../reports/CreateReport';
 import GIS from '../gis/gis.js';
 import SiteStats from '../performance/siteStats.js';
 import MODataBrowser from '../mobrowser/MODataBrowser';
@@ -46,6 +48,8 @@ const Components = {
     "RabbitMQ": RabbitMQ,
     "ElementBrowser": ElementBrowser,
     "Reports": Reports,
+    "CreateReport": CreateReport,
+    "TableReport": TableReport,
     "GIS": GIS,
     "MODataBrowser": MODataBrowser,
     "NetAuditRuleData": NetAuditRuleData,
