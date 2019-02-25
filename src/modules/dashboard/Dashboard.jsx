@@ -58,15 +58,6 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a title="Network Baseline" href="#" onClick={this.addTab({
-                                    component: 'NetworkBaseline',
-                                    title: 'Network Baseline'
-                                })}> <FontAwesomeIcon icon="stop-circle"/></a></div>
-                                
-                                <div className="icon-label">Network Baseline</div>
-                            </div>
-
-                            <div className="col-md-2">
                             <div className="icon-display"><a title="Telecom Library" href="#/telecomlib" onClick={this.addTab({
                                 component: 'TelecomLib',
                                 title: 'Telecom Library'
@@ -82,6 +73,8 @@ class Dashboard extends React.Component {
                                 <div className="icon-label">Reports</div>
                             </div>
                             
+                            <div className="col-md-2">
+                            </div>
                         </div>        
 
                 </fieldset>		
