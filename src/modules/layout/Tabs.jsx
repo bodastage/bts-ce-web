@@ -8,7 +8,6 @@ import ElementBrowser from '../networkbrowser/ElementBrowser';
 import CellView from '../networkbrowser/CellView';
 import NetworkAudit from '../networkaudit/NetworkAudit';
 import MOBrowser from '../mobrowser/MOBrowser';
-import NetworkBaseline from '../networkbaseline/NetworkBaseline';
 import TelecomLib from '../telecomlib/Telecomlib';
 import Vendors from '../telecomlib/Vendors';
 import Technologies from '../telecomlib/Technologies';
@@ -38,7 +37,6 @@ const Components = {
     "NetworkBrowser": NetworkBrowser,
     "NetworkAudit": NetworkAudit,
     "MOBrowser": MOBrowser,
-    "NetworkBaseline": NetworkBaseline,
     "TelecomLib": TelecomLib,
     "Processes": Processes,
     "UserProfile": UserProfile,
