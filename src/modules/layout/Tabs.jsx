@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dashboard from '../dashboard/Dashboard';
 import Settings from '../settings/Settings';
 import NetworkBrowser from '../networkbrowser/NetworkBrowser';
-import ElementBrowser from '../networkbrowser/ElementBrowser';
-import CellView from '../networkbrowser/CellView';
 import NetworkAudit from '../networkaudit/NetworkAudit';
 import MOBrowser from '../mobrowser/MOBrowser';
 import TelecomLib from '../telecomlib/Telecomlib';
@@ -44,7 +42,6 @@ const Components = {
     "Technologies": Technologies,
     "Airflow": Airflow,
     "RabbitMQ": RabbitMQ,
-    "ElementBrowser": ElementBrowser,
     "Reports": Reports,
     "CreateReport": CreateReport,
     "TableReport": TableReport,
@@ -54,7 +51,6 @@ const Components = {
     "NMSConnectionDetails": NMSConnectionDetails,
     "CMScheduler": CMScheduler,
     "CMDumpLocations": CMDumpLocations,
-    "CellView": CellView,
     "SiteStats": SiteStats
     };
 

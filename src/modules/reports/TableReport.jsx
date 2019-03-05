@@ -5,11 +5,15 @@ import { getReportFields, downloadReport, checkDownloadStatus,
          clearReportDownloadStatus, deleteReport, clearReportCreateState,
          getReportInfo, } from './reports-actions';
 import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css'; 
+
 import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
 import axios from '../../api/config';
 import { ProgressBar, Intent, ButtonGroup, Button, Classes, Toaster, Alert } from "@blueprintjs/core"; 
 import classNames from 'classnames';
 import { addTab, closeTab } from '../layout/uilayout-actions';
+import LoadingCellRenderer from './LoadingCellRenderer'
 
 class TableReport extends React.Component{
     static icon = "table";
@@ -39,6 +43,15 @@ class TableReport extends React.Component{
             columnDefs: [],
             rowData: [
             ],
+//            components: {
+//                loadingRenderer: function(params) {
+//                  if (params.value !== undefined) {
+//                    return params.data.action;
+//                  } else {
+//                    return '<img src="https://raw.githubusercontent.com/ag-grid/ag-grid-docs/master/src/images/loading.gif">';
+//                  }
+//                }
+//              },
             rowBuffer: 0,
             rowSelection: "multiple",
             rowModelType: "infinite",
@@ -47,7 +60,12 @@ class TableReport extends React.Component{
             maxConcurrentDatasourceRequests: 2,
             infiniteInitialRowCount: 1,
             maxBlocksInCache: 2,
-            
+            frameworkComponents: {customloadingCellRenderer: LoadingCellRenderer},
+            loadingCellRenderer: "customloadingCellRenderer",
+            loadingCellRendererParams: { loadingMessage: "One moment please..." },
+            overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>',
+            overlayNoRowsTemplate: "<span style=\"padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;\">This is a custom 'no rows' overlay</span>",
+
             //Download Alert state
             canEscapeKeyCancel: false,
             canOutsideClickCancel: false,
@@ -256,7 +274,6 @@ class TableReport extends React.Component{
                                 pagination={true}
                                 gridAutoHeight={true}
                                 columnDefs={this.columnDef}
-                                components={this.state.components}
                                 enableColResize={true}
                                 rowBuffer={this.state.rowBuffer}
                                 rowSelection={this.state.rowSelection}
@@ -270,6 +287,7 @@ class TableReport extends React.Component{
                                 enableServerSideSorting={true}
                                 enableServerSideFilter={true}
                                 onGridReady={this.onGridReady.bind(this)}
+
                                 >
                             </AgGridReact>
 
