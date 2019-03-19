@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Classes } from '@blueprintjs/core';
 import classNames from 'classnames';
 import logo from '../../images/logo-no-text-white.svg';
-import { Mosaic, MosaicWindow, MosaicZeroState } from 'react-mosaic-component'
 import { Button, Alignment, Menu, MenuDivider, MenuItem, Popover, Position } from "@blueprintjs/core";
 import { addTab } from '../layout/uilayout-actions';
 import SplitterLayout from 'react-splitter-layout';
