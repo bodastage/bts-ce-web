@@ -7,6 +7,7 @@ import MOBrowserPanel from '../mobrowser/MOBrowserPanel';
 import NetworkTree from '../networkbrowser/NetworkTree';
 import CMSettingsOptions from '../settings/CMSettingsOptions';
 import CMDumpLocations from '../settings/CMDumpLocations';
+import './sidepanel.css'
 
 const SidePanels = {
     "DashboardSidePanel": DashboardSidePanel,
