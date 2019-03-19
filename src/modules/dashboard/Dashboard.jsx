@@ -8,7 +8,7 @@ import { Icon } from "@blueprintjs/core";
 class Dashboard extends React.Component {
     
     static icon = "home";
-    static label = "Dashboard"
+    static label = "Home"
     
     constructor(props){
         super(props);
@@ -58,7 +58,8 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a title="Telecom Library" href="#/telecomlib" onClick={this.addTab({
+                            <div className="icon-display"><a title="Telecom Library" href="#/telecomlib" 
+                                onClick={this.addTab({
                                 component: 'TelecomLib',
                                 title: 'Telecom Library'
                                 })}> <FontAwesomeIcon icon="university"/></a></div>
@@ -66,7 +67,8 @@ class Dashboard extends React.Component {
                             </div>
 
                             <div className="col-md-2">
-                            <div className="icon-display"><a title="Reports" href="#/reports" onClick={this.addTab({
+                            <div className="icon-display"><a title="Reports" href="#/reports" 
+                                onClick={this.addTab({
                                 component: 'Reports',
                                 title: 'Reports'
                                 })}> <FontAwesomeIcon icon="table"/></a></div>

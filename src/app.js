@@ -12,14 +12,10 @@ class App extends React.Component {
   render() {
       
         if (this.props.authenticated === false) {
-            return (<div>
-                <LoginForm/>
-            </div>);
+            return (<LoginForm/>);
         }
         
-        return (<div>
-            <UILayout/>
-        </div>);
+        return (<UILayout/>);
   }
 }
 

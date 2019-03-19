@@ -7,9 +7,16 @@ export const AUTHENTICATE = 'AUTHENTICATE'; //login attemp
 export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
 export const CLEAR_AUTH_ERROR = 'CLEAR_AUTH_ERROR';
 export const CLEAR_OLD_SESSION = 'CLEAR_OLD_SESSION';
-
+export const CHECK_DB_SETUP_STATUS = 'CHECK_DB_SETUP_STATUS';
+export const CONFIRM_DB_READY = 'CONFIRM_DB_READY';
 //The database is not yet ready
 export const WAIT_FOR_DATABASE_SETUP = 'WAIT_FOR_DATABASE_SETUP';
+
+export function confirmDBReady(){
+    return {
+        type: CONFIRM_DB_READY
+    };
+}
 
 export function clearAuthError(){
     return {
@@ -65,6 +72,38 @@ export function waitForDatabaseSetup(notice){
     };
 }
 
+/**
+ * Check if the database is ready
+ */
+export function checkDBSetupStatus(){
+    return (dispatch, getState) => {
+        
+        return axios.get("/authenticate")
+        .then( response => {
+            
+            if(response.status === 204){
+                dispatch(waitForDatabaseSetup("Database is still being setup..."));
+        
+                //Check every minute 1000*60
+                setTimeout(() => dispatch(checkDBSetupStatus()), 60000);
+            }else{
+                dispatch(confirmDBReady());
+            }           
+        })
+        .catch(function(error){
+            try{
+                if(error.response.status === 405){
+                    dispatch(confirmDBReady());
+                }else{
+                    dispatch(markLoginAsFailed("Request error!"));
+                }
+            }catch(e){
+                dispatch(markLoginAsFailed("Request error! Check connection."));
+            }
+        })
+    }
+}
+
 export function attemptAuthentication(loginDetails){
     return (dispatch, getState) => {
         dispatch(authenticateUser(loginDetails));
@@ -80,13 +119,13 @@ export function attemptAuthentication(loginDetails){
                 if(response.status === 200){
                   dispatch(logIntoApp(response.data));
                 }else if(response.status === 204){
-                  dispatch(waitForDatabaseSetup("Database is still being setup"));
+                  dispatch(checkDBSetupStatus());
                 }else{
                    dispatch(markLoginAsFailed());
                 }
         })
         .catch(function (response) {
-            dispatch(markLoginAsFailed("Login attempt failed"));
+            dispatch(markLoginAsFailed("Login attempt failed! Check connection."));
         });
     }
 }

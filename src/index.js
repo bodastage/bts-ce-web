@@ -42,5 +42,5 @@ ReactDOM.render(
             <PersistGate loading={<Loading show={true}/>} persistor={persistor}>
                 <App/>
             </PersistGate>
-        </Provider>, 
+        </Provider>,
     document.getElementById('root'));

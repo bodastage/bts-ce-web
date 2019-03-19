@@ -114,13 +114,13 @@ class Tabs extends React.Component {
         
         return (
             <li className="nav-item" key={tabId}>
-                <a className={"nav-link " + activeClass} id={tabId+"-tab"} data-toggle="tab" href={"#"+tabId} role="tab" aria-controls={tabId} aria-selected="false" onClick={this.setActiveTab(tabId)}>
+                <a className={"nav-link " + activeClass} id={tabId+"-tab"} data-toggle="tab" href={"#"+tabId} role="tab" aria-controls={tabId} aria-selected="false" onClick={this.setActiveTab(tabId)} style={{whiteSpace: "nowrap"}}>
                 { this.props.tabs[tabId].component === 'Dashboard' ? "" :
-                <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tabId)}>
+                <button type="button" className="close" aria-label="Close" onClick={this.closeTab(tabId)} style={{marginLeft: "5px"}}>
                     <span aria-hidden="true">&times;</span>
                 </button>
                 }            
-                <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{options.title}</span>
+                <FontAwesomeIcon icon={Tag.icon}/> <span className="tab-label">{options.title}&nbsp;</span>
 
                 </a>
             </li>

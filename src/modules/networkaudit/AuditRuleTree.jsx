@@ -145,14 +145,13 @@ class AuditRuleTree extends React.Component{
         }
     }
 
-    onNodeDoubleClick = (nodeData: ITreeNode) => {
-
+    onNodeDoubleClick = (nodeData) => {
         if(typeof nodeData.ruleId !== 'undefined'){
             this.showMODataTab(nodeData.label, nodeData.ruleId);
         }
     }
     
-    handleNodeCollapse = (nodeData: ITreeNode) => {
+    handleNodeCollapse = (nodeData) => {
         const expandedNodes = this.state.expandedNodes.filter((v,k) => v !== nodeData.catId)
         this.setState({expandedNodes: expandedNodes});
     };
@@ -176,9 +175,9 @@ class AuditRuleTree extends React.Component{
         return (
             
         <div>
-
-          <h6><FontAwesomeIcon icon={AuditRuleTree.icon}/> Network Audit Rules</h6>
-
+            <div class="sidepanel-header">
+                <h6 class="bp4-heading"><FontAwesomeIcon icon={AuditRuleTree.icon}/> Network Audit Rules</h6>
+            </div>
                 <div>
 
                 <FormGroup

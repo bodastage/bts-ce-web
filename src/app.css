@@ -1,11 +1,22 @@
-body{
-    /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
+/*body{
     font-size: 14px;
     
     color: #000;
     font: 400 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-}
+}*/
 
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  
+  font-size: 14px;
+    
+    color: #000;
+    font: 400 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
 
 
 .close {

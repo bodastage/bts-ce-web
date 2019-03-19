@@ -1,7 +1,7 @@
 import { ADD_TAB, CLOSE_TAB, SET_ACTIVE_TAB, SET_SIDE_PANEL } from './uilayout-actions';
 
 let initialState = {
-    tabs: {'dashboard': { component: 'Dashboard', options:{title: "Dashboard"}}},
+    tabs: {'dashboard': { component: 'Dashboard', options:{title: "Home"}}},
     activeTab: 'dashboard',
     activePanel: 'DashboardSidePanel'
 };

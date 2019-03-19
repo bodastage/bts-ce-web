@@ -31,3 +31,22 @@ Taken from tabdrop.css to create custom styles
 .nav-tabs .bp3-popover-wrapper{
     margin-left: 5px !important;
 }
+
+
+.split-panel .layout-pane{
+    margin-top: 4px;
+    padding: 2px;
+}
+
+
+.splitter-layout>div.layout-pane:first-child{
+    padding:10px
+}
+
+.splitter-layout>div.layout-pane-primary{
+    padding: 10px;
+}
+
+.sidepanel-header{
+    
+}

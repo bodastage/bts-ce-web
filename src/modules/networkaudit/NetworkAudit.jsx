@@ -21,8 +21,9 @@ class NetworkAudit extends React.Component{
         return (
                 
         <div>
-            <h3><FontAwesomeIcon icon={NetworkAudit.icon}/> Network Audit</h3>
 
+            <h3><FontAwesomeIcon icon={NetworkAudit.icon}/> Network Audit</h3>
+            
             <div className="card  mb-2">
                 <div className="card-body p-3">
                     <a href="#" className="launch-network-tree" onClick={this.setSidePanel}><FontAwesomeIcon icon="arrow-right"/> View audit rules</a>        

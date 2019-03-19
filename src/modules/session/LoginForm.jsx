@@ -6,7 +6,7 @@ import * as sessionActions from './session-actions';
 import  './LoginForm.css';
 import Loading from './Loading';
 import axios from 'axios';
-import { attemptAuthentication, clearAuthError, clearOldSession } from '../session/session-actions';
+import { attemptAuthentication, clearAuthError, clearOldSession, checkDBSetupStatus } from '../session/session-actions';
 import { Button, Intent, FormGroup, InputGroup } from "@blueprintjs/core";
 
 class LoginForm extends React.Component {
@@ -22,7 +22,6 @@ class LoginForm extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.dismissError = this.dismissError.bind(this);
         this.clearOldSession = this.clearOldSession.bind(this);
-        
 
     }
     
@@ -30,6 +29,10 @@ class LoginForm extends React.Component {
         if(typeof this.props.userDetails !== 'undefined' && this.props.userDetails !== null ){
             this.setState({username: this.props.userDetails.username});
         }
+        
+        //Check if database is ready
+        this.props.dispatch(checkDBSetupStatus());
+        
     }
     
     clearOldSession(){
