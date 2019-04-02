@@ -47,6 +47,11 @@ Taken from tabdrop.css to create custom styles
     padding: 10px;
 }
 
-.sidepanel-header{
-    
+
+/*.layout-pane.layout-pane-primary .card {
+    margin-bottom: 50px;
+}*/
+
+.tab-pane {
+    margin-bottom: 50px;
 }
