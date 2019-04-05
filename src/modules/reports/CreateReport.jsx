@@ -7,7 +7,7 @@ import 'brace/mode/sql';
 import 'brace/theme/github';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ResizeSensor, FormGroup, InputGroup, Button, TextArea, Intent, Spinner,
-         Callout, Menu, MenuItem, ProgressBar  } from "@blueprintjs/core";
+         Callout, Menu, MenuItem, ProgressBar, HTMLSelect , Popover, Position } from "@blueprintjs/core";
 import { Select, ItemListRenderer } from "@blueprintjs/select";
 import { AgGridReact } from 'ag-grid-react';
 import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queries';
@@ -15,8 +15,10 @@ import axios from '../../api/config';
 import { requestCreateReportFields, clearPreviewReportError,
          createReportPreviewError, clearReportCreateState, 
          createOrUpdateReport, getReport } from './reports-actions';
-
+import Plot from 'react-plotly.js';
 import './create-report-styles.css'
+import { GraphOptionsContainer } from './GraphOptions'
+
 
 class CreateReport extends React.Component{
     static icon = "table";
@@ -24,6 +26,8 @@ class CreateReport extends React.Component{
     
     constructor(props){
         super(props);
+        
+        this.handleResize = this.handleResize.bind(this)
         
         this.loadPreview = this.loadPreview.bind(this)
         
@@ -52,7 +56,13 @@ class CreateReport extends React.Component{
             isOpenError: false,
             
             //
-            category: this.props.categories[0]
+            reportType: 'Table',
+            category: this.props.categories[0],
+            plotWidth: null,
+            
+            //@TODO: Looking in replacing ploltly's revision property
+            plotReloadCount: 0
+            
         }
         
         this.handleNotesChange = this.handleNotesChange.bind(this)
@@ -85,18 +95,29 @@ class CreateReport extends React.Component{
             this.fetchingReportInfo = true;
         }
         
-        
         this.nameRedraw = 0;
         
+        //Report types 
+        this.reportTypes = ["Table","Graph"];
+        this.addPlotTrace = this.addPlotTrace.bind(this);
+        this.getGraphOptions = this.getGraphOptions.bind(this);
+        this.updatePlotData = this.updatePlotData.bind(this);
+        this.plotData = [];
+        
+        //Preview data
+        //Holds the aggrid data
+        this.previewData = [];
     }
  
- 
+    handleResize(resizeEntries){
+        this.setState({plotWidth: resizeEntries[0].contentRect.width + "px"})
+    }
+         
     componentWillMount(){
         
     }
     
     componentDidMount(){
-        console.log("componentWill")
         
         if( typeof this.props.options.reportId !== 'undefined' ){
             if(this.props.reportInfo === null){
@@ -130,6 +151,17 @@ class CreateReport extends React.Component{
         }));
     }
     
+    /**
+     * 
+     *@TODO: Request list from server 
+     * 
+     * @param {type} items
+     * @param {type} itemsParentRef
+     * @param {type} query
+     * @param {type} renderItem
+     * @returns {itemsParentRef@var;renderedItems|String|Boolean}
+     */
+   
     renderCategoryList(items, itemsParentRef, query, renderItem){
         const renderedItems = items.map(renderItem).filter(item => item != null);
         return (
@@ -175,7 +207,7 @@ class CreateReport extends React.Component{
 
     
     loadPreview(){
-        this.setState({loadPreview: true})
+        this.setState({loadPreview: true, plotReloadCount: this.state.plotReloadCount+1})
         
         this.props.dispatch(requestCreateReportFields(this.reportName, this.aceEditorValue, {}));
         this.props.dispatch(clearPreviewReportError());
@@ -236,9 +268,14 @@ class CreateReport extends React.Component{
             }
         };
         this.gridApi.setDatasource(dataSource);
+        
+//        this.gridApi.onFistDataRendered(){
+//            
+//        }
     }
     
-    updateColumnDefs(){
+    
+        updateColumnDefs(){
         this.columnDef = [];
         if( typeof this.props.fields === 'undefined'  ) return;
         for(var key in this.props.fields){
@@ -249,6 +286,85 @@ class CreateReport extends React.Component{
         }
     }
     
+    addPlotTrace(type){
+        
+        if(type === 'bar'){
+            
+            let xField = this.props.fields.length > 0 ? this.props.fields[0] : null;
+            let yField = this.props.fields.length > 0 ? this.props.fields[0] : null;
+            
+            let xData  = this.previewData.map((entry, idx) => entry[xField]);
+            let yData  = this.previewData.map((entry, idx) => entry[yField]);
+            
+            let barData = {type: 'bar', x: xData, y: yData, name: yField, xField: xField, yField: yField};
+            this.plotData.push(barData);
+            this.setState({plotReloadCount: this.state.plotReloadCount+1});
+        }
+        
+        if(type === 'pie'){
+            let data = {type: 'pie', values: [1, 2, 3], labels: [2, 5, 3]};
+            this.plotData.push(data);
+            this.setState({plotReloadCount: this.state.plotReloadCount+1});
+        }
+        
+        if(type === 'scatter'){
+            let data = {
+                x: [1, 2, 3],
+                y: [2, 6, 3],
+                type: 'scatter',
+                mode: 'lines+markers',
+                marker: {color: 'red'},
+            };
+            this.plotData.push(data);
+            this.setState({plotReloadCount: this.state.plotReloadCount+1});
+        }   
+    }
+    
+    
+    getGraphOptions(){
+        
+        let gOptions = []
+        
+        return gOptions;
+    }
+    
+   
+   //Update the preview Data when the aggrid model is updated
+   handleModelUpdated(){
+       this.previewData = [];
+
+       this.gridApi.forEachNode( (rowNode, index) => {
+            this.previewData.push(rowNode.data);
+        });
+   }
+   
+   selectReportType(event){
+       this.setState({'reportType': event.currentTarget.value });
+   }
+
+    
+    //Updates the plotPreviewData When the graph options are updated
+    updatePlotData(newOptions){
+        for(let i in newOptions){
+            if( newOptions[i].type === 'bar'){
+                let xField = newOptions[i].xField;
+                let yField = newOptions[i].yField;
+                newOptions[i].x = this.previewData.map((entry, idx) => entry[xField]);
+                newOptions[i].y = this.previewData.map((entry, idx) => entry[yField]);
+                newOptions[i].name = yField;
+            }
+        }
+        
+        this.plotData = newOptions;
+        this.setState({plotReloadCount: this.state.plotReloadCount+1});
+        
+    }
+    
+    updateGraphOptions(newOptions){
+       this.updatePlotData(newOptions);
+       this.setState({plotReloadCount: this.state.plotReloadCount+1});
+   }
+   
     render(){
         const { spinnerSize, spinnerHasValue, spinnerIntent, spinnerValue, columns, loadPreview, category } = this.state;
         const tabTitle = this.props.options.title;
@@ -326,10 +442,22 @@ class CreateReport extends React.Component{
                                 enableServerSideSorting={true}
                                 enableServerSideFilter={true}
                                 onGridReady={this.onGridReady.bind(this)}
+                                onModelUpdated={this.handleModelUpdated.bind(this)}
                                 >
                             </AgGridReact>
                         </div>
         }
+        
+        //Plot types menu
+        const plotTypesMenu = (
+        <Menu>
+            <MenuItem icon="grouped-bar-chart" text="Bar" onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('bar');}}/>        
+            <MenuItem icon="pie-chart" text="Pie"  onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('pie');}}/>        
+            <MenuItem icon="scatter-plot" text="Scatter"  onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('scatter');}}/>        
+            <MenuItem icon="timeline-line-chart" text="Line"  onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('line');}}/>        
+        </Menu>
+        );
+        
         
         return (
         <div className='cotainer p-0 m-0 mr-2'>
@@ -353,25 +481,27 @@ class CreateReport extends React.Component{
                 </div>
                   
                 <div className="col-sm">
-                <Select 
-                    key={this.nameRedraw}
-                    noResults={<MenuItem disabled={true} text="No categories." />}
-                    items={this.props.categories}
-                    itemListRenderer={this.categoryItemListRenderer}
-                    itemRenderer={this.categoryItemRenderer}
-                    itemPredicate={this.categoryItemPredicate}
-                    onItemSelect={this.handleCategoryValueChange}
-                    activeItem={activeItem}
-                    initialContent={<MenuItem disabled={true} text="Category" />}
-                        >
-                    <Button
-                        icon="folder-close"
-                        rightIcon="caret-down"
-                        text={category ? `${category.name}` : "(No selection)"}
-                        disabled={false}
-                        className="mb-2"
-                    />        
-                </Select>
+                    <Select 
+                        key={this.nameRedraw}
+                        noResults={<MenuItem disabled={true} text="No categories." />}
+                        items={this.props.categories}
+                        itemListRenderer={this.categoryItemListRenderer}
+                        itemRenderer={this.categoryItemRenderer}
+                        itemPredicate={this.categoryItemPredicate}
+                        onItemSelect={this.handleCategoryValueChange}
+                        activeItem={activeItem}
+                        initialContent={<MenuItem disabled={true} text="Category" />}
+                            >
+                        <Button
+                            icon="folder-close"
+                            rightIcon="caret-down"
+                            text={category ? `${category.name}` : "(No selection)"}
+                            disabled={false}
+                            className="mb-2"
+                        />        
+                    </Select>
+
+                    <HTMLSelect options={this.reportTypes} onChange={this.selectReportType.bind(this)}></HTMLSelect>
                 
                     <FormGroup
                         helperText=""
@@ -397,9 +527,10 @@ class CreateReport extends React.Component{
                             fill={true}
                             key={this.nameRedraw}
                         />
-
-                        <Button icon="refresh" text="Preview"  onClick={this.loadPreview} />  <Button icon="plus" intent='success' text="Save" onClick={this.saveReport} disabled={this.props.creating === true ? true : false}/>
                         
+                        <Popover>
+                            <Button icon="refresh" text="Preview"  onClick={this.loadPreview} />  <Button icon="plus" intent='success' text="Save" onClick={this.saveReport} disabled={this.props.creating === true ? true : false}/>
+                        </Popover>
                     </FormGroup>
                 </div>
             </div>
@@ -408,6 +539,24 @@ class CreateReport extends React.Component{
                         {previewTable}
                 </div>
             </div>
+            
+            {this.state.reportType === 'Graph'?
+            <div className="row">
+                <div className="col-sm mt-2">
+                    <Plot
+                        data={this.plotData}
+                        layout={{width: null, height: null, title: this.reportName}}
+                        config={{displaylogo:false}}
+                          />
+                </div>
+                <div className="col-sm mt-2">
+                    <Popover content={plotTypesMenu} position={Position.RIGHT_BOTTOM}>
+                        <Button icon="plus" text="Add trace"  rightIcon="caret-down"/>
+                    </Popover>
+                    <GraphOptionsContainer fields={this.props.fields} plotOptions={this.plotData} key={"reload-" + this.state.plotReloadCount} updateGraphOptions={this.updateGraphOptions.bind(this)}/>
+                </div>
+            </div>
+            : "" }
         </div>
         );
     }
