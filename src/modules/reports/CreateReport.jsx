@@ -302,15 +302,18 @@ class CreateReport extends React.Component{
         }
         
         if(type === 'pie'){
-            let data = {type: 'pie', values: [1, 2, 3], labels: [2, 5, 3]};
+            let labelsField = this.props.fields.length > 0 ? this.props.fields[0] : null;
+            let valuesField = this.props.fields.length > 0 ? this.props.fields[0] : null;
+            
+            let data = {type: 'pie', values: [], labels: [], labelsField: labelsField, valuesField:valuesField};
             this.plotData.push(data);
             this.setState({plotReloadCount: this.state.plotReloadCount+1});
         }
         
         if(type === 'scatter'){
             let data = {
-                x: [1, 2, 3],
-                y: [2, 6, 3],
+                x: [],
+                y: [],
                 type: 'scatter',
                 mode: 'lines+markers',
                 marker: {color: 'red'},
@@ -322,9 +325,7 @@ class CreateReport extends React.Component{
     
     
     getGraphOptions(){
-        
         let gOptions = []
-        
         return gOptions;
     }
     
@@ -336,6 +337,9 @@ class CreateReport extends React.Component{
        this.gridApi.forEachNode( (rowNode, index) => {
             this.previewData.push(rowNode.data);
         });
+        
+       //Update graph
+       this.setState({plotReloadCount: this.state.plotReloadCount+1});
    }
    
    selectReportType(event){
@@ -352,6 +356,23 @@ class CreateReport extends React.Component{
                 newOptions[i].x = this.previewData.map((entry, idx) => entry[xField]);
                 newOptions[i].y = this.previewData.map((entry, idx) => entry[yField]);
                 newOptions[i].name = yField;
+            }
+
+            if( newOptions[i].type === 'scatter'){
+                let xField = newOptions[i].xField;
+                let yField = newOptions[i].yField;
+                newOptions[i].x = this.previewData.map((entry, idx) => entry[xField]);
+                newOptions[i].y = this.previewData.map((entry, idx) => entry[yField]);
+                newOptions[i].name = yField;
+                
+                console.log(newOptions[i]);
+            }
+            
+            if( newOptions[i].type === 'pie'){
+                let labelsField = newOptions[i].labelsField;
+                let valuesField = newOptions[i].valuesField;
+                newOptions[i].labels = this.previewData.map((entry, idx) => entry[labelsField]);
+                newOptions[i].values = this.previewData.map((entry, idx) => entry[valuesField]);
             }
         }
         
@@ -451,10 +472,9 @@ class CreateReport extends React.Component{
         //Plot types menu
         const plotTypesMenu = (
         <Menu>
-            <MenuItem icon="grouped-bar-chart" text="Bar" onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('bar');}}/>        
+            <MenuItem icon="timeline-bar-chart" text="Bar" onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('bar');}}/>        
             <MenuItem icon="pie-chart" text="Pie"  onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('pie');}}/>        
             <MenuItem icon="scatter-plot" text="Scatter"  onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('scatter');}}/>        
-            <MenuItem icon="timeline-line-chart" text="Line"  onClick={(ev) => {ev.preventDefault(); this.addPlotTrace('line');}}/>        
         </Menu>
         );
         
