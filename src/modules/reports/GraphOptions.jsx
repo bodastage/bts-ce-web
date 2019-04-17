@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Label, HTMLSelect, FormGroup, Intent, Icon } from "@blueprintjs/core";
+import { Button, Label, HTMLSelect, FormGroup, Intent, Icon, Collapse } from "@blueprintjs/core";
 import { SketchPicker } from 'react-color';
+import './GraphOptions.css';
 
 //Show Bar chart options
 class BarOptions extends React.Component{
@@ -9,7 +10,8 @@ class BarOptions extends React.Component{
         
         this.state = {
             fields: this.props.fields || [],
-            options: this.props.options || []
+            options: this.props.options || [],
+            isMarkerOptionsOpen: false
         }
     }
     
@@ -215,25 +217,44 @@ class ScatterPlotOptions extends React.Component{
                     <HTMLSelect options={this.fills} onChange={this.updateFill.bind(this)} value={this.state.options.fill}></HTMLSelect>
                 </Label>
                 
+                
                 <div className="row">
-                    Line
+                    <div className="col-sm option-section">
+                        <span>Line <Icon icon="add"/></span>
+                    </div>
+                </div>
+                <div className="row">
                     <div className="col-sm-6">
                         <Label className={"bp3-inline"}>
-                            Color
+                        Color &nbsp;
                         <input type="color" onChange={this.updateLineColor.bind(this)} value={defaultLineColor}/>
                         </Label>
+                    </div>
+                    <div className="col-sm-6">
                     </div>
                 </div>
                 
                 <div className="row">
-                    Marker
+                    <div className="col-sm option-section">
+                        {this.state.isMarkerOptionsOpen === false ? 
+                            <span>Marker <Icon icon="add" onClick={()=>this.setState({isMarkerOptionsOpen:true})}/></span> :
+                            <span>Marker <Icon icon="ban-circle" onClick={()=>this.setState({isMarkerOptionsOpen:false})}/></span>
+                        }
+                    </div>
+                </div>
+                
+                <Collapse isOpen={this.state.isMarkerOptionsOpen}>
+                <div className="row">
+                
                     <div className="col-sm-6">
                         <Label className={"bp3-inline"}>
-                            Color
+                            Color &nbsp;
                         <input type="color" onChange={this.updateMarkerColor.bind(this)} value={defaultMarkerColor}/>
                         </Label>
                     </div>
+                
                 </div>
+                </Collapse>
                 
             </div>
         );
