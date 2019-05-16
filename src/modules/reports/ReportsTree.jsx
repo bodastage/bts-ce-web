@@ -84,7 +84,6 @@ class ReportsTree extends React.Component{
     }
     
     openEditCategoryDialog = (categoryId) => { 
-        console.log('categoryId:', categoryId);
         this.setState({ isOpen: true });
         this.props.dispatch(getCategory(categoryId));
         
@@ -213,7 +212,7 @@ class ReportsTree extends React.Component{
     showReportDataTab(reportName, reportId){ 
         let tabId = 'report_' + reportId + "_tab";
         
-        this.props.dispatch(addTab(tabId, 'TableReport', {
+        this.props.dispatch(addTab(tabId, 'ReportContainer', {
             title: reportName,
             reportId: reportId
         }));

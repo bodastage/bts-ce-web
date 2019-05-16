@@ -72,6 +72,36 @@ export function notifyReportCategoryRenameError(categoryId, error){
         error: error
     }
 }
+
+//Action necessary to fecth graph data
+export const REQUEST_GRAPH_DATA = 'REQUEST_REPORT_DATA'
+export const RECEIVE_GRAPH_DATA = 'RECEIVE_REPORT_DATA'
+
+/**
+ * Request data for a graph report type.
+ * 
+ * @param int reportId
+ */
+export function requestGraphData(reportId){
+    return {
+        type: REQUEST_GRAPH_DATA
+    }
+}
+
+/**
+ * Receive graph report data
+ * 
+ * @param int reportId
+  * @param Array reportData
+ */
+export function receiveGraphData(reportId, reportData){
+    return {
+        type: RECEIVE_GRAPH_DATA,
+        reportData: reportData,
+        reportId: reportId
+    }
+}
+
 /**
  * 
  * @type StringClears the state.edit_cat state
@@ -691,5 +721,30 @@ export function renameReportCategory(categoryId, name, notes){
                 return dispatch(notifyReportCategoryRenameError(categoryId, error.response.data));
             }
         });
+    }
+}
+
+
+export function getGraphData(reportId){
+    return(dispatch, getState) => {
+        dispatch(requestGraphData(reportId))
+        
+        const authToken = getState().session.userDetails.token;
+        let apiEndPoint = '/api/reports/graphdata/' + reportId;
+        
+        axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            return dispatch(receiveGraphData(reportId, response.data));
+        })
+        .catch(function(error){
+            if(typeof error.response === 'undefined'){
+                return dispatch(notifyReportCategoryCreationError(error.toString()));
+            }else{
+                return dispatch(notifyReportCategoryCreationError(error.response.data));
+            }
+        });
+        
     }
 }

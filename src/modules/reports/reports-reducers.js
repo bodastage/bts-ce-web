@@ -9,20 +9,33 @@ import { REQUEST_REPORTS, RECEIVE_REPORTS, NOTIFY_REPORT_REQUEST_ERROR,
         NOTIFY_REPORT_CATEGORY_CREATION_ERROR, CLEAR_REPORT_TREE_ERROR,
         SEND_RENAME_RPT_CATEGORY_REQ, CONFIRM_RPT_CATEGORY_RENAMING, 
         REQUEST_REPORT_CATEGORY, NOTIFY_REPORT_CATEGORY_RENAME_ERROR,
-        CONFIRM_REPORT_CATEGORY_RECEIVED, CLEAR_EDIT_RPT_CATEGORY} 
+        CONFIRM_REPORT_CATEGORY_RECEIVED, CLEAR_EDIT_RPT_CATEGORY,
+        RECEIVE_GRAPH_DATA} 
      from './reports-actions';
 
 
 let initialState = {
+    
+    //Used by the reports tree
     requestingReports: false,
     requestError: null,
     reports: [],
+    
+    //Report tree filtering state
     filter:{
         text: '',
         reports: true,
         categories: false
     },
+    
+    //Containers all report related data
+    //while it is being rendered
     reportsdata:{},
+    
+    //Meta data about a report
+    reportsInfo:{},
+    
+    //Contains all report creation related data
     create: {
         error: null,
         fields: [],
@@ -52,7 +65,7 @@ export default function reports(state = initialState, action){
                 }
             
                 return Object.assign({}, state, { 
-                    reportdata: Object.assign({},state.reportsdata, {
+                    reportsdata: Object.assign({},state.reportsdata, {
                         [action.reportId]: {
                             requesting: true,
                             requestError:  null,
@@ -150,7 +163,10 @@ export default function reports(state = initialState, action){
             case RECEIVE_REPORT:
                 return {
                     ...state,
-                    reportInfo: { [action.reportId]: {...action.reportInfo, error: null}}
+                    reportsInfo: {
+                        ...state.reportsInfo, 
+                        [action.reportId]: {...action.reportInfo, error: null}
+                    }
                 }
                 
             case CLEAR_DOWNLOAD_STATUS:  
@@ -229,6 +245,20 @@ export default function reports(state = initialState, action){
                     edit_cat: { ...state.edit_cat, requesting: false},
                     requestingReports: false,
                     requestError: action.error
+                }
+            case RECEIVE_GRAPH_DATA:
+                return {
+                    ...state,
+                    reportsdata: { 
+                            ...state.reportsdata,
+                        [action.reportId]: {
+                            requesting: false,
+                            requestError:  null,
+                            fields: [],
+                            download: null,
+                            data: action.reportData
+                        }
+                    }
                 }
             default:
                 return state;

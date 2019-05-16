@@ -3,7 +3,15 @@ export const CLOSE_TAB = 'CLOSE_TAB';
 export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 export const SET_SIDE_PANEL = 'SET_SIDE_PANEL';
 
-export function addTab(id,component,options){
+/**
+ * Add tab to UI 
+ * 
+ * @param {type} id
+ * @param {type} component
+ * @param {type} options
+ * @returns {addTab.uilayout-actionsAnonym$0}
+ */
+export function addTab(id, component, options){
     return {
         type: ADD_TAB,
         id: id,

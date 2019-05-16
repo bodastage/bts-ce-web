@@ -170,7 +170,6 @@ class TableReport extends React.Component{
         this.progressToastCount = 0;
         this.progressToastKey = this.toaster.show(this.renderDownloadProgress(0));
         this.progressToastInterval = setInterval(() => {
-            console.log('this.progressToastInterval = setInterval(() => {');
             if(this.props.download !== null ){ 
                 if(this.props.download.status === 'FINISHED'){
                     clearInterval(this.progressToastInterval);

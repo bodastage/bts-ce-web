@@ -141,13 +141,21 @@ class CreateReport extends React.Component{
     saveReport(){
         this.setState({loadPreview: false});
         
+        let options = {"type": this.state.reportType}
+        if(this.state.reportType === 'Graph'){
+            options = {
+                type: this.state.reportType,
+                data: this.getGraphOptions()
+            }
+        }
+        
         this.props.dispatch(createOrUpdateReport({
             name: this.reportName,
             category_id: this.state.category.id,
             notes: this.reportNotes,
             qry: this.aceEditorValue,
             reportId: this.props.reportInfo !== null ? this.props.reportInfo.id : null,
-            options: {}
+            options: options
         }));
     }
     
@@ -205,7 +213,10 @@ class CreateReport extends React.Component{
             );
     }
 
-    
+    /*
+     * Show data preview for the query in a table
+     * 
+     */
     loadPreview(){
         this.setState({loadPreview: true, plotReloadCount: this.state.plotReloadCount+1})
         
@@ -215,7 +226,12 @@ class CreateReport extends React.Component{
         //this is incremented to reload/redraw the aggrid
         this.agTblReload += 1;
     }
-    
+    /**
+     * Handle change of value of Ace editor 
+     * 
+     * @param {type} newValue
+     * @returns
+     */
     onAceChange(newValue){
         this.aceEditorValue = newValue;
     }
@@ -286,6 +302,13 @@ class CreateReport extends React.Component{
         }
     }
     
+    
+    /**
+     * Add plot to the graph 
+     * 
+     * @param string type bar|pie|scatter
+     * @returns
+     */
     addPlotTrace(type){
         
         if(type === 'bar'){
@@ -323,10 +346,29 @@ class CreateReport extends React.Component{
         }   
     }
     
+    removeValuesFromPlotData = () => {}
     
+    /**
+     * Return graph otpions without the data
+     * 
+     * @returns {Array}
+     */
     getGraphOptions(){
         let gOptions = []
+        this.plotData.forEach((plt, idx) => {
+            if(plt.type === 'pie'){
+                plt.values = []
+            }
+            if(plt.type === 'bar' || plt.type === 'scatter'){
+                plt.x = []
+                plt.y = []
+            }
+            
+            gOptions.push(plt)
+        });
+        console.log(gOptions)
         return gOptions;
+        
     }
     
    
@@ -364,8 +406,6 @@ class CreateReport extends React.Component{
                 newOptions[i].x = this.previewData.map((entry, idx) => entry[xField]);
                 newOptions[i].y = this.previewData.map((entry, idx) => entry[yField]);
                 newOptions[i].name = yField;
-                
-                console.log(newOptions[i]);
             }
             
             if( newOptions[i].type === 'pie'){
@@ -378,7 +418,6 @@ class CreateReport extends React.Component{
         
         this.plotData = newOptions;
         this.setState({plotReloadCount: this.state.plotReloadCount+1});
-        
     }
     
     updateGraphOptions(newOptions){
@@ -548,9 +587,7 @@ class CreateReport extends React.Component{
                             key={this.nameRedraw}
                         />
                         
-                        <Popover>
-                            <Button icon="refresh" text="Preview"  onClick={this.loadPreview} />  <Button icon="plus" intent='success' text="Save" onClick={this.saveReport} disabled={this.props.creating === true ? true : false}/>
-                        </Popover>
+                        <Button icon="refresh" text="Preview"  onClick={this.loadPreview} />  <Button icon="plus" intent='success' text="Save" onClick={this.saveReport} disabled={this.props.creating === true ? true : false}/>
                     </FormGroup>
                 </div>
             </div>
@@ -567,7 +604,7 @@ class CreateReport extends React.Component{
                         data={this.plotData}
                         layout={{width: null, height: null, title: this.reportName}}
                         config={{displaylogo:false}}
-                          />
+                    />
                 </div>
                 <div className="col-sm mt-2">
                     <Popover content={plotTypesMenu} position={Position.RIGHT_BOTTOM}>

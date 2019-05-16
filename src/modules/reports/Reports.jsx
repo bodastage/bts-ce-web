@@ -47,7 +47,7 @@ class Reports extends React.Component{
 
     }
     
-    createReport(){
+    createReport = () => {
         let tabId  = 'create_report'
         this.props.dispatch(addTab(tabId, 'CreateReport', {
             title: 'Create Report'

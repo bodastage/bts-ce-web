@@ -47,6 +47,7 @@
     "react-plotly.js": "^2.2.0",
     "react-redux": "^5.0.7",
     "react-resizable": "^1.7.5",
+    "react-sizeme": "^2.6.7",
     "react-splitter-layout": "^4.0.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
