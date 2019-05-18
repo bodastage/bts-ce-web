@@ -1,6 +1,6 @@
 {
   "name": "bts-ce-web",
-  "version": "0.1.0",
+  "version": "2.1.0",
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^3.3.0",

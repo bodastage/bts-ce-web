@@ -12,7 +12,7 @@ class GraphReport extends React.Component{
         super(props);
         
         this.state = {
-            width: 200
+            width: window.innerWidth - 500
         }
         
         this.updatePlotData.bind(this)
@@ -33,7 +33,10 @@ class GraphReport extends React.Component{
      * @returns
      */
     updatePlotData(newOptions){
+        //Remove empty slots
+        newOptions = newOptions.filter((v) => v!==undefined )
         for(let i in newOptions){
+            
             if( newOptions[i].type === 'bar'){
                 let xField = newOptions[i].xField;
                 let yField = newOptions[i].yField;
@@ -68,15 +71,17 @@ class GraphReport extends React.Component{
             this.plotData = this.updatePlotData(plotOptions.data)   
             plotTitle = this.props.reportInfo.name
         }
-
+        
+        console.log("this.plotData:", this.plotData)
+        
         return (
         <div style={{width:"100%"}}>
             <SizeMe>
                 {({ size }) => <Plot
-                    className
                     data={this.plotData}
-                    layout={{width: size.width, height: null, autosize: false, title: plotTitle}}
+                    layout={{width: this.state.width, height: null, autosize: false, title: plotTitle}}
                     config={{displaylogo:false}}
+                    responsive={true}
                 />}
 
             </SizeMe>

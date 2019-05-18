@@ -354,7 +354,7 @@ export class GraphOptionsContainer extends React.Component{
     
     handleDelete(traceIndex){
         let plotOptions = this.props.plotOptions;
-        plotOptions[traceIndex] = [];
+        delete plotOptions[traceIndex];
         this.props.updateGraphOptions(plotOptions);
     }
     render(){

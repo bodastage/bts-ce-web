@@ -40,8 +40,13 @@ class ReportContainer extends React.Component{
             return <TableReport options={this.props.options}/>
         }
         
-        return <GraphReport options={this.props.options}/>
-        //return <div>Report container</div>;
+        const reportOptions = JSON.parse(this.props.reportInfo.options)
+        if(reportOptions.type === 'Graph'){
+            return <GraphReport options={this.props.options}/>
+        }
+        
+        //Table report is the default
+        return <TableReport options={this.props.options}/>
     }
 }
 

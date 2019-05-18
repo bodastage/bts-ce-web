@@ -204,8 +204,11 @@ export function requestReport(reportId){
     }
 }
 
-export function confirmReportCreation(){
-    return { type: CONFIRM_REPORT_CREATED };
+export function confirmReportCreation(reportId, reportInfo){
+    return { type: CONFIRM_REPORT_CREATED,
+        reportId: reportId,
+        reportInfo: reportInfo
+    };
 }
 
 export function createReportRequest(){
@@ -239,8 +242,11 @@ export function createOrUpdateReport({name, category_id, notes, qry, reportId, o
             headers: { "Authorization": authToken }
         })
         .then(response => {
+            //Update the report tree incase the report name changed
             dispatch(getReports());
-            return dispatch(confirmReportCreation(response.data));
+            
+            //Update hte reports data in reprotsInfo
+            return dispatch(confirmReportCreation(reportId, data));
         })
         .catch(function(error){
             if(typeof error.response === 'undefined'){

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Plot from 'react-plotly.js';
 import Plotly from 'plotly.js';
-import { setSidePanel, addTab } from '../layout/uilayout-actions';
+import { setSidePanel, addTab, closeTab } from '../layout/uilayout-actions';
 import { Dialog, Classes, InputGroup, Intent, TextArea, FormGroup, Button, 
          Spinner } from "@blueprintjs/core";
-import { saveCategory } from "./reports-actions"
+import { saveCategory, clearReportCreateState } from "./reports-actions"
 
 class Reports extends React.Component{
     static icon = "table";
@@ -48,10 +48,20 @@ class Reports extends React.Component{
     }
     
     createReport = () => {
-        let tabId  = 'create_report'
-        this.props.dispatch(addTab(tabId, 'CreateReport', {
-            title: 'Create Report'
-        }));
+        let tabId  = 'create_report';
+        
+        //Close any open create tab
+        //This is to fix a bug caused by create and edit using the same component
+        this.props.dispatch(closeTab(tabId));
+        this.props.dispatch(clearReportCreateState());
+        
+        //The delay is toe ensure the previous close has time to clean up
+        setTimeout(()=>{
+            this.props.dispatch(addTab(tabId, 'CreateReport', {
+                title: 'Create Report'
+            }));
+        },10)
+
     }
     
     handleSave = () => {
@@ -130,7 +140,7 @@ class Reports extends React.Component{
 
 function mapStateToProps(state){
     return {
-        requesting: state.reports.new_cat.requesting,
+        requesting: state.reports.newCat.requesting,
     };
 }
 

@@ -14,7 +14,7 @@ import { getQueryForAGGridSortAndFilter } from '../../utils/aggrid-to-jqdt-queri
 import axios from '../../api/config';
 import { requestCreateReportFields, clearPreviewReportError,
          createReportPreviewError, clearReportCreateState, 
-         createOrUpdateReport, getReport } from './reports-actions';
+         createOrUpdateReport, getReport, getReportInfo } from './reports-actions';
 import Plot from 'react-plotly.js';
 import './create-report-styles.css'
 import { GraphOptionsContainer } from './GraphOptions'
@@ -65,11 +65,13 @@ class CreateReport extends React.Component{
             
         }
         
+        
         this.handleNotesChange = this.handleNotesChange.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
         this.onGridReady = this.onGridReady.bind(this)
         this.onAceChange = this.onAceChange.bind(this)
         this.updateColumnDefs = this.updateColumnDefs.bind(this)
+        this.updateReportType = this.updateReportType.bind(this)
         
         this.aceEditorValue = "Write report query here";
         this.reportName = "New Report";
@@ -83,7 +85,8 @@ class CreateReport extends React.Component{
         //Category Select
         this.categoryItemRenderer = this.categoryItemRenderer.bind(this)
         this.handleCategoryValueChange = this.handleCategoryValueChange.bind(this)
-        
+        this.handleModelUpdated = this.handleModelUpdated.bind(this)
+                
         this.saveReport = this.saveReport.bind(this)
         
         this.fetchingReportInfo = false;
@@ -104,9 +107,16 @@ class CreateReport extends React.Component{
         this.updatePlotData = this.updatePlotData.bind(this);
         this.plotData = [];
         
+        this.plotLayout = {width: null, height: null, title: this.reportName};
+        
         //Preview data
         //Holds the aggrid data
         this.previewData = [];
+        
+        
+        //This is used to indicate that the report type has changed as result 
+        //of selecting the type selection combo
+        this.reportTypeChange = false;
     }
  
     handleResize(resizeEntries){
@@ -118,20 +128,17 @@ class CreateReport extends React.Component{
     }
     
     componentDidMount(){
-        
         if( typeof this.props.options.reportId !== 'undefined' ){
             if(this.props.reportInfo === null){
                 this.fetchingReportInfo = true;
+                this.props.dispatch(getReportInfo(this.props.options.reportId))
             }
         }
     }
     
     componentWillUnmount(){
-
         this.props.dispatch(clearReportCreateState());
-                
         this.props.dispatch(clearPreviewReportError());
-        
     }
     
     handleCategoryValueChange(category) { 
@@ -139,7 +146,7 @@ class CreateReport extends React.Component{
     }
         
     saveReport(){
-        this.setState({loadPreview: false});
+        //this.setState({loadPreview: false});
         
         let options = {"type": this.state.reportType}
         if(this.state.reportType === 'Graph'){
@@ -225,6 +232,8 @@ class CreateReport extends React.Component{
         
         //this is incremented to reload/redraw the aggrid
         this.agTblReload += 1;
+        
+        
     }
     /**
      * Handle change of value of Ace editor 
@@ -252,6 +261,7 @@ class CreateReport extends React.Component{
         let _fields = this.props.fields;
         let _dispatch = this.props.dispatch;
         let reportId = this.props.options.reportId;
+        let that = this;
         
         let postData = {name: this.reportName, qry: this.aceEditorValue};
         
@@ -304,7 +314,7 @@ class CreateReport extends React.Component{
     
     
     /**
-     * Add plot to the graph 
+     * Add plot trace to preview graph 
      * 
      * @param string type bar|pie|scatter
      * @returns
@@ -312,7 +322,7 @@ class CreateReport extends React.Component{
     addPlotTrace(type){
         
         if(type === 'bar'){
-            
+            //Use the first field as the x and y data source on addtion of bar chart
             let xField = this.props.fields.length > 0 ? this.props.fields[0] : null;
             let yField = this.props.fields.length > 0 ? this.props.fields[0] : null;
             
@@ -325,18 +335,30 @@ class CreateReport extends React.Component{
         }
         
         if(type === 'pie'){
+            //Use first field as the labels and values source on addition of a pie chart
             let labelsField = this.props.fields.length > 0 ? this.props.fields[0] : null;
             let valuesField = this.props.fields.length > 0 ? this.props.fields[0] : null;
             
-            let data = {type: 'pie', values: [], labels: [], labelsField: labelsField, valuesField:valuesField};
+            let labelsData = this.previewData.map((entry, idx) => entry[labelsField]);
+            let valuesData = this.previewData.map((entry, idx) => entry[valuesField]);
+            
+            let data = {type: 'pie', values: labelsData, labels: valuesData, labelsField: labelsField, valuesField:valuesField};
             this.plotData.push(data);
             this.setState({plotReloadCount: this.state.plotReloadCount+1});
         }
         
         if(type === 'scatter'){
+            
+            //Use the first field as the x and y data source on addtion of scatter plot
+            let xField = this.props.fields.length > 0 ? this.props.fields[0] : null;
+            let yField = this.props.fields.length > 0 ? this.props.fields[0] : null;
+            
+            let xData  = this.previewData.map((entry, idx) => entry[xField]);
+            let yData  = this.previewData.map((entry, idx) => entry[yField]);
+            
             let data = {
-                x: [],
-                y: [],
+                x: xData,
+                y: yData,
                 type: 'scatter',
                 mode: 'lines+markers',
                 marker: {color: 'red'},
@@ -366,9 +388,7 @@ class CreateReport extends React.Component{
             
             gOptions.push(plt)
         });
-        console.log(gOptions)
         return gOptions;
-        
     }
     
    
@@ -384,14 +404,20 @@ class CreateReport extends React.Component{
        this.setState({plotReloadCount: this.state.plotReloadCount+1});
    }
    
-   selectReportType(event){
-       this.setState({'reportType': event.currentTarget.value });
+   selectReportType = (event) => {
+       this.reportTypeChange = true;
+       this.setState({reportType: event.currentTarget.value});
    }
 
     
     //Updates the plotPreviewData When the graph options are updated
     updatePlotData(newOptions){
+        
+        //Remove empty slots
+        newOptions = newOptions.filter((v) => v!==undefined )
+        
         for(let i in newOptions){
+            
             if( newOptions[i].type === 'bar'){
                 let xField = newOptions[i].xField;
                 let yField = newOptions[i].yField;
@@ -413,6 +439,8 @@ class CreateReport extends React.Component{
                 let valuesField = newOptions[i].valuesField;
                 newOptions[i].labels = this.previewData.map((entry, idx) => entry[labelsField]);
                 newOptions[i].values = this.previewData.map((entry, idx) => entry[valuesField]);
+                //newOptions[i].xaxis = {showgrid: false, zeroline: false, showline: false, showticklabels: false, ticks:''}
+                //newOptions[i].yaxis = {showgrid: false, zeroline: false, showline: false, showticklabels: false, ticks:''}
             }
         }
         
@@ -425,6 +453,18 @@ class CreateReport extends React.Component{
        this.setState({plotReloadCount: this.state.plotReloadCount+1});
    }
    
+   /**
+    * Set the report type. 
+    * 
+    * This is meant to be used to trigger a state update during report editting
+    * 
+    * @param {type} reportType
+    * @returns {undefined}
+    */
+   updateReportType = (reportType) => {
+       this.setState({reportType: reportType})
+   }
+           
     render(){
         const { spinnerSize, spinnerHasValue, spinnerIntent, spinnerValue, columns, loadPreview, category } = this.state;
         const tabTitle = this.props.options.title;
@@ -469,6 +509,8 @@ class CreateReport extends React.Component{
                 this.fetchingReportInfo = true;
             }
         }
+        
+        console.log("this.props:", this.props)
         
         //Update preview area
         let previewTable;
@@ -518,6 +560,41 @@ class CreateReport extends React.Component{
         );
         
         
+        //If we are in edit mode,
+        if( typeof this.props.options.reportId !== 'undefined' ){
+            
+            //If the report info is ready
+            if(this.props.reportInfo !== null ){
+                
+                //If the report has options set or they are not empty
+                //@TODO: there should always be a type options for the report type
+                //this.reportTypeChange prevents this code section from being run every time
+                //the report type is changed.
+                if(Object.keys(this.props.reportInfo.options).length !== 0 && this.reportTypeChange === false){
+                    let plotOptions =  JSON.parse(this.props.reportInfo.options)
+    
+                    if(plotOptions.type === 'Graph' && this.state.reportType !== 'Graph'){
+                        this.plotData = plotOptions.data
+                        this.updateReportType('Graph')
+                        
+                        //@TODO: Findout which aggrid event is fired when the 
+                        //data has been loaded in the grid. If it exists, use it.
+                        //In the meantime, we use a timeout to load athe preview 
+                        //graph
+                        setTimeout(() => { 
+                            this.handleModelUpdated() 
+                            this.updatePlotData(this.plotData)
+                        }, 3000)
+                    }
+                }
+                
+                //Show review
+                if(this.state.loadPreview === false){
+                    this.loadPreview()
+                }
+            }
+        }
+        
         return (
         <div className='cotainer p-0 m-0 mr-2'>
             <h3><FontAwesomeIcon icon="table"/> {tabTitle}</h3>
@@ -540,6 +617,9 @@ class CreateReport extends React.Component{
                 </div>
                   
                 <div className="col-sm">
+
+                    <HTMLSelect options={this.reportTypes} onChange={this.selectReportType.bind(this)} value={this.state.reportType} className="mb-2 mr-2"></HTMLSelect>
+                    
                     <Select 
                         key={this.nameRedraw}
                         noResults={<MenuItem disabled={true} text="No categories." />}
@@ -560,8 +640,6 @@ class CreateReport extends React.Component{
                         />        
                     </Select>
 
-                    <HTMLSelect options={this.reportTypes} onChange={this.selectReportType.bind(this)}></HTMLSelect>
-                
                     <FormGroup
                         helperText=""
                         label="Report Name"
@@ -602,7 +680,7 @@ class CreateReport extends React.Component{
                 <div className="col-sm mt-2">
                     <Plot
                         data={this.plotData}
-                        layout={{width: null, height: null, title: this.reportName}}
+                        layout={this.plotLayout}
                         config={{displaylogo:false}}
                     />
                 </div>
@@ -614,6 +692,7 @@ class CreateReport extends React.Component{
                 </div>
             </div>
             : "" }
+
         </div>
         );
     }
@@ -624,8 +703,9 @@ function mapStateToProps(state, ownProps){
     
     if(typeof ownProps.options.reportId !== 'undefined'){
         const reportId = ownProps.options.reportId
-        if(typeof state.reports.reportInfo[reportId] !== 'undefined'){ 
-            reportInfo = state.reports.reportInfo[reportId] 
+        if(typeof state.reports.reportsInfo[reportId] !== 'undefined'){ 
+            reportInfo = state.reports.reportsInfo[reportId] 
+            if(reportInfo.options === null) reportInfo.options  = {}
         }
     }
     

@@ -32,7 +32,7 @@ let initialState = {
     //while it is being rendered
     reportsdata:{},
     
-    //Meta data about a report
+    //Meta data about a report when being displayed
     reportsInfo:{},
     
     //Contains all report creation related data
@@ -41,9 +41,14 @@ let initialState = {
         fields: [],
         creating: false // for showing a loading indicator when request is sent to the server
     },
-    reportInfo:{}, //holds details or reports being editted,
-    new_cat:{}, //Stores the sate of new category creation
-    edit_cat: null // edit category details her
+    
+    //holds details or reports being editted,
+    reportEditInfo:{}, 
+    
+     //Stores the sate of new category creation
+    newCat:{},
+    
+    editCat: null // edit category details her
 };
 
 export default function reports(state = initialState, action){
@@ -151,7 +156,19 @@ export default function reports(state = initialState, action){
             case CONFIRM_REPORT_CREATED:
                 return {
                     ...state,
-                    create: { fields: [], error: null, creating: false}
+                    create: { 
+                        ...state.create,
+                        //fields: [], //Don't reset fields after saving.
+                        error: null, 
+                        creating: false
+                    },
+                    reportsInfo: {
+                        ...state.reportsInfo,
+                        [action.reportId]: {
+                            ...action.reportInfo, 
+                            id: action.reportId 
+                        }        
+                    }
                 }
                 
             case CREATE_REPORT_REQUEST:
@@ -183,12 +200,12 @@ export default function reports(state = initialState, action){
             case SEND_CREATE_RPT_CATEGORY_REQ:
                 return {
                     ...state,
-                    new_cat: { ...state.new_cat, requesting: true}
+                    newCat: { ...state.newCat, requesting: true}
                 }
             case CONFIRM_RPT_CATEGORY_CREATION:
                 return {
                     ...state,
-                    new_cat: { ...state.new_cat, requesting: false}
+                    newCat: { ...state.newCat, requesting: false}
                 }
             case SEND_DELETE_RPT_CATEGORY_REQ:
                 return {
@@ -215,34 +232,34 @@ export default function reports(state = initialState, action){
                 return {
                     ...state,
                     requestingReports: true,
-                    edit_cat: { ...action.data , requesting: true}
+                    editCat: { ...action.data , requesting: true}
                 }
             case CONFIRM_RPT_CATEGORY_RENAMING:
                 return {
                     ...state,
                     requestingReports: false,
-                    edit_cat: null
+                    editCat: null
                 }
             case CONFIRM_REPORT_CATEGORY_RECEIVED:
                 return {
                     ...state,
                     requestingReports: false,
-                    edit_cat: { ...action.data , requesting: false}
+                    editCat: { ...action.data , requesting: false}
                 }
             case REQUEST_REPORT_CATEGORY:
                 return {
                    ...state,
-                   edit_cat:{ requesting: true}
+                   editCat:{ requesting: true}
                 }
             case CLEAR_EDIT_RPT_CATEGORY:
                 return {
                     ...state,
-                    edit_cat: null
+                    editCat: null
                 }
             case NOTIFY_REPORT_CATEGORY_RENAME_ERROR:
                 return {
                     ...state,
-                    edit_cat: { ...state.edit_cat, requesting: false},
+                    editCat: { ...state.editCat, requesting: false},
                     requestingReports: false,
                     requestError: action.error
                 }
