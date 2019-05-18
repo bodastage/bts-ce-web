@@ -19,6 +19,7 @@ class GraphReport extends React.Component{
 
         //Plot data and options/settings
         this.plotData = []
+        this.layoutOptions = {width: this.state.width, height: null, autosize: false, title: null}
 
     }       
     
@@ -68,20 +69,23 @@ class GraphReport extends React.Component{
         let plotTitle = 'Loading...'
         if(this.props.reportInfo !== null){
             let plotOptions = JSON.parse(this.props.reportInfo.options)
-            this.plotData = this.updatePlotData(plotOptions.data)   
+            this.plotData = this.updatePlotData(plotOptions.data)
+            this.layoutOptions = plotOptions.layout
             plotTitle = this.props.reportInfo.name
         }
         
         console.log("this.plotData:", this.plotData)
+        console.log("this.layoutOptions:", this.layoutOptions)
         
         return (
         <div style={{width:"100%"}}>
             <SizeMe>
                 {({ size }) => <Plot
                     data={this.plotData}
-                    layout={{width: this.state.width, height: null, autosize: false, title: plotTitle}}
+                    layout={this.layoutOptions}
                     config={{displaylogo:false}}
                     responsive={true}
+                    useResizeHandler={true}
                 />}
 
             </SizeMe>

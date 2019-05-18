@@ -28,7 +28,6 @@ class CreateReport extends React.Component{
         super(props);
         
         this.handleResize = this.handleResize.bind(this)
-        
         this.loadPreview = this.loadPreview.bind(this)
         
         this.state = {
@@ -73,7 +72,10 @@ class CreateReport extends React.Component{
         this.updateColumnDefs = this.updateColumnDefs.bind(this)
         this.updateReportType = this.updateReportType.bind(this)
         
+        //Default ace code editor text
         this.aceEditorValue = "Write report query here";
+        
+        //Default report name 
         this.reportName = "New Report";
         this.reportNotes = "Some notes on the report";
         this.previewError = null;
@@ -105,9 +107,29 @@ class CreateReport extends React.Component{
         this.addPlotTrace = this.addPlotTrace.bind(this);
         this.getGraphOptions = this.getGraphOptions.bind(this);
         this.updatePlotData = this.updatePlotData.bind(this);
+        
+        //Plotly data parameter values
         this.plotData = [];
         
-        this.plotLayout = {width: null, height: null, title: this.reportName};
+        //Plolty layout options
+        this.plotLayout = { 
+            width: null, 
+            height: null, 
+            title: {
+                text: this.reportName
+            },
+            //X-Axis settings
+            xaxis: {
+                title: { text: null} 
+            },
+            //Y-Axis
+            yaxis:{
+                title: { text: null}
+            }
+            
+        };
+        
+        
         
         //Preview data
         //Holds the aggrid data
@@ -137,7 +159,7 @@ class CreateReport extends React.Component{
     }
     
     componentWillUnmount(){
-        this.props.dispatch(clearReportCreateState());
+        //this.props.dispatch(clearReportCreateState());
         this.props.dispatch(clearPreviewReportError());
     }
     
@@ -152,7 +174,8 @@ class CreateReport extends React.Component{
         if(this.state.reportType === 'Graph'){
             options = {
                 type: this.state.reportType,
-                data: this.getGraphOptions()
+                data: this.getGraphOptions(),
+                layout: this.plotLayout //Plotly layout options
             }
         }
         
@@ -380,6 +403,7 @@ class CreateReport extends React.Component{
         this.plotData.forEach((plt, idx) => {
             if(plt.type === 'pie'){
                 plt.values = []
+                plt.labels = []
             }
             if(plt.type === 'bar' || plt.type === 'scatter'){
                 plt.x = []
@@ -395,7 +419,10 @@ class CreateReport extends React.Component{
    //Update the preview Data when the aggrid model is updated
    handleModelUpdated(){
        this.previewData = [];
-
+       
+       //Handle cases where the grid has not yet been initialized
+       if( this.gridApi === undefined ) return;
+       
        this.gridApi.forEachNode( (rowNode, index) => {
             this.previewData.push(rowNode.data);
         });
@@ -457,6 +484,7 @@ class CreateReport extends React.Component{
     * Set the report type. 
     * 
     * This is meant to be used to trigger a state update during report editting
+    * Reference: https://plot.ly/javascript/reference/#layout
     * 
     * @param {type} reportType
     * @returns {undefined}
@@ -465,6 +493,24 @@ class CreateReport extends React.Component{
        this.setState({reportType: reportType})
    }
            
+    /**
+     * Update graph layout options.
+     * 
+     * This includes the title, axes, etc..
+     * 
+     * @param object plotlyLayout Options
+     * 
+     * @returns {undefined}
+     */       
+    updateLayoutOptions = (newLayoutOptions) => {
+        console.log(`updateLayoutOptions(${newLayoutOptions})`)
+        console.log(newLayoutOptions)
+        
+        this.plotLayout = newLayoutOptions
+        this.setState({plotReloadCount: this.state.plotReloadCount+1});
+    }
+    
+    
     render(){
         const { spinnerSize, spinnerHasValue, spinnerIntent, spinnerValue, columns, loadPreview, category } = this.state;
         const tabTitle = this.props.options.title;
@@ -510,7 +556,7 @@ class CreateReport extends React.Component{
             }
         }
         
-        console.log("this.props:", this.props)
+        //console.log("this.props:", this.props)
         
         //Update preview area
         let previewTable;
@@ -575,6 +621,7 @@ class CreateReport extends React.Component{
     
                     if(plotOptions.type === 'Graph' && this.state.reportType !== 'Graph'){
                         this.plotData = plotOptions.data
+                        this.plotLayout = plotOptions.layout
                         this.updateReportType('Graph')
                         
                         //@TODO: Findout which aggrid event is fired when the 
@@ -677,18 +724,20 @@ class CreateReport extends React.Component{
             
             {this.state.reportType === 'Graph'?
             <div className="row">
-                <div className="col-sm mt-2">
+                <div className="col-sm mt-2" style={{width: "100%"}}>
                     <Plot
+                        revision={this.plotReloadCount}
                         data={this.plotData}
                         layout={this.plotLayout}
                         config={{displaylogo:false}}
+                        useResizeHandler={true}
                     />
                 </div>
                 <div className="col-sm mt-2">
                     <Popover content={plotTypesMenu} position={Position.RIGHT_BOTTOM}>
                         <Button icon="plus" text="Add trace"  rightIcon="caret-down"/>
                     </Popover>
-                    <GraphOptionsContainer fields={this.props.fields} plotOptions={this.plotData} key={"reload-" + this.state.plotReloadCount} updateGraphOptions={this.updateGraphOptions.bind(this)}/>
+                    <GraphOptionsContainer fields={this.props.fields} plotOptions={this.plotData} layoutOptions={this.plotLayout} key={"reload-" + this.state.plotReloadCount} updateGraphOptions={this.updateGraphOptions.bind(this)} updateLayoutOptions={this.updateLayoutOptions.bind(this)}/>
                 </div>
             </div>
             : "" }
