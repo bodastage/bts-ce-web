@@ -15,6 +15,10 @@ import classNames from 'classnames';
 import { addTab, closeTab } from '../layout/uilayout-actions';
 import LoadingCellRenderer from './LoadingCellRenderer'
 
+//Maximum number of times to check if the file is being generated 
+//for download
+const MAX_STATUS_CHECKS = 3;
+
 class TableReport extends React.Component{
     static icon = "table";
     static label = "";
@@ -37,7 +41,8 @@ class TableReport extends React.Component{
         this.handleErrorOpen = this.handleErrorOpen.bind(this);
         this.handleErrorClose = this.handleErrorClose.bind(this);
         this.refreshData = this.refreshData.bind(this);
-        
+        this.clearDownloadProgress = this.clearDownloadProgress.bind(this)
+        this.handleAlertClose = this.handleAlertClose.bind(this)
         
         this.state = {
             columnDefs: [],
@@ -71,6 +76,9 @@ class TableReport extends React.Component{
             canOutsideClickCancel: false,
             isOpen: false,
             isOpenError: false,
+            isAlertOpen: false
+            
+            
         };
         
         //This is filled when a download is triggered
@@ -93,16 +101,70 @@ class TableReport extends React.Component{
     }
     
     handleErrorOpen = () => this.setState({ isOpenError: true });
+    
     handleErrorClose = () => { 
-        this.setState({ isOpenError: false });
+        this.setState({ isOpenError: false,  });
         this.props.dispatch(clearReportDownloadStatus(this.props.options.reportId));
     } 
     
+    /**
+     * Hides the download details alert. 
+     * 
+     * It is called when the download alert is closed
+     * 
+     * @returns {undefined}
+     */
+    handleAlertClose = () => {
+       this.setState({isAlertOpen: false}) 
+    }
+    
+    /**
+     * Dismiss the download progress toast
+     * 
+     * @returns {undefined}
+     */
+    clearDownloadProgress(){
+        clearTimeout(this.downloadInterval);
+        clearInterval(this.progressToastInterval);
+
+        this.downloadUrl = null;
+        this.downloadFilename = null;
+        
+        this.progressToastCount = 101;
+        //this.toaster.dismiss();
+ 
+    }
+    
+    /**
+     * Check the status of the download job
+     * 
+     * @returns {undefined}
+     */
     checkReportDownloadStatus(){
         if(this.props.download !== null ){   
-            if (this.props.download.status === 'FINISHED'){
-                clearInterval(this.downloadInterval);
-                clearInterval(this.progressToastInterval);
+            
+            //Stop check if the number of status checks is above MAX_STATUS_CHECKS count
+            if(this.props.download.statusChecks > MAX_STATUS_CHECKS 
+                && this.props.download.status === 'PENDING'){
+
+                this.clearDownloadProgress();
+                this.toaster.dismiss(this.progressToastKey)
+        
+                this.toaster.show({
+                        icon: "warning-sign",
+                        intent: Intent.DANGER,
+                        message: "Download failed. Try again!",
+                });
+                return;
+            }
+            
+            //If the download status is completed, clear the progress toast and 
+            //show the download details alert
+            if (this.props.download.status.toUpperCase() === 'FINISHED'){
+
+//                clearInterval(this.downloadInterval);
+                clearTimeout(this.downloadInterval);
+                clearInterval(this.progressToastInterval);  
                 
                 this.downloadUrl = this.props.download.download_url;
                 this.downloadFilename = this.props.download.log;
@@ -113,13 +175,33 @@ class TableReport extends React.Component{
                     this.progressToastCount = 0;
                 }
                 
+                this.setState({isAlertOpen: true})
+            }else if(this.props.download.status.toUpperCase() === 'FAILED'){
+                this.props.dispatch(clearReportDownloadStatus(this.props.options.reportId))
+                
+//                clearInterval(this.downloadInterval);
+                clearTimeout(this.downloadInterval);
+                clearInterval(this.progressToastInterval);
+                
+                if(this.progressToastCount > 0 && this.toaster !== null ){
+                    this.progressToastCount = 101;
+                    this.toaster.show(this.renderDownloadProgress(this.progressToastCount), this.progressToastKey);
+                    this.progressToastCount = 0;
+                }
+                
                 this.handleErrorOpen();
+                
+                //@TODO: Investigate setting the donwload status to 'COMPLETED'
+                //so that this can act as a cache should the user want to download the 
+                //same files again...but then agian is there any benefit to this?
             }else{
+                
                 const reportId = this.props.options.reportId;
                 const statusUrl= this.props.download.status_url;
 
                 this.props.dispatch(checkDownloadStatus(reportId, statusUrl));
-                this.downloadInterval = setInterval(this.checkReportDownloadStatus, 5000);
+                //this.downloadInterval = setInterval(this.checkReportDownloadStatus, 5000);
+                this.downloadInterval = setTimeout(this.checkReportDownloadStatus, 5000);
             }
         }
         
@@ -131,20 +213,28 @@ class TableReport extends React.Component{
             this.props.dispatch(getReportFields(this.props.options.reportId));
         }
         
-        this.downloadInterval = setInterval(this.checkReportDownloadStatus, 5000);
+        //this.downloadInterval = setInterval(this.checkReportDownloadStatus, 5000);
+        this.downloadInterval = setTimeout(this.checkReportDownloadStatus, 5000);
         
     }
     
+    /**
+     * Trigger the download 
+     * 
+     * @returns {undefined}
+     */
     onDownloadClick(){
         this.props.dispatch(downloadReport(this.props.options.reportId));
         
         //check if there is an on going download
         if (this.props.download === null){
             this.handleProgressToast();
+        }else if(this.props.download.status !== 'RUNNING'){
+            this.handleProgressToast();
         }
         
-        
-        this.checkReportDownloadStatus();
+        //Check download after 3 seconds
+        setTimeout(this.checkReportDownloadStatus, 3000);
     }
     
     /*
@@ -166,22 +256,29 @@ class TableReport extends React.Component{
         };
     }
     
+    /**
+     * Set up and start download progress toast
+     * 
+     * @returns {undefined}
+     */
     handleProgressToast = () => {
         this.progressToastCount = 0;
         this.progressToastKey = this.toaster.show(this.renderDownloadProgress(0));
         this.progressToastInterval = setInterval(() => {
             if(this.props.download !== null ){ 
-                if(this.props.download.status === 'FINISHED'){
+                if(this.props.download.status.toUpperCase() === 'FINISHED' ||
+                   this.props.download.status.toUpperCase() === 'FAILED'
+                    ){
                     clearInterval(this.progressToastInterval);
+                    return;
                 }
             }
             
-            if (this.toaster == null || this.progressToastCount > 100) {
+            if (this.toaster === null || this.progressToastCount > 100) {
                 clearInterval(this.progressToastInterval);
             } else {
                 //Don't reach 100
                 if(this.progressToastCount + 20 < 100) { 
-//                    progress += 10 + Math.random() * 20;
                     this.progressToastCount += Math.random() * 20;
                     this.toaster.show(this.renderDownloadProgress(this.progressToastCount), this.progressToastKey);
                 }
@@ -191,9 +288,15 @@ class TableReport extends React.Component{
     }
 
     
+    /**
+     * Update the column definitions for the aggrid table
+     * 
+     * @returns {undefined}
+     */
     updateColumnDefs(){
         this.columnDef = [];
         if( typeof this.props.fields === 'undefined'  ) return;
+        
         for(var key in this.props.fields){
             let columnName = this.props.fields[key]
             this.columnDef.push(
@@ -202,7 +305,12 @@ class TableReport extends React.Component{
         }
     }
 
-    
+    /**
+     * 
+     * 
+     * @param {type} params
+     * @returns {undefined}
+     */
     onGridReady(params) {
         this.gridApi = params.api;
         this.gridColumnApi = params.columnApi;
@@ -239,6 +347,9 @@ class TableReport extends React.Component{
         this.gridApi.setDatasource(dataSource);
     }
     
+    /**
+     * Create toask reference
+     */
     refHandlers = {
         toaster: (ref) => (this.toaster = ref),
     };
@@ -299,9 +410,8 @@ class TableReport extends React.Component{
                 <Alert
                     {...alertProps}
                     confirmButtonText="Okay"
-                    isOpen={isOpenError}
-                    onClose={this.handleErrorClose}
-                >
+                    isOpen={this.state.isAlertOpen}
+                    onClose={this.handleAlertClose}>
                     <p>
                         Download file: <a target='_blank' href={'//'+window.location.hostname + ':8181' + this.downloadUrl} download>{this.downloadFilename}</a> <br />
                         Or pick it from the reports folder.

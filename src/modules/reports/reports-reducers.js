@@ -10,7 +10,7 @@ import { REQUEST_REPORTS, RECEIVE_REPORTS, NOTIFY_REPORT_REQUEST_ERROR,
         SEND_RENAME_RPT_CATEGORY_REQ, CONFIRM_RPT_CATEGORY_RENAMING, 
         REQUEST_REPORT_CATEGORY, NOTIFY_REPORT_CATEGORY_RENAME_ERROR,
         CONFIRM_REPORT_CATEGORY_RECEIVED, CLEAR_EDIT_RPT_CATEGORY,
-        RECEIVE_GRAPH_DATA} 
+        RECEIVE_GRAPH_DATA, REQUEST_REPORT_DOWNLOAD} 
      from './reports-actions';
 
 
@@ -41,9 +41,6 @@ let initialState = {
         fields: [],
         creating: false // for showing a loading indicator when request is sent to the server
     },
-    
-    //holds details or reports being editted,
-    reportEditInfo:{}, 
     
      //Stores the sate of new category creation
     newCat:{},
@@ -114,18 +111,24 @@ export default function reports(state = initialState, action){
                             ...state.reportsdata,
                             [action.reportId]: {
                                 ...state.reportsdata[action.reportId],
-                                download: action.statusData
+                                download: { ...action.statusData, statusChecks: 0}
                             }
                         }
                     };
             case SET_DOWNLOAD_STATUS:
-                return {
+                return { //DOWNLOAD STATS: FINISHED|SUCCEEDED, FAILED, COMPLETED/CACHED
                         ...state,
                         reportsdata:{
                             ...state.reportsdata,
                             [action.reportId]: {
                                 ...state.reportsdata[action.reportId],
-                                download: { ...state.reportsdata[action.reportId].download, status: action.status, log: action.log }
+                                download: { 
+                                    ...state.reportsdata[action.reportId].download, 
+                                    status: action.status, 
+                                    log: action.log,
+                                    statusChecks: state.reportsdata[action.reportId].download.statusChecks + 1,
+                                }
+                                
                             }
                         }
                     };
@@ -277,6 +280,19 @@ export default function reports(state = initialState, action){
                         }
                     }
                 }
+            case REQUEST_REPORT_DOWNLOAD:
+                return {
+                    ...state,
+                    reportsdata: {
+                        ...state.reportsdata,
+                        [action.reportId]: {
+                            ...state.reportsdata[action.reportId],
+                            download: {status: 'REQUESTED', statusChecks: 0},
+                            requesting: true 
+                        }
+                    }
+                }
+                
             default:
                 return state;
         }
