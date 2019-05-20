@@ -15,14 +15,16 @@ import { faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
     faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
     faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
     faChartArea, faBrain, faGem, faUserMd, faGlobeAfrica, faPeopleCarry,
-    faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen
+    faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen, faTable,
+    faChartLine
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faLock, faAt, faSpinner, faHome, faPlug, faCog, faDownload,
 faQuestionCircle, faUser, faSitemap, faWrench, faPuzzlePiece,faSync,
 faStopCircle, faUniversity, faCogs, faPowerOff, faArrowRight, faList,
 faChartArea, faBrain, faGem, faUserMd, faGlobeAfrica, faPeopleCarry,
-faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen);
+faFolder, faFile, faStar, faChevronRight, faDotCircle, faFolderOpen, faTable,
+faChartLine);
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -43,14 +45,14 @@ describe('<Dashboard/>', () => {
         expect(enzymeWrapper.contains(<div className="icon-label">Network Browser</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Network Audit</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">MO Browser</div>)).toBe(true)
-        expect(enzymeWrapper.contains(<div className="icon-label">Network Baseline</div>)).toBe(true)
+        //expect(enzymeWrapper.contains(<div className="icon-label">Network Baseline</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Telecom Library</div>)).toBe(true)
         expect(enzymeWrapper.contains(<legend className="legend">Service Assurance</legend>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Performance</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">SON</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">CEM</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Faults</div>)).toBe(true)
-        expect(enzymeWrapper.contains(<div className="icon-label">GIS</div>)).toBe(true)
+        //expect(enzymeWrapper.contains(<div className="icon-label">GIS</div>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">WorkOrders</div>)).toBe(true)
         expect(enzymeWrapper.contains(<legend className="legend">System</legend>)).toBe(true)
         expect(enzymeWrapper.contains(<div className="icon-label">Processes</div>)).toBe(true)
