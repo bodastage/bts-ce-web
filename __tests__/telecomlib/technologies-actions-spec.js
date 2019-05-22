@@ -1,7 +1,8 @@
 import * as actions from '../../src/modules/telecomlib/technologies-actions'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import fetchMock from 'fetch-mock'
+import moxios from 'moxios'
+import sinon from 'sinon'
 import expect from 'expect'
 
 const middlewares = [thunk]
@@ -44,12 +45,15 @@ describe('technologies.actions', () => {
 
 
 describe('technologies.actions.async', () => {
+    beforeEach(() => {
+      moxios.install()
+    })
+    
     afterEach(() => {
-        fetchMock.reset()
-        fetchMock.restore()
-    });
+      moxios.uninstall()
+    })
   
-    it('should attempt authentication when done', () => {
+    it('should get technologies', (done) => {
         
         const loginDetails = {
             "username": "btsuser@bodastage.org",
@@ -73,24 +77,31 @@ describe('technologies.actions.async', () => {
         
         const data  = [];
         
-        fetchMock
-        .getOnce('/api/technologies', { body:data, headers: { "Authorization": authToken } })
-
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent()
+            
+            request.respondWith({
+                status: 200,
+                response: data
+            }) 
+        })
+        
         const store = mockStore({session: {userDetails: userDetails}})
         
-        const expectedActions = [
-            {
+        const expectedActions = [{
                 type: actions.REQUEST_TECHNOLOGIES
             },{
                 type: actions.RECEIVE_TECHNOLOGIES,
                 data
-          }
+            }
         ];
         
         return store.dispatch(actions.getTechnologies()).then(() => {
             const actions = store.getActions();
             expect(actions[0]).toEqual(expectedActions[0]) 
             expect(actions[1].type).toEqual(expectedActions[1].type) 
+            
+            done()
         });
     });
     

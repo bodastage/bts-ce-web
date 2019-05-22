@@ -65,6 +65,22 @@ export const REQUEST_REPORT_CATEGORY = 'REQUEST_REPORT_CATEGORY';
 export const CONFIRM_REPORT_CATEGORY_RECEIVED = 'CONFIRM_REPORT_CATEGORY_RECEIVED';
 
 
+//Action necessary to fecth graph data
+export const REQUEST_GRAPH_DATA = 'REQUEST_REPORT_DATA'
+export const RECEIVE_GRAPH_DATA = 'RECEIVE_REPORT_DATA'
+
+//Request reprot download 
+//This markst the beginning of a download request.
+//It resets the download state to null
+export const REQUEST_REPORT_DOWNLOAD = 'REQUEST_REPORT_DOWNLOAD'
+
+/**
+ * 
+ * @type StringClears the state.edit_cat state
+ */
+export const CLEAR_EDIT_RPT_CATEGORY = 'CLEAR_EDIT_RPT_CATEGORY';
+
+
 export function notifyReportCategoryRenameError(categoryId, error){
     return {
         type: NOTIFY_REPORT_CATEGORY_RENAME_ERROR,
@@ -72,11 +88,32 @@ export function notifyReportCategoryRenameError(categoryId, error){
         error: error
     }
 }
+
 /**
+ * Request data for a graph report type.
  * 
- * @type StringClears the state.edit_cat state
+ * @param int reportId
  */
-export const CLEAR_EDIT_RPT_CATEGORY = 'CLEAR_EDIT_RPT_CATEGORY';
+export function requestGraphData(reportId){
+    return {
+        type: REQUEST_GRAPH_DATA
+    }
+}
+
+/**
+ * Receive graph report data
+ * 
+ * @param int reportId
+  * @param Array reportData
+ */
+export function receiveGraphData(reportId, reportData){
+    return {
+        type: RECEIVE_GRAPH_DATA,
+        reportData: reportData,
+        reportId: reportId
+    }
+}
+
 
 /**
  * Confirm that the report category rename/edit request has been successful
@@ -174,8 +211,11 @@ export function requestReport(reportId){
     }
 }
 
-export function confirmReportCreation(){
-    return { type: CONFIRM_REPORT_CREATED };
+export function confirmReportCreation(reportId, reportInfo){
+    return { type: CONFIRM_REPORT_CREATED,
+        reportId: reportId,
+        reportInfo: reportInfo
+    };
 }
 
 export function createReportRequest(){
@@ -209,8 +249,11 @@ export function createOrUpdateReport({name, category_id, notes, qry, reportId, o
             headers: { "Authorization": authToken }
         })
         .then(response => {
+            //Update the report tree incase the report name changed
             dispatch(getReports());
-            return dispatch(confirmReportCreation(response.data));
+            
+            //Update hte reports data in reprotsInfo
+            return dispatch(confirmReportCreation(reportId, data));
         })
         .catch(function(error){
             if(typeof error.response === 'undefined'){
@@ -432,8 +475,23 @@ export function getReports(){
     }
 }
 
+//Mark beginning of download process
+//Reset the download field to null
+/**
+ * 
+ * @param {type} reportId
+ * @returns {requestDownload.reports-actionsAnonym$34}
+ */
+export function requestReportDownload(reportId){
+    return {
+        type: REQUEST_REPORT_DOWNLOAD,
+        reportId: reportId
+    }
+}
+
 export function downloadReport(reportId){
     return(dispatch, getState) => {
+        dispatch(requestReportDownload(reportId))
         
         const authToken = getState().session.userDetails.token;
         let apiEndPoint = "/api/reports/download/" + reportId;
@@ -691,5 +749,30 @@ export function renameReportCategory(categoryId, name, notes){
                 return dispatch(notifyReportCategoryRenameError(categoryId, error.response.data));
             }
         });
+    }
+}
+
+
+export function getGraphData(reportId){
+    return(dispatch, getState) => {
+        dispatch(requestGraphData(reportId))
+        
+        const authToken = getState().session.userDetails.token;
+        let apiEndPoint = '/api/reports/graphdata/' + reportId;
+        
+        axios.get(apiEndPoint,{
+            headers: { "Authorization": authToken }
+        })
+        .then(response => {
+            return dispatch(receiveGraphData(reportId, response.data));
+        })
+        .catch(function(error){
+            if(typeof error.response === 'undefined'){
+                return dispatch(notifyReportCategoryCreationError(error.toString()));
+            }else{
+                return dispatch(notifyReportCategoryCreationError(error.response.data));
+            }
+        });
+        
     }
 }

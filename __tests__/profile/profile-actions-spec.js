@@ -2,7 +2,8 @@ import * as actions from '../../src/modules/profile/profile-actions'
 import { API_URL } from '../../src/api/config'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import fetchMock from 'fetch-mock'
+import moxios from 'moxios'
+import sinon from 'sinon'
 import expect from 'expect'
 
 const middlewares = [thunk]
@@ -58,34 +59,45 @@ describe('profile.actions', () => {
 
 
 describe('profile.actions.async', () => {
-    afterEach(() => {
-        fetchMock.reset()
-        fetchMock.restore()
-    });
+    beforeEach(() => {
+      moxios.install()
+    })
     
-    it('should make async request to update the profile details', () => {
+    afterEach(() => {
+      moxios.uninstall()
+    })
+    
+    it('should make async request to update the profile details', (done) => {
         
         const authToken = userDetails.token;
         const profileData = userDetails;
         
-        fetchMock
-        .getOnce('/api/users', { body:{}, headers: {"Authorization": authToken }})
 
         const store = mockStore({session: {userDetails: userDetails}})
         
-        const expectedActions = [
-            {
+        const expectedActions = [{
                 type: actions.SEND_PROFILE_UPDATE_REQUEST,
                 data: profileData
             },{
                 type: actions.NOTIFY_PROFILE_UPDATE_SUCCESS
-          }
+            }
         ];
+        
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent()
+            
+            request.respondWith({
+                status: 200,
+                response: {}
+            }) 
+        })
         
         return store.dispatch(actions.updateUserProfile(profileData))
             .then(() => {
                 const actions = store.getActions();
                 expect(actions).toEqual(expectedActions) 
+                
+                done()
         });
     });
 });

@@ -55,8 +55,8 @@ class ReportsTree extends React.Component{
         this.nodes = [];
         
         //These hold the category name and notes while editting
-        this.catName = this.props.edit_cat !== null ? this.props.edit_cat.name : "";
-        this.catNote = this.props.edit_cat !== null ? this.props.edit_cat. notes : "";
+        this.catName = this.props.editCat !== null ? this.props.editCat.name : "";
+        this.catNote = this.props.editCat !== null ? this.props.editCat. notes : "";
         
         //This is used to show a progress bar while category details are loading
         this.fetchingCatInfo = false;
@@ -69,7 +69,7 @@ class ReportsTree extends React.Component{
     }
     
     handleSaveCategory(){
-        this.props.dispatch(renameReportCategory(this.props.edit_cat.pk, this.catName, this.catNote));
+        this.props.dispatch(renameReportCategory(this.props.editCat.pk, this.catName, this.catNote));
     }
     
     /**
@@ -84,7 +84,6 @@ class ReportsTree extends React.Component{
     }
     
     openEditCategoryDialog = (categoryId) => { 
-        console.log('categoryId:', categoryId);
         this.setState({ isOpen: true });
         this.props.dispatch(getCategory(categoryId));
         
@@ -213,7 +212,7 @@ class ReportsTree extends React.Component{
     showReportDataTab(reportName, reportId){ 
         let tabId = 'report_' + reportId + "_tab";
         
-        this.props.dispatch(addTab(tabId, 'TableReport', {
+        this.props.dispatch(addTab(tabId, 'ReportContainer', {
             title: reportName,
             reportId: reportId
         }));
@@ -295,10 +294,15 @@ class ReportsTree extends React.Component{
         //Fetch report details 
         this.props.dispatch(getReportInfo(reportId))
         
-        this.props.dispatch(addTab(tabId, 'CreateReport', {
-            title: 'Edit Report',
-            reportId: reportId
-        }));
+        //add delay before showing edit mode
+        //Without this, there is 
+        setTimeout(()=> {
+            this.props.dispatch(addTab(tabId, 'CreateReport', {
+                title: 'Edit Report',
+                reportId: reportId
+            }));
+        },100)
+
                 
     }
 
@@ -341,10 +345,10 @@ class ReportsTree extends React.Component{
         let defaultName = this.catName;
         let defaultNotes = this.catNotes;
         
-        if(this.props.edit_cat !== null){
-           if(this.props.edit_cat.requesting === false){
-                defaultName = this.props.edit_cat.name;
-                defaultNotes = this.props.edit_cat.notes;
+        if(this.props.editCat !== null){
+           if(this.props.editCat.requesting === false){
+                defaultName = this.props.editCat.name;
+                defaultNotes = this.props.editCat.notes;
                 
                 this.catName = defaultName;
                 this.catNote = defaultNotes;
@@ -356,8 +360,8 @@ class ReportsTree extends React.Component{
         
         //Show progress bar when report details are being fetched 
         let catDetailsLoadingProgressBar = null;
-        if( this.props.edit_cat !== null){
-            catDetailsLoadingProgressBar = this.props.edit_cat.requesting === true ? <ProgressBar className="mb-2"/> : "";
+        if( this.props.editCat !== null){
+            catDetailsLoadingProgressBar = this.props.editCat.requesting === true ? <ProgressBar className="mb-2"/> : "";
         }
         
                                 
@@ -471,7 +475,7 @@ function mapStateToProps(state){
         filter: state.reports.filter,
         requestingReports: state.reports.requestingReports,
         requestError: state.reports.requestError,
-        edit_cat: state.reports.edit_cat
+        editCat: state.reports.editCat
     };
     
     

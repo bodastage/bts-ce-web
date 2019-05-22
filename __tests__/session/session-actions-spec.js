@@ -1,7 +1,8 @@
 import * as actions from '../../src/modules/session/session-actions'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import fetchMock from 'fetch-mock'
+import moxios from 'moxios'
+import sinon from 'sinon'
 import expect from 'expect'
 
 const middlewares = [thunk]
@@ -66,12 +67,15 @@ describe('session.actions', () => {
 
 
 describe('session.actions.async', () => {
+    beforeEach(() => {
+      moxios.install()
+    })
+    
     afterEach(() => {
-        fetchMock.reset()
-        fetchMock.restore()
-    });
+      moxios.uninstall()
+    })
   
-    it('should attempt authentication when done', () => {
+    it('should attempt authentication when done', (done) => {
         
         const loginDetails = {
             "username": "btsuser@bodastage.org",
@@ -91,26 +95,32 @@ describe('session.actions.async', () => {
             username:"btsuser@bodastage.org"
         };
         
-        fetchMock
-        .postOnce('/authenticate', { body: userDetails, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-
         const store = mockStore({})
         
-        const expectedActions = [
-            {
+        const expectedActions = [{
               type: actions.AUTHENTICATE,
               loginDetails
-            },
-            {
-            type: actions.LOGIN,
-            userDetails
-          }
+            },{
+                type: actions.LOGIN,
+                userDetails
+            }
         ];
+        
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent()
+            
+            request.respondWith({
+                status: 200,
+                response: userDetails
+            }) 
+        })
         
         return store.dispatch(actions.attemptAuthentication(loginDetails))
             .then(() => {
                 const actions = store.getActions();
                 expect(actions).toEqual(expectedActions) 
+                
+                done()
         });
     });
 });

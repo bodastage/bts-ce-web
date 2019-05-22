@@ -15,7 +15,7 @@ import RabbitMQ from '../processes/Rabbitmq';
 import UserProfile from '../profile/UserProfile';
 import Help from '../help/Help';
 import Reports from '../reports/Reports';
-import TableReport from '../reports/TableReport';
+import ReportContainer from '../reports/ReportContainer';
 import CreateReport from '../reports/CreateReport';
 import GIS from '../gis/gis.js';
 import SiteStats from '../performance/siteStats.js';
@@ -44,7 +44,7 @@ const Components = {
     "RabbitMQ": RabbitMQ,
     "Reports": Reports,
     "CreateReport": CreateReport,
-    "TableReport": TableReport,
+    "ReportContainer": ReportContainer,
     "GIS": GIS,
     "MODataBrowser": MODataBrowser,
     "NetAuditRuleData": NetAuditRuleData,
@@ -105,7 +105,7 @@ class Tabs extends React.Component {
         );
     };
     
-    renderBreadcrumb(props: IMenuItemProps, index: number) {
+    renderBreadcrumb(props, index) {
         const tabId = props.tabid;
         const Tag = Components[ this.props.tabs[tabId].component];
         const options = this.props.tabs[tabId].options;

@@ -14,7 +14,8 @@ describe('session.reducer', () => {
         const expectedState = {
                 authenticated: false,
                 authenticating: false,
-                loginError: null
+                loginError: null,
+                waitingForDB: false
             };
         expect(reducer(undefined, {})).toEqual(expectedState);
     })
@@ -25,7 +26,8 @@ describe('session.reducer', () => {
         const expectedState = {
                 authenticated: false,
                 authenticating: true,
-                loginError: null
+                loginError: null,
+                waitingForDB: false
             };
         expect(reducer(prevState, actions.authenticateUser(loginDetails))).toEqual(expectedState);
     })
