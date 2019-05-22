@@ -3,6 +3,10 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import fetchMock from 'fetch-mock'
 import expect from 'expect'
+import moxios from 'moxios'
+import sinon from 'sinon'
+import jest from 'jest'
+
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -21,7 +25,7 @@ const userDetails = {
 };
 
 describe('networkbrowser.actions', () => {
-    it('should create an action to request network elenents', () => {
+    it('should create an action to request network elements', () => {
         const entity = 'site';
         const expectedAction = {
           type: actions.REQUEST_NODES,
@@ -169,33 +173,50 @@ describe('networkbrowser.actions', () => {
 });
 
 describe('networkbrowser.actions.async', () => {
-    it('should get entity fields', () => {
+    beforeEach(function () {
+//      jest.setTimeout(10000);
+//      jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+      moxios.install()
+    })
+    
+    afterEach(function () {
+      moxios.uninstall()
+    })
+    
+    test('should get entity fields', (done) => {
         const entity = 'site';
         const fields =  ["id", "name", "node", "technology", "vendor", "date_added"];
         
         const store = mockStore({session: {userDetails: userDetails}})
         
-        const expectedActions = [
-            {
+        const expectedActions = [{
                 type: actions.REQUEST_NODES,
                 entity: entity
-            },
-            {
-            type: actions.RECEIVE_NODES_FIELDS,
-            entity: entity,
-            fields: fields
-          }
+            },{
+                type: actions.RECEIVE_NODES_FIELDS,
+                entity: entity,
+                fields: fields
+            }
         ];
+
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent()
+            
+            request.respondWith({
+                status: 200,
+                response: fields
+            }) 
+        })
         
-        return store.dispatch(actions.getEntityFields(entity))
-            .then(() => {
+        return store.dispatch(actions.getEntityFields(entity)).then(() => {
                 const actions = store.getActions();
                 expect(actions).toEqual(expectedActions) 
+                done()
         });
         
     })
     
-    it('should get entity data', () => {
+    it('should get entity data', (done) => {
         const entity = 'site';
         const page = 1;
         const length = 1;
@@ -203,23 +224,32 @@ describe('networkbrowser.actions.async', () => {
         
         const store = mockStore({session: {userDetails: userDetails}})
         
-        const expectedActions = [
-            {
+        const expectedActions = [{
                 type: actions.REQUEST_NODES,
                 entity: entity
-            },
-            {
+            },{
                 type: actions.RECEIVE_NODES,
                 entity: entity,
                 data
           }
         ];
         
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent()
+            
+            request.respondWith({
+                status: 200,
+                response: data
+            }) 
+        })
+        
         return store.dispatch(actions.getEntities(entity, page, length))
             .then(() => {
                 const actions = store.getActions();
                 expect(actions[0]).toEqual(expectedActions[0]) 
                 expect(actions[1].type).toEqual(expectedActions[1].type) 
+                
+                done()
         });
     })
     

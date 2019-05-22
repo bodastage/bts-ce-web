@@ -281,9 +281,11 @@ export function getEntityFields(entity){
         })
         .then(response => {
             dispatch(receiveNodeFields(entity, response.data));
+            return response;
         })
         .catch(function(error){
             dispatch(notifyNodesRequestFailure(entity, "Failed to fetch data"));
+            return error;
         });
     }
 }
