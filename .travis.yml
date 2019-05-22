@@ -11,7 +11,7 @@ script:
   - export NODE_OPTIONS=--max_old_space_size=4096
   - npm run build
 before_deploy:
-  - TRAVIS_TAG=v`node -pe "require('./package.json').version"`
+  - TRAVIS_TAG=`node -pe "require('./package.json').version"`
   - zip -r bts-ce-web-${TRAVIS_TAG}.zip build/*
 deploy:
       provider: releases
@@ -23,8 +23,4 @@ deploy:
       overwrite: true
       on:
         tag_name: $TRAVIS_TAG
-        branch: master
-branches:
-  only:
-    - master
 
