@@ -1,5 +1,5 @@
 import React from 'react'
-import Help from '../../src/modules/help/help'
+import Help from '../../src/modules/help/Help'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import Enzyme, { mount, shallow } from 'enzyme'
