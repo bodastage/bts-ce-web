@@ -11,6 +11,7 @@ script:
   - export NODE_OPTIONS=--max_old_space_size=4096
   - npm run build
 before_deploy:
+  - TRAVIS_TAG=`node -pe "require('./package.json').version"`
   - zip -r bts-ce-web-${TRAVIS_TAG}.zip build/*
 deploy:
       provider: releases
@@ -20,8 +21,4 @@ deploy:
       draft: true
       skip_cleanup: true
       overwrite: true
-      on:
-        tags: true
-branches:
-  except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+      tag_name: $TRAVIS_TAG
