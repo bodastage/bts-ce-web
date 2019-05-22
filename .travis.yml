@@ -22,5 +22,3 @@ deploy:
       skip_cleanup: true
       overwrite: true
       tag_name: $TRAVIS_TAG
-        
-
