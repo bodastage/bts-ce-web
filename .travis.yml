@@ -1,10 +1,23 @@
 language: node_js
 node_js:
-  - "stable"
+  - 10
+cashe: npm
 before_install:
   - 'nvm install-latest-npm'
 sudo: false
 script:
   - npm install
   - npm run test
-  - npn run build
+  - npm run build
+before_deploy:
+  - zip -r bts-ce-web-${TRAVIS_TAG}.zip build/*
+deploy:
+      provider: releases
+      api_key: $GH_TOKEN
+      file: 
+        - bts-ce-web-${TRAVIS_TAG}.zip
+      draft: true
+      skip_cleanup: true
+      overwrite: true
+      on:
+        tags: true
