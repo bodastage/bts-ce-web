@@ -22,3 +22,6 @@ deploy:
       overwrite: true
       on:
         tags: true
+branches:
+  except:
+    - "/^v\\d+\\.\\d+\\.\\d+$/"
