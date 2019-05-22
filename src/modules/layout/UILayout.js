@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Classes } from '@blueprintjs/core';
 import classNames from 'classnames';
 import logo from '../../images/logo-no-text-white.svg';
-import { Button, Alignment, Menu, MenuDivider, MenuItem, Popover, Position } from "@blueprintjs/core";
+import { Button, Alignment, Menu, MenuDivider, MenuItem, Popover, Position, Navbar } from "@blueprintjs/core";
 import { addTab } from '../layout/uilayout-actions';
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
@@ -100,20 +100,14 @@ class UILayout extends React.Component {
             );
 
             return (
-                <div className={classNames(Classes.NAVBAR, Classes.DARK)}>
-                    <div className={Classes.NAVBAR_GROUP}>
-
-                        <img src={logo} width="50px" alt="Boda Telecom Suite - CE" />  
-                        &nbsp;&nbsp;&nbsp;
-                            <div className={Classes.NAVBAR_HEADING}> 
-                                <div> 
-                                  Boda Telecom Suite-CE <span className="version bp3-text-muted">v{"2.0.0"}</span>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div className={classNames(Classes.NAVBAR_GROUP, Classes.BUTTON_GROUP)} align={Alignment.RIGHT}>
-                        <Button className={Classes.MINIMAL} icon="home" text="Home" 
+				<Navbar className={classNames(Classes.DARK)}>
+				
+					<Navbar.Group align={Alignment.LEFT}>
+						<img src={logo} width="50px" alt="Boda Telecom Suite - CE" />  &nbsp;&nbsp;&nbsp;
+						<Navbar.Heading>Boda Telecom Suite-CE <span className="version bp3-text-muted">v{"2.1.0"}</span></Navbar.Heading>
+					</Navbar.Group>
+					<Navbar.Group align={Alignment.RIGHT}>
+						<Button className={Classes.MINIMAL} icon="home" text="Home" 
                             onClick={this.addTab({component: 'dashboard', title: 'Home'})}/>
                         <Popover content={moduleMenu} position={Position.BOTTOM}>
                             <Button className={Classes.MINIMAL} icon="cube" text="Modules" />
@@ -124,8 +118,8 @@ class UILayout extends React.Component {
                         <Popover content={sessionMenu} position={Position.BOTTOM}>
                             <Button className={Classes.MINIMAL} icon="user" text={this.props.userDetails.first_name} />
                         </Popover>
-                    </div>
-                </div>   
+					</Navbar.Group>
+				</Navbar>
             );
         }
         
