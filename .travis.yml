@@ -21,6 +21,6 @@ deploy:
       draft: true
       skip_cleanup: true
       overwrite: true
-      on:
-        tag_name: $TRAVIS_TAG
+      tag_name: $TRAVIS_TAG
+        
 
