@@ -66,7 +66,7 @@ export function getQueryForAGGridSortAndFilter(columnNames, AGGridSortModel, AGG
                 let filterValue2 = "";
                 
                 if(condition1.type === 'contains') {
-                    filterValue1 = "?=.*" + condition1.filter + ".*";
+                    filterValue1 = `%${condition1.filter}%`
                 }
                 if( condition1.type === 'notEqual' ){
                     filterValue1 = '^(?!'+condition1.filter + "$)";                  
@@ -86,7 +86,7 @@ export function getQueryForAGGridSortAndFilter(columnNames, AGGridSortModel, AGG
                 
                 //condition2 filter
                 if(condition2.type === 'contains') {
-                    filterValue2 = "?=.*" + condition2.filter + ".*";
+                    filterValue2 = `%${condition2.filter}%`
                 }
                 if( condition2.type === 'notEqual' ){
                     filterValue2 = '^(?!'+condition2.filter + "$)";                  
