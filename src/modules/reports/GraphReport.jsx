@@ -103,6 +103,15 @@ function mapStateToProps(state, ownProps){
         };
     }
     
+	//If there is no data yet 
+	if(typeof state.reports.reportsdata[ownProps.options.reportId].data === 'undefined' ){
+        return {
+            reportInfo: null,
+            reportData: {}
+        };
+	}
+    
+	
     return {
         reportInfo: state.reports.reportsInfo[ownProps.options.reportId],
         reportData: state.reports.reportsdata[ownProps.options.reportId]
